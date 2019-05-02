@@ -1,6 +1,7 @@
 import React from 'react';
 import Modal from 'react-bootstrap-modal';
 import Datetime from 'react-datetime';
+import Layout from '../components/Layout';
 import '../../node_modules/react-datetime/css/react-datetime.css';
 
 class Cashier extends React.Component {
@@ -46,7 +47,7 @@ class Cashier extends React.Component {
 
     render() {
         return (
-            <div>
+            <Layout>
                <div className="row content">
                    <h1 className="content-title">POS</h1>
                </div>
@@ -280,7 +281,7 @@ class Cashier extends React.Component {
                     </Modal.Footer>
                 </Modal>
 
-           </div>
+           </Layout>
        )
     }
 }

@@ -1,9 +1,10 @@
 import React from 'react';
-import Select from 'react-select'
+import Select from 'react-select';
+import Layout from '../components/Layout';
 
 const ProductCreate = () => {
     return (
-        <div>
+        <Layout>
             <div className="row content">
                 <h1 className="content-title">Create new product</h1>
             </div>
@@ -67,7 +68,7 @@ const ProductCreate = () => {
                     
                 </div>
             </div>
-        </div>
+        </Layout>
     
     )
 }

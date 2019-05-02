@@ -1,5 +1,6 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
+import Layout from '../components/Layout';
 
 class Product extends React.Component {
     state = {
@@ -89,7 +90,7 @@ class Product extends React.Component {
             
 
         return (
-            <div>
+            <Layout>
                 <div className="row content">
                     <h1 className="content-title">Product</h1>
                 </div>
@@ -203,7 +204,7 @@ class Product extends React.Component {
                         </div>
                     </div>
                 </div>
-            </div>
+            </Layout>
         )
     }
 }
