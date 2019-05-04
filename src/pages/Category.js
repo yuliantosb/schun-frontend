@@ -2,7 +2,7 @@ import React from 'react';
 import {Link} from 'react-router-dom';
 import Layout from '../components/Layout';
 
-class Product extends React.Component {
+class Category extends React.Component {
     state = {
         ordering: {
             type: 'name',
@@ -23,42 +23,26 @@ class Product extends React.Component {
         const datas = [
             {
                 id: 1,
-                name: 'Charjer Leptop',
-                code: '123456',
-                cost: 230000,
-                price: 300000,
-                stock: 20,
-                categories: ['office tools', 'computer stuff']
+                name: 'Broken Goods',
+                description: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Esse sapiente dignissimos porro, vero modi aliquid fugit sequi'
 
             },
             {
                 id: 2,
-                name: 'Mos Leptop',
-                code: '223456',
-                cost: 80000,
-                price: 120000,
-                stock: 80,
-                categories: ['office tools', 'computer stuff', 'small tools']
+                name: 'Easy to broke',
+                description: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Esse sapiente dignissimos porro, vero modi aliquid fugit sequi'
 
             },
             {
                 id: 3,
-                name: 'Kibot Leptop',
-                code: '323456',
-                cost: 120000,
-                price: 160000,
-                stock: 50,
-                categories: ['computer stuff', 'stuff always broken']
+                name: 'Cheap goods',
+                description: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Esse sapiente dignissimos porro, vero modi aliquid fugit sequi'
 
             },
             {
                 id: 4,
-                name: 'LED Leptop 4.5 inci',
-                code: '423456',
-                cost: 450000,
-                price: 650000,
-                stock: 150,
-                categories: ['computer stuff', 'small tools', 'stuff always broken']
+                name: 'expensive goods',
+                description: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Esse sapiente dignissimos porro, vero modi aliquid fugit sequi'
 
             },
         ];
@@ -68,22 +52,12 @@ class Product extends React.Component {
                 <tr key={data.id}>
                     <td>
                         <p className="text-primary">{data.name}</p>
-                        <small className="text-muted">{data.code}</small>
                         <div>
                             <button className="btn btn-link text-success btn-xs">Edit</button>
                             <button className="btn btn-link text-danger btn-xs">Delete</button>
                         </div>
-                    </td>
-                    <td className="text-right">RP.{data.cost.toLocaleString()}</td>
-                    <td className="text-right">RP.{data.price.toLocaleString()}</td>
-                    <td className="text-center">{data.stock.toLocaleString()}</td>
-                    <td>
-                        {data.categories.map((category, index) => {
-                            return (
-                                <span key={index} className="label label-primary">{category}</span>
-                            )
-                        })}
-                    </td>
+                    </td>                    
+                    <td>{data.description} <small className="text-muted">[...]</small> </td>
                 </tr>
             )
         });
@@ -92,24 +66,21 @@ class Product extends React.Component {
         return (
             <Layout>
                 <div className="row content">
-                    <h1 className="content-title">Product</h1>
+                    <h1 className="content-title">Category</h1>
                 </div>
     
                 <div className="col-md-12">
                     <div className="cardbox cards">
                         <div className="row">                        
                             <div className="col-sm-8">
-                                <Link to="product/create" className="btn btn-primary mr-10">
-                                    <i className="mdi mdi-plus"></i> Add new product
+                                <Link to="category/create" className="btn btn-primary mr-10">
+                                    <i className="mdi mdi-plus"></i> Add new category
                                 </Link>
                                 <div className="btn btn-info mr-10">
                                     <i className="mdi mdi-upload"></i> Import
                                 </div>
                                 <div className="btn btn-success mr-10">
                                     <i className="mdi mdi-download"></i> Export
-                                </div>
-                                <div className="btn btn-primary">
-                                    <i className="mdi mdi-barcode"></i> Print Label and Barcode
                                 </div>
                             </div>
                             <div className="col-sm-4 text-right">
@@ -124,7 +95,7 @@ class Product extends React.Component {
                         <table className="table table-primary table-bordered table-hover mt-20 table-custom">
                             <thead>
                                 <tr>
-                                    <th onClick={this.handleSorting} id="name">Name 
+                                    <th onClick={this.handleSorting} id="name" style={{ width: '250px' }}>Name 
                                             <div className={`table-sorting ${this.state.ordering.type === 'name' && 'active' }`} >
                                             { 
                                                 this.state.ordering.type === 'name' ?
@@ -135,43 +106,10 @@ class Product extends React.Component {
                                             
                                             </div>
                                     </th>
-                                    <th onClick={this.handleSorting} id="cost">Cost 
-                                        <div className={`table-sorting ${this.state.ordering.type === 'cost' && 'active' }`} >
+                                    <th onClick={this.handleSorting} id="description">Description 
+                                        <div className={`table-sorting ${this.state.ordering.type === 'description' && 'active' }`} >
                                             { 
-                                                this.state.ordering.type === 'cost' ?
-                                                    (<i className={`mdi mdi-${ this.state.ordering.sort === 'asc' ? 'sort-ascending' : 'sort-descending' }`}></i>)
-                                                :
-                                                    (<i className="mdi mdi-sort"></i>)
-                                            }
-                                            
-                                        </div>
-                                    </th>
-                                    <th onClick={this.handleSorting} id="price">Price 
-                                        <div className={`table-sorting ${this.state.ordering.type === 'price' && 'active' }`} >
-                                            { 
-                                                this.state.ordering.type === 'price' ?
-                                                    (<i className={`mdi mdi-${ this.state.ordering.sort === 'asc' ? 'sort-ascending' : 'sort-descending' }`}></i>)
-                                                :
-                                                    (<i className="mdi mdi-sort"></i>)
-                                            }
-                                            
-                                        </div>
-                                    </th>
-                                    <th onClick={this.handleSorting} id="stock">Stock 
-                                        <div className={`table-sorting ${this.state.ordering.type === 'stock' && 'active' }`} >
-                                            { 
-                                                this.state.ordering.type === 'stock' ?
-                                                    (<i className={`mdi mdi-${ this.state.ordering.sort === 'asc' ? 'sort-ascending' : 'sort-descending' }`}></i>)
-                                                :
-                                                    (<i className="mdi mdi-sort"></i>)
-                                            }
-                                            
-                                        </div>
-                                    </th>
-                                    <th onClick={this.handleSorting} id="categories" style={{ width: '100px' }}>Categories
-                                        <div className={`table-sorting ${this.state.ordering.type === 'categories' && 'active' }`} >
-                                            { 
-                                                this.state.ordering.type === 'categories' ?
+                                                this.state.ordering.type === 'description' ?
                                                     (<i className={`mdi mdi-${ this.state.ordering.sort === 'asc' ? 'sort-ascending' : 'sort-descending' }`}></i>)
                                                 :
                                                     (<i className="mdi mdi-sort"></i>)
@@ -212,4 +150,4 @@ class Product extends React.Component {
     }
 }
 
-export default Product;
+export default Category;

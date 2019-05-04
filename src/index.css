@@ -50,3 +50,7 @@ code {
 .loading img {
   width: 100px;
 }
+
+.child > li > a.active {
+  border-color: #3d9cdb !important;
+}

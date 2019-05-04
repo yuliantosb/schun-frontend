@@ -77,8 +77,30 @@ class Menu extends React.Component {
               }
           </li>
           <li>
+              <NavLink to="/sales">
+                <i className="mdi mdi-cart" /> Sales
+              </NavLink>
+          </li>
+          <li>
+              <button onClick={this.handleChildren} id="purchase">
+                <i className="mdi mdi-shopping" /> Purchase
+                <span className="dropdown"><i className="mdi mdi-chevron-down"></i></span>
+              </button>
+              { isToggle === 'purchase' && 
+              <ul className="child" >
+                <li><NavLink to="/purchase">Purchase</NavLink></li>
+                <li><NavLink to="/expense">Expense</NavLink></li>
+              </ul>
+              }
+          </li>
+          <li>
               <NavLink to="/stock-opname">
                 <i className="mdi mdi-alarm" /> Stock Opname
+              </NavLink>
+          </li>
+          <li>
+              <NavLink to="/giftcard">
+                <i className="mdi mdi-credit-card" /> Giftcard
               </NavLink>
           </li>
           <li>
