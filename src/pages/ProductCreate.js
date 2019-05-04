@@ -1,6 +1,7 @@
 import React from 'react';
-import Select from 'react-select';
+import CreatableSelect from 'react-select/lib/Creatable';
 import Layout from '../components/Layout';
+import ReactNumeric from 'react-numeric';
 
 const ProductCreate = () => {
     return (
@@ -17,22 +18,28 @@ const ProductCreate = () => {
                         <div className="col-md-6">
                             <div className="form-group">
                                 <label className="control-label">Name <span className="text-danger">*</span></label>
-                                <input type="text" className="form-control"/>
+                                <input type="text" className="form-control" placeholder="Name" />
                             </div>
 
                             <div className="form-group">
                                 <label className="control-label">Code <span className="text-danger">*</span></label>
-                                <input type="text" className="form-control"/>
+                                <input type="text" className="form-control" placeholder="Code" />
                             </div>
 
                             <div className="form-group">
                                 <label className="control-label">Cost <span className="text-danger">*</span></label>
-                                <input type="text" className="form-control text-right"/>
+                                <div className="input-group">
+                                    <span className="input-group-addon" id="basic-addon1">RP.</span>
+                                    <ReactNumeric minimumValue="0" decimalCharacter="." digitGroupSeparator="," type="text" className="form-control text-right" placeholder="0.0" />
+                                </div>
                             </div>
 
                             <div className="form-group">
                                 <label className="control-label">Price <span className="text-danger">*</span></label>
-                                <input type="text" className="form-control text-right"/>
+                                <div className="input-group">
+                                    <span className="input-group-addon" id="basic-addon1">RP.</span>
+                                    <ReactNumeric minimumValue="0" decimalCharacter="." digitGroupSeparator="," type="text" className="form-control text-right" placeholder="0.0"/>
+                                </div>
                             </div>
 
                         </div>
@@ -40,22 +47,22 @@ const ProductCreate = () => {
                         <div className="col-md-6">
                             <div className="form-group">
                                 <label className="control-label">Category <span className="text-danger">*</span></label>
-                                <Select options={[
+                                <CreatableSelect options={[
                                         { value: 'chocolate', label: 'Chocolate' },
                                         { value: 'strawberry', label: 'Strawberry' },
                                         { value: 'vanilla', label: 'Vanilla' }
-                                        ]} isMulti={true} />
+                                        ]} isMulti={true} placeholder="Select or type categories" />
                             </div>
                         
 
                             <div className="form-group">
                                 <label className="control-label">Stock <span className="text-danger">*</span></label>
-                                <input type="text" className="form-control"/>
+                                <ReactNumeric minimumValue="0" digitGroupSeparator="," type="text" className="form-control text-right" placeholder="0.0" />
                             </div>
 
                             <div className="form-group">
                                 <label className="control-label">Description <span className="text-danger">*</span></label>
-                                <textarea type="text" className="form-control" rows="5"></textarea>
+                                <textarea type="text" className="form-control" rows="5" placeholder="Description"></textarea>
                             </div>
                         </div>
 

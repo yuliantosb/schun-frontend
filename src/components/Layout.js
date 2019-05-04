@@ -2,11 +2,18 @@ import React from 'react';
 import moment from 'moment';
 import Sidebar from '../components/Sidebar';
 import Menu from '../components/Menu';
+import Loading from '../img/loading.gif';
 
 class Layout extends React.Component {
     render() {
+        const { loading } = this.props;
         return (
-            <div className="wrapper-custom clearfix">
+          <div className="wrapper-custom clearfix">
+            { loading && 
+            <div className="loading">
+              <img src={Loading} alt="loading" />
+            </div>
+            }
             <div className="col-sm-3 sidebar">
               <Sidebar />
               <Menu />

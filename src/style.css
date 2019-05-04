@@ -7,6 +7,14 @@ body {
   font-family: "Open Sans", sans-serif;
 }
 
+textarea:focus, input:focus, button:focus {
+  outline: none;
+}
+
+*:focus {
+  outline: none;
+}
+
 ::-webkit-scrollbar {
   width: 8px; /* for vertical scrollbars */
   height: 8px; /* for horizontal scrollbars */
@@ -114,7 +122,17 @@ body {
   padding: 10px 30px;
 }
 
-.components > li > a {
+.components > li > button {
+  width: 100%;
+  text-align: left;
+  background-color: #fff;
+  box-shadow: none;
+  padding-left: 0px;
+  border: none;
+  border-bottom: 1px solid #eee;
+}
+
+.components > li > a, .components > li > button {
   display: block;
   padding-bottom: 15px;
   border-bottom: 1px solid #eee;
@@ -124,13 +142,18 @@ body {
   text-decoration: none;
 }
 
-.components > li > a > i {
+.components > li span.dropdown {
+  float: right;
+}
+.components > li > a > i, .components > li > button > i {
   margin-right: 15px;
   color: #2d9cdb;
 }
 
 .components > li > a.active,
-.components > li > a:hover {
+.components > li > a:hover,
+.components > li > button.active,
+.components > li > button:hover {
   border-color: #2d9cdb;
 }
 
@@ -238,6 +261,7 @@ body {
 
 .components ul.child {
   list-style: none;
+  transition: all 1s ease-in-out;
 }
 
 .components ul.child > li:before {
@@ -248,7 +272,7 @@ body {
 }
 
 .components ul.child > li {
-  padding: 10px 30px;
+  padding: 10px 0px 10px 30px;
   position: relative;
 }
 
