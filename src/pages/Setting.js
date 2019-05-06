@@ -1,7 +1,11 @@
 import React from 'react';
+import Layout from '../components/Layout';
+
 const Setting = () => {
     return (
-        <h1>Setting</h1>
+        <Layout>
+            <h1>Setting</h1>
+        </Layout>
     )
 }
 

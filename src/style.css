@@ -391,6 +391,7 @@ textarea:focus, input:focus, button:focus {
 .table-custom th {
   position: relative;
   cursor: pointer;
+  padding-right: 35px !important;
 }
 
 .table-sorting {

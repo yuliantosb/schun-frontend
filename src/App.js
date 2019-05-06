@@ -30,7 +30,7 @@ function App() {
           <Route path='/sales' component={Sales} />
           <Route path='/purchase' component={Purchase} />
           <Route path='/expense' component={Expense} />
-          <Route path='/gifcard' component={Giftcard} />
+          <Route path='/giftcard' component={Giftcard} />
           <Route path='/stock-opname' component={StockOpname} />
           <Route path='/report' component={Report} />
           <Route path='/setting' component={Setting} />
