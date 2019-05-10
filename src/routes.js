@@ -8,7 +8,6 @@ import { DefaultLayout, BlankLayout } from "./layouts";
 import BlogOverview from "./views/BlogOverview";
 import UserProfileLite from "./views/UserProfileLite";
 import AddNewPost from "./views/AddNewPost";
-import Errors from "./views/Errors";
 import ComponentsOverview from "./views/ComponentsOverview";
 import Tables from "./views/Tables";
 import BlogPosts from "./views/BlogPosts";
@@ -112,5 +111,10 @@ export default [
     path: "/user",
     layout: DefaultLayout,
     component: User
-  }
+  },
+  // {
+  //   path: '*',
+  //   layout: DefaultLayout,
+  //   component: () => <Errors type="404" title="Not Found" message="Page not found, maybe you're typo" />
+  // }
 ];

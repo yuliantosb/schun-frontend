@@ -7,59 +7,63 @@ import SmallStats from "./../components/common/SmallStats";
 import UsersOverview from "./../components/blog/UsersOverview";
 import UsersByDevice from "./../components/blog/UsersByDevice";
 import UsersByDick from "./../components/blog/UsersByDick";
-import NewDraft from "./../components/blog/NewDraft";
-import Discussions from "./../components/blog/Discussions";
-import TopReferrals from "./../components/common/TopReferrals";
 import TableDick from './../components/blog/TableDick';
+import {Redirect} from 'react-router-dom';
 
-const BlogOverview = ({ smallStats }) => (
-  <Container fluid className="main-content-container px-4">
-    {/* Page Header */}
-    <Row noGutters className="page-header py-4">
-      <PageTitle title="Production Overview" subtitle="Dashboard" className="text-sm-left mb-3" />
-    </Row>
+class BlogOverview extends React.Component {
+  render() {
+    if (!sessionStorage.getItem('token')) return (<Redirect to="/login" />)
+    const { smallStats } = this.props;
+    return (
+      <Container fluid className="main-content-container px-4">
+        {/* Page Header */}
+        <Row noGutters className="page-header py-4">
+          <PageTitle title="Production Overview" subtitle="Dashboard" className="text-sm-left mb-3" />
+        </Row>
 
-    {/* Small Stats Blocks */}
-    <Row>
-      {smallStats.map((stats, idx) => (
-        <Col className="col-lg-6 mb-4" key={idx} {...stats.attrs}>
-          <SmallStats
-            id={`small-stats-${idx}`}
-            variation="1"
-            chartData={stats.datasets}
-            chartLabels={stats.chartLabels}
-            label={stats.label}
-            value={stats.value}
-            percentage={stats.percentage}
-            increase={stats.increase}
-            decrease={stats.decrease}
-          />
-        </Col>
-      ))}
-    </Row>
+        {/* Small Stats Blocks */}
+        <Row>
+          {smallStats.map((stats, idx) => (
+            <Col className="col-lg-6 mb-4" key={idx} {...stats.attrs}>
+              <SmallStats
+                id={`small-stats-${idx}`}
+                variation="1"
+                chartData={stats.datasets}
+                chartLabels={stats.chartLabels}
+                label={stats.label}
+                value={stats.value}
+                percentage={stats.percentage}
+                increase={stats.increase}
+                decrease={stats.decrease}
+              />
+            </Col>
+          ))}
+        </Row>
 
-    <Row>
-      {/* Users Overview */}
-      <Col lg="8" md="12" sm="12" className="mb-4">
-        <UsersOverview />
-      </Col>
+        <Row>
+          {/* Users Overview */}
+          <Col lg="8" md="12" sm="12" className="mb-4">
+            <UsersOverview />
+          </Col>
 
-      {/* Users by Device */}
-      <Col lg="4" md="6" sm="12" className="mb-4">
-        <UsersByDevice />
-      </Col>
+          {/* Users by Device */}
+          <Col lg="4" md="6" sm="12" className="mb-4">
+            <UsersByDevice />
+          </Col>
 
-      <Col xs="12" className="mb-4">
-        <UsersByDick />
-      </Col>
+          <Col xs="12" className="mb-4">
+            <UsersByDick />
+          </Col>
 
-      <Col xs="12" className="mb-4">
-        <TableDick />
-      </Col>
+          <Col xs="12" className="mb-4">
+            <TableDick />
+          </Col>
 
-    </Row>
-  </Container>
-);
+        </Row>
+      </Container>
+    );
+  }
+}
 
 BlogOverview.propTypes = {
   /**
@@ -106,63 +110,6 @@ BlogOverview.defaultProps = {
         }
       ]
     },
-    // {
-    //   label: "Comments",
-    //   value: "8,147",
-    //   percentage: "3.8%",
-    //   increase: false,
-    //   decrease: true,
-    //   chartLabels: [null, null, null, null, null, null, null],
-    //   attrs: { md: "4", sm: "6" },
-    //   datasets: [
-    //     {
-    //       label: "Today",
-    //       fill: "start",
-    //       borderWidth: 1.5,
-    //       backgroundColor: "rgba(255,180,0,0.1)",
-    //       borderColor: "rgb(255,180,0)",
-    //       data: [2, 3, 3, 3, 4, 3, 3]
-    //     }
-    //   ]
-    // },
-    // {
-    //   label: "New Customers",
-    //   value: "29",
-    //   percentage: "2.71%",
-    //   increase: false,
-    //   decrease: true,
-    //   chartLabels: [null, null, null, null, null, null, null],
-    //   attrs: { md: "4", sm: "6" },
-    //   datasets: [
-    //     {
-    //       label: "Today",
-    //       fill: "start",
-    //       borderWidth: 1.5,
-    //       backgroundColor: "rgba(255,65,105,0.1)",
-    //       borderColor: "rgb(255,65,105)",
-    //       data: [1, 7, 1, 3, 1, 4, 8]
-    //     }
-    //   ]
-    // },
-    // {
-    //   label: "Subscribers",
-    //   value: "17,281",
-    //   percentage: "2.4%",
-    //   increase: false,
-    //   decrease: true,
-    //   chartLabels: [null, null, null, null, null, null, null],
-    //   attrs: { md: "4", sm: "6" },
-    //   datasets: [
-    //     {
-    //       label: "Today",
-    //       fill: "start",
-    //       borderWidth: 1.5,
-    //       backgroundColor: "rgb(0,123,255,0.1)",
-    //       borderColor: "rgb(0,123,255)",
-    //       data: [3, 2, 3, 2, 4, 5, 4]
-    //     }
-    //   ]
-    // }
   ]
 };
 

@@ -29,7 +29,7 @@ class Register extends React.Component {
                             <div className="form-group mb-3 d-table mx-auto">
                                 <div className="custom-control custom-checkbox mb-1">
                                 <input type="checkbox" className="custom-control-input" id="customCheck2" />
-                                <label className="custom-control-label" for="customCheck2">I agree with the <a href="#">Terms &amp; Conditions</a>.</label>
+                                <label className="custom-control-label" for="customCheck2">I agree with the <Link to="/">Terms &amp; Conditions</Link>.</label>
                                 </div>
                             </div>
                             <button type="submit" className="btn btn-pill btn-accent d-table mx-auto">Create Account</button>
@@ -37,10 +37,10 @@ class Register extends React.Component {
                         </div>
                         <div className="card-footer border-top">
                             <ul className="auth-form__social-icons d-table mx-auto">
-                            <li><a href="#"><i className="fab fa-facebook-f"></i></a></li>
-                            <li><a href="#"><i className="fab fa-twitter"></i></a></li>
-                            <li><a href="#"><i className="fab fa-github"></i></a></li>
-                            <li><a href="#"><i className="fab fa-google-plus-g"></i></a></li>
+                            <li><Link to="/"><i className="fab fa-facebook-f"></i></Link></li>
+                            <li><Link to="/"><i className="fab fa-twitter"></i></Link></li>
+                            <li><Link to="/"><i className="fab fa-github"></i></Link></li>
+                            <li><Link to="/"><i className="fab fa-google-plus-g"></i></Link></li>
                             </ul>
                         </div>
                         </div>

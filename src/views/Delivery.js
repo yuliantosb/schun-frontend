@@ -3,6 +3,7 @@ import PageTitle from "../components/common/PageTitle";
 import { Container, Row, Col, Card, CardHeader, CardBody, DatePicker } from 'shards-react';
 import "../assets/range-date-picker.css";
 import Modal from 'react-bootstrap-modal';
+import { Link } from 'react-router-dom';
 
 class Delivery extends React.Component {
     state = {
@@ -192,7 +193,7 @@ class Delivery extends React.Component {
                                                 <td>A2</td>
                                                 <td>7.00 m3</td>
                                             </tr>
-                                            <tr className="clickable-row">
+                                            <tr className="clickable-row" onClick={this.handleModalOpen}>
                                                 <td>
                                                     <p className="text-primary">BKS001 - JAPEK-BEKASI BARAT</p>
                                                     <small className="text-muted">05/20/2019</small>
@@ -206,7 +207,7 @@ class Delivery extends React.Component {
                                                 <td>A2</td>
                                                 <td>7.00 m3</td>
                                             </tr>
-                                            <tr className="clickable-row">
+                                            <tr className="clickable-row" onClick={this.handleModalOpen}>
                                                 <td>
                                                     <p className="text-primary">BKS001 - JAPEK-BEKASI BARAT</p>
                                                     <small className="text-muted">05/20/2019</small>
@@ -220,7 +221,7 @@ class Delivery extends React.Component {
                                                 <td>A2</td>
                                                 <td>7.00 m3</td>
                                             </tr>
-                                            <tr className="clickable-row">
+                                            <tr className="clickable-row" onClick={this.handleModalOpen}>
                                                 <td>
                                                     <p className="text-primary">BKS001 - JAPEK-BEKASI BARAT</p>
                                                     <small className="text-muted">05/20/2019</small>
@@ -234,7 +235,7 @@ class Delivery extends React.Component {
                                                 <td>A2</td>
                                                 <td>7.00 m3</td>
                                             </tr>
-                                            <tr className="clickable-row">
+                                            <tr className="clickable-row" onClick={this.handleModalOpen}>
                                                 <td>
                                                     <p className="text-primary">BKS001 - JAPEK-BEKASI BARAT</p>
                                                     <small className="text-muted">05/20/2019</small>
@@ -248,7 +249,7 @@ class Delivery extends React.Component {
                                                 <td>A2</td>
                                                 <td>7.00 m3</td>
                                             </tr>
-                                            <tr className="clickable-row">
+                                            <tr className="clickable-row" onClick={this.handleModalOpen}>
                                                 <td>
                                                     <p className="text-primary">BKS001 - JAPEK-BEKASI BARAT</p>
                                                     <small className="text-muted">05/20/2019</small>
@@ -262,7 +263,7 @@ class Delivery extends React.Component {
                                                 <td>A2</td>
                                                 <td>7.00 m3</td>
                                             </tr>
-                                            <tr className="clickable-row">
+                                            <tr className="clickable-row" onClick={this.handleModalOpen}>
                                                 <td>
                                                     <p className="text-primary">BKS001 - JAPEK-BEKASI BARAT</p>
                                                     <small className="text-muted">05/20/2019</small>
@@ -282,11 +283,11 @@ class Delivery extends React.Component {
                                 <div className="col-md-12 text-right py-3">
                                     <nav aria-label="Page navigation example">
                                         <ul className="pagination">
-                                            <li className="page-item disabled"><a aria-disabled="true" className="page-link" href="#">Previous</a></li>
-                                            <li className="page-item active"><a className="page-link" href="#">1</a></li>
-                                            <li className="page-item"><a className="page-link" href="#">2</a></li>
-                                            <li className="page-item"><a className="page-link" href="#">3</a></li>
-                                            <li className="page-item"><a className="page-link" href="#">Next</a></li>
+                                            <li className="page-item disabled"><Link aria-disabled="true" className="page-link">Previous</Link></li>
+                                            <li className="page-item active"><Link className="page-link">1</Link></li>
+                                            <li className="page-item"><Link className="page-link">2</Link></li>
+                                            <li className="page-item"><Link className="page-link">3</Link></li>
+                                            <li className="page-item"><Link className="page-link">Next</Link></li>
                                         </ul>
                                     </nav>
                                 </div>

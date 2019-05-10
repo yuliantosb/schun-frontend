@@ -11,7 +11,7 @@ class ForgotPassword extends React.Component {
                     <div className="col-lg-3 col-md-5 auth-form mx-auto my-auto">
                         <div className="card">
                         <div className="card-body">
-                            <img className="auth-form__logo d-table mx-auto mb-3" src={Logo} />
+                            <img className="auth-form__logo d-table mx-auto mb-3" src={Logo} alt="logo" />
                             <h5 className="auth-form__title text-center mb-4">Reset Password</h5>
                             <form>
                             <div className="form-group mb-4">

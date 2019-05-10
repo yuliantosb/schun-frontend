@@ -1,6 +1,7 @@
 import React from 'react';
-import { Container, Row, Col, Card, CardHeader } from 'shards-react';
+import { Container, Row } from 'shards-react';
 import PageTitle from "../components/common/PageTitle";
+import {Link} from 'react-router-dom';
 
 class User extends React.Component {
     render() {
@@ -22,20 +23,20 @@ class User extends React.Component {
                         <div className="card card-small user-details mb-4">
                             <div className="card-header p-0">
                                 <div className="user-details__bg">
-                                    <img src={require('../images/user-profile/up-user-details-background.jpg')} alt="User Details Background Image" />
+                                    <img src={require('../images/user-profile/up-user-details-background.jpg')} alt={Math.random()} />
                                 </div>
                             </div>
                             <div className="card-body p-0">
                                 <div className="user-details__avatar mx-auto">
-                                    <img src={require('../images/avatars/0.jpg')} alt="User Avatar" />
+                                    <img src={require('../images/avatars/0.jpg')} alt={Math.random()} />
                                 </div>
                                 <h4 className="text-center m-0 mt-2">Sierra Brooks</h4>
                                 <p className="text-center text-light m-0 mb-2">I'm a design focused engineer.</p>
                                 <ul className="user-details__social user-details__social--primary d-table mx-auto mb-4">
-                                    <li className="mx-1"><a href="#"><i className="fab fa-facebook-f"></i></a></li>
-                                    <li className="mx-1"><a href="#"><i className="fab fa-twitter"></i></a></li>
-                                    <li className="mx-1"><a href="#"><i className="fab fa-github"></i></a></li>
-                                    <li className="mx-1"><a href="#"><i className="fab fa-slack"></i></a></li>
+                                    <li className="mx-1"><Link to="/"><i className="fab fa-facebook-f"></i></Link></li>
+                                    <li className="mx-1"><Link to="/"><i className="fab fa-twitter"></i></Link></li>
+                                    <li className="mx-1"><Link to="/"><i className="fab fa-github"></i></Link></li>
+                                    <li className="mx-1"><Link to="/"><i className="fab fa-slack"></i></Link></li>
                                 </ul>
                             </div>
                         </div>
@@ -45,20 +46,20 @@ class User extends React.Component {
                         <div className="card card-small user-details mb-4">
                             <div className="card-header p-0">
                                 <div className="user-details__bg">
-                                    <img src={`http://lorempixel.com/600/300/nature/${Math.floor(Math.random() * Math.floor(8))}`} alt="User Details Background Image" />
+                                    <img src={`http://lorempixel.com/600/300/nature/${Math.floor(Math.random() * Math.floor(8))}`} alt={Math.random()} />
                                 </div>
                             </div>
                             <div className="card-body p-0">
                                 <div className="user-details__avatar mx-auto">
-                                    <img src={`https://i.pravatar.cc/300?u=${Math.random()}`} alt="User Avatar" />
+                                    <img src={`https://i.pravatar.cc/300?u=${Math.random()}`} alt={Math.random()} />
                                 </div>
                                 <h4 className="text-center m-0 mt-2">Sierra Brooks</h4>
                                 <p className="text-center text-light m-0 mb-2">I'm a design focused engineer.</p>
                                 <ul className="user-details__social user-details__social--primary d-table mx-auto mb-4">
-                                    <li className="mx-1"><a href="#"><i className="fab fa-facebook-f"></i></a></li>
-                                    <li className="mx-1"><a href="#"><i className="fab fa-twitter"></i></a></li>
-                                    <li className="mx-1"><a href="#"><i className="fab fa-github"></i></a></li>
-                                    <li className="mx-1"><a href="#"><i className="fab fa-slack"></i></a></li>
+                                    <li className="mx-1"><Link to="/"><i className="fab fa-facebook-f"></i></Link></li>
+                                    <li className="mx-1"><Link to="/"><i className="fab fa-twitter"></i></Link></li>
+                                    <li className="mx-1"><Link to="/"><i className="fab fa-github"></i></Link></li>
+                                    <li className="mx-1"><Link to="/"><i className="fab fa-slack"></i></Link></li>
                                 </ul>
                             </div>
                         </div>
@@ -68,20 +69,20 @@ class User extends React.Component {
                         <div className="card card-small user-details mb-4">
                             <div className="card-header p-0">
                                 <div className="user-details__bg">
-                                    <img src={`http://lorempixel.com/600/300/nature/${Math.floor(Math.random() * Math.floor(8))}`} alt="User Details Background Image" />
+                                    <img src={`http://lorempixel.com/600/300/nature/${Math.floor(Math.random() * Math.floor(8))}`} alt={Math.random()} />
                                 </div>
                             </div>
                             <div className="card-body p-0">
                                 <div className="user-details__avatar mx-auto">
-                                    <img src={`https://i.pravatar.cc/300?u=${Math.random()}`} alt="User Avatar" />
+                                    <img src={`https://i.pravatar.cc/300?u=${Math.random()}`} alt={Math.random()} />
                                 </div>
                                 <h4 className="text-center m-0 mt-2">Sierra Brooks</h4>
                                 <p className="text-center text-light m-0 mb-2">I'm a design focused engineer.</p>
                                 <ul className="user-details__social user-details__social--primary d-table mx-auto mb-4">
-                                    <li className="mx-1"><a href="#"><i className="fab fa-facebook-f"></i></a></li>
-                                    <li className="mx-1"><a href="#"><i className="fab fa-twitter"></i></a></li>
-                                    <li className="mx-1"><a href="#"><i className="fab fa-github"></i></a></li>
-                                    <li className="mx-1"><a href="#"><i className="fab fa-slack"></i></a></li>
+                                    <li className="mx-1"><Link to="/"><i className="fab fa-facebook-f"></i></Link></li>
+                                    <li className="mx-1"><Link to="/"><i className="fab fa-twitter"></i></Link></li>
+                                    <li className="mx-1"><Link to="/"><i className="fab fa-github"></i></Link></li>
+                                    <li className="mx-1"><Link to="/"><i className="fab fa-slack"></i></Link></li>
                                 </ul>
                             </div>
                         </div>
@@ -91,20 +92,20 @@ class User extends React.Component {
                         <div className="card card-small user-details mb-4">
                             <div className="card-header p-0">
                                 <div className="user-details__bg">
-                                    <img src={`http://lorempixel.com/600/300/nature/${Math.floor(Math.random() * Math.floor(8))}`} alt="User Details Background Image" />
+                                    <img src={`http://lorempixel.com/600/300/nature/${Math.floor(Math.random() * Math.floor(8))}`} alt={Math.random()} />
                                 </div>
                             </div>
                             <div className="card-body p-0">
                                 <div className="user-details__avatar mx-auto">
-                                    <img src={`https://i.pravatar.cc/300?u=${Math.random()}`} alt="User Avatar" />
+                                    <img src={`https://i.pravatar.cc/300?u=${Math.random()}`} alt={Math.random()} />
                                 </div>
                                 <h4 className="text-center m-0 mt-2">Sierra Brooks</h4>
                                 <p className="text-center text-light m-0 mb-2">I'm a design focused engineer.</p>
                                 <ul className="user-details__social user-details__social--primary d-table mx-auto mb-4">
-                                    <li className="mx-1"><a href="#"><i className="fab fa-facebook-f"></i></a></li>
-                                    <li className="mx-1"><a href="#"><i className="fab fa-twitter"></i></a></li>
-                                    <li className="mx-1"><a href="#"><i className="fab fa-github"></i></a></li>
-                                    <li className="mx-1"><a href="#"><i className="fab fa-slack"></i></a></li>
+                                    <li className="mx-1"><Link to="/"><i className="fab fa-facebook-f"></i></Link></li>
+                                    <li className="mx-1"><Link to="/"><i className="fab fa-twitter"></i></Link></li>
+                                    <li className="mx-1"><Link to="/"><i className="fab fa-github"></i></Link></li>
+                                    <li className="mx-1"><Link to="/"><i className="fab fa-slack"></i></Link></li>
                                 </ul>
                             </div>
                         </div>
@@ -114,20 +115,20 @@ class User extends React.Component {
                         <div className="card card-small user-details mb-4">
                             <div className="card-header p-0">
                                 <div className="user-details__bg">
-                                    <img src={`http://lorempixel.com/600/300/nature/${Math.floor(Math.random() * Math.floor(8))}`} alt="User Details Background Image" />
+                                    <img src={`http://lorempixel.com/600/300/nature/${Math.floor(Math.random() * Math.floor(8))}`} alt={Math.random()} />
                                 </div>
                             </div>
                             <div className="card-body p-0">
                                 <div className="user-details__avatar mx-auto">
-                                    <img src={`https://i.pravatar.cc/300?u=${Math.random()}`} alt="User Avatar" />
+                                    <img src={`https://i.pravatar.cc/300?u=${Math.random()}`} alt={Math.random()} />
                                 </div>
                                 <h4 className="text-center m-0 mt-2">Sierra Brooks</h4>
                                 <p className="text-center text-light m-0 mb-2">I'm a design focused engineer.</p>
                                 <ul className="user-details__social user-details__social--primary d-table mx-auto mb-4">
-                                    <li className="mx-1"><a href="#"><i className="fab fa-facebook-f"></i></a></li>
-                                    <li className="mx-1"><a href="#"><i className="fab fa-twitter"></i></a></li>
-                                    <li className="mx-1"><a href="#"><i className="fab fa-github"></i></a></li>
-                                    <li className="mx-1"><a href="#"><i className="fab fa-slack"></i></a></li>
+                                    <li className="mx-1"><Link to="/"><i className="fab fa-facebook-f"></i></Link></li>
+                                    <li className="mx-1"><Link to="/"><i className="fab fa-twitter"></i></Link></li>
+                                    <li className="mx-1"><Link to="/"><i className="fab fa-github"></i></Link></li>
+                                    <li className="mx-1"><Link to="/"><i className="fab fa-slack"></i></Link></li>
                                 </ul>
                             </div>
                         </div>
@@ -137,20 +138,20 @@ class User extends React.Component {
                         <div className="card card-small user-details mb-4">
                             <div className="card-header p-0">
                                 <div className="user-details__bg">
-                                    <img src={`http://lorempixel.com/600/300/nature/${Math.floor(Math.random() * Math.floor(8))}`} alt="User Details Background Image" />
+                                    <img src={`http://lorempixel.com/600/300/nature/${Math.floor(Math.random() * Math.floor(8))}`} alt={Math.random()} />
                                 </div>
                             </div>
                             <div className="card-body p-0">
                                 <div className="user-details__avatar mx-auto">
-                                    <img src={`https://i.pravatar.cc/300?u=${Math.random()}`} alt="User Avatar" />
+                                    <img src={`https://i.pravatar.cc/300?u=${Math.random()}`} alt={Math.random()} />
                                 </div>
                                 <h4 className="text-center m-0 mt-2">Sierra Brooks</h4>
                                 <p className="text-center text-light m-0 mb-2">I'm a design focused engineer.</p>
                                 <ul className="user-details__social user-details__social--primary d-table mx-auto mb-4">
-                                    <li className="mx-1"><a href="#"><i className="fab fa-facebook-f"></i></a></li>
-                                    <li className="mx-1"><a href="#"><i className="fab fa-twitter"></i></a></li>
-                                    <li className="mx-1"><a href="#"><i className="fab fa-github"></i></a></li>
-                                    <li className="mx-1"><a href="#"><i className="fab fa-slack"></i></a></li>
+                                    <li className="mx-1"><Link to="/"><i className="fab fa-facebook-f"></i></Link></li>
+                                    <li className="mx-1"><Link to="/"><i className="fab fa-twitter"></i></Link></li>
+                                    <li className="mx-1"><Link to="/"><i className="fab fa-github"></i></Link></li>
+                                    <li className="mx-1"><Link to="/"><i className="fab fa-slack"></i></Link></li>
                                 </ul>
                             </div>
                         </div>
@@ -159,11 +160,11 @@ class User extends React.Component {
                     <div className="col-md-12 text-right py-3">
                         <nav aria-label="Page navigation example">
                             <ul className="pagination">
-                                <li className="page-item disabled"><a aria-disabled="true" className="page-link" href="#">Previous</a></li>
-                                <li className="page-item active"><a className="page-link" href="#">1</a></li>
-                                <li className="page-item"><a className="page-link" href="#">2</a></li>
-                                <li className="page-item"><a className="page-link" href="#">3</a></li>
-                                <li className="page-item"><a className="page-link" href="#">Next</a></li>
+                                <li className="page-item disabled"><Link aria-disabled="true" className="page-link" to="/">Previous</Link></li>
+                                <li className="page-item active"><Link className="page-link" to="/">1</Link></li>
+                                <li className="page-item"><Link className="page-link" to="/">2</Link></li>
+                                <li className="page-item"><Link className="page-link" to="/">3</Link></li>
+                                <li className="page-item"><Link className="page-link" to="/">Next</Link></li>
                             </ul>
                         </nav>
                     </div>

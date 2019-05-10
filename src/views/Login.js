@@ -1,12 +1,29 @@
 import React from 'react';
 import Logo from '../images/shards-dashboards-logo.svg';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
+import { connect } from 'react-redux';
+import {login} from '../store/actions/authActions';
 
 class Login extends React.Component {
-    login = () => {
-        this.props.history.push('/')
+    state = {
+        email: '',
+        password: ''
     }
+
+    handleChangeCreds = (e) => {
+        this.setState({
+            [e.target.id]: e.target.value
+        })
+    }
+
+    handleLoginSubmit = (e) => {
+        e.preventDefault();
+        this.props.login(this.state);
+    }
+
     render() {
+        const {error} = this.props;
+        if (sessionStorage.getItem('token')) return (<Redirect to="/" />);
         return (
             <main className="main-content col mt-5">
                 <div className="main-content-container container-fluid px-4 my-auto h-100">
@@ -16,14 +33,21 @@ class Login extends React.Component {
                                 <div className="card-body">
                                     <img className="auth-form__logo d-table mx-auto mb-3" src={Logo} alt="Shards Dashboards - Register Template" />
                                     <h5 className="auth-form__title text-center mb-4">Access Your Account</h5>
-                                    <form>
+                                    { error && (
+                                    <div className="alert alert-danger alert-dismissible fade show" role="alert">
+                                        <strong>Error!</strong> { error }
+                                        <button type="button" className="close" data-dismiss="alert" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div> ) }
+                                    <form onSubmit={this.handleLoginSubmit}>
                                         <div className="form-group">
-                                            <label htmlFor="exampleInputEmail1">Email address</label>
-                                            <input type="email" className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email" />
+                                            <label htmlFor="email">Email address</label>
+                                            <input type="email" className="form-control" id="email" aria-describedby="emailHelp" placeholder="Enter email" onChange={this.handleChangeCreds} />
                                         </div>
                                         <div className="form-group">
-                                            <label htmlFor="exampleInputPassword1">Password</label>
-                                            <input type="password" className="form-control" id="exampleInputPassword1" placeholder="Password" />
+                                            <label htmlFor="password">Password</label>
+                                            <input type="password" className="form-control" id="password" placeholder="Password" onChange={this.handleChangeCreds} />
                                         </div>
                                         <div className="form-group mb-3 d-table mx-auto">
                                             <div className="custom-control custom-checkbox mb-1">
@@ -31,15 +55,15 @@ class Login extends React.Component {
                                                 <label className="custom-control-label" htmlFor="customCheck2">Remember me for 30 days.</label>
                                             </div>
                                         </div>
-                                        <button type="button" className="btn btn-pill btn-accent d-table mx-auto" onClick={this.login} >Access Account</button>
+                                        <button type="submit" className="btn btn-pill btn-accent d-table mx-auto">Access Account</button>
                                     </form>
                                 </div>
                                 <div className="card-footer border-top">
                                     <ul className="auth-form__social-icons d-table mx-auto">
-                                        <li><a href="#"><i className="fab fa-facebook-f"></i></a></li>
-                                        <li><a href="#"><i className="fab fa-twitter"></i></a></li>
-                                        <li><a href="#"><i className="fab fa-github"></i></a></li>
-                                        <li><a href="#"><i className="fab fa-google-plus-g"></i></a></li>
+                                        <li><Link to="/"><i className="fab fa-facebook-f"></i></Link></li>
+                                        <li><Link to="/"><i className="fab fa-twitter"></i></Link></li>
+                                        <li><Link to="/"><i className="fab fa-github"></i></Link></li>
+                                        <li><Link to="/"><i className="fab fa-google-plus-g"></i></Link></li>
                                     </ul>
                                 </div>
                             </div>
@@ -55,4 +79,19 @@ class Login extends React.Component {
     }
 }
 
-export default Login;
+
+const mapStateToProps = (state) => {
+    return {
+        ...state,
+        payload: state.auth.payload,
+        error: state.auth.error
+    }
+}
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        login: (credentials) => dispatch(login(credentials))
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Login);

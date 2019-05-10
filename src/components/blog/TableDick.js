@@ -1,5 +1,5 @@
 import React from 'react';
-import { Row, Col, Card, CardHeader, CardBody, Button, DatePicker } from "shards-react";
+import { Card, CardHeader, CardBody, DatePicker } from "shards-react";
 import "../../assets/range-date-picker.css";
 
 class TableDick extends React.Component {
@@ -123,7 +123,7 @@ class TableDick extends React.Component {
                         </div>
                     
                     <div className="col-sm-12 mb-5">
-                            <table className="table table-bordered table-custom">
+                            <table className="table table-bordered table-custom table-responsive">
                                 <thead>
                                     <tr>
                                         <th>Batching Plan</th>
