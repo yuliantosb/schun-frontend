@@ -1,11 +1,16 @@
 import React from 'react';
 import Logo from '../images/shards-dashboards-logo.svg';
 import { Link } from 'react-router-dom';
+import { appName } from '../global';
+import { Helmet } from 'react-helmet';
 
 class ForgotPassword extends React.Component {
     render() {
         return (
             <main className="main-content col mt-5">
+                <Helmet>
+                    <title>Forgot Password | {appName} </title>
+                </Helmet>
                 <div className="main-content-container container-fluid px-4 my-auto h-100">
                     <div className="row no-gutters h-100">
                     <div className="col-lg-3 col-md-5 auth-form mx-auto my-auto">

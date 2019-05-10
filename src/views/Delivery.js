@@ -4,6 +4,8 @@ import { Container, Row, Col, Card, CardHeader, CardBody, DatePicker } from 'sha
 import "../assets/range-date-picker.css";
 import Modal from 'react-bootstrap-modal';
 import { Link } from 'react-router-dom';
+import { appName } from '../global';
+import { Helmet } from 'react-helmet';
 
 class Delivery extends React.Component {
     state = {
@@ -41,6 +43,9 @@ class Delivery extends React.Component {
     render() {
         return (
             <Container fluid className="main-content-container px-4">
+                <Helmet>
+                    <title>Delivery | {appName} </title>
+                </Helmet>
                 <Row noGutters className="page-header py-4">
                     <PageTitle sm="4" title="Overview delivery" subtitle="Delivery" className="text-sm-left" />
                 </Row>
@@ -283,11 +288,11 @@ class Delivery extends React.Component {
                                 <div className="col-md-12 text-right py-3">
                                     <nav aria-label="Page navigation example">
                                         <ul className="pagination">
-                                            <li className="page-item disabled"><Link aria-disabled="true" className="page-link">Previous</Link></li>
-                                            <li className="page-item active"><Link className="page-link">1</Link></li>
-                                            <li className="page-item"><Link className="page-link">2</Link></li>
-                                            <li className="page-item"><Link className="page-link">3</Link></li>
-                                            <li className="page-item"><Link className="page-link">Next</Link></li>
+                                            <li className="page-item disabled"><Link to="/" aria-disabled="true" className="page-link">Previous</Link></li>
+                                            <li className="page-item active"><Link to="/" className="page-link">1</Link></li>
+                                            <li className="page-item"><Link to="/" className="page-link">2</Link></li>
+                                            <li className="page-item"><Link to="/" className="page-link">3</Link></li>
+                                            <li className="page-item"><Link to="/" className="page-link">Next</Link></li>
                                         </ul>
                                     </nav>
                                 </div>

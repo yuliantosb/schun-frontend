@@ -4,6 +4,7 @@ import { Link, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import {login} from '../store/actions/authActions';
 import {Helmet} from 'react-helmet';
+import { appName } from '../global';
 
 class Login extends React.Component {
     state = {
@@ -28,7 +29,7 @@ class Login extends React.Component {
         return (
             <main className="main-content col mt-5">
                 <Helmet>
-                    <title>Login</title>
+                    <title>Login | {appName} </title>
                 </Helmet>
                 <div className="main-content-container container-fluid px-4 my-auto h-100">
                     <div className="row no-gutters h-100">

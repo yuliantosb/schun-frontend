@@ -3,6 +3,8 @@ import { Container, Row, Col, Card, CardHeader, CardBody, DatePicker } from "sha
 import PageTitle from "../components/common/PageTitle";
 import "../assets/range-date-picker.css";
 import {Link} from 'react-router-dom';
+import { appName } from '../global';
+import { Helmet } from 'react-helmet';
 
 class StockOut extends React.Component {
     state = {
@@ -27,6 +29,9 @@ class StockOut extends React.Component {
     render() {
         return (
             <Container fluid className="main-content-container px-4">
+                <Helmet>
+                    <title>Stock out | {appName} </title>
+                </Helmet>
                 <Row noGutters className="page-header py-4">
                     <PageTitle sm="4" title="Stock out" subtitle="Stock out material" className="text-sm-left" />
                 </Row>

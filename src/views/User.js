@@ -2,11 +2,16 @@ import React from 'react';
 import { Container, Row } from 'shards-react';
 import PageTitle from "../components/common/PageTitle";
 import {Link} from 'react-router-dom';
+import { appName } from '../global';
+import { Helmet } from 'react-helmet';
 
 class User extends React.Component {
     render() {
         return (
             <Container fluid className="main-content-container px-4">
+                <Helmet>
+                    <title>Dashboard | {appName} </title>
+                </Helmet>
                 <Row noGutters className="page-header py-4">
                     <PageTitle sm="4" title="User" subtitle="User overview" className="text-sm-left" />
                 </Row>
