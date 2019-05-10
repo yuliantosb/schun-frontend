@@ -1,0 +1,97 @@
+a {
+    cursor: pointer !important;
+}
+
+.table-custom > tbody p {
+    margin-bottom: 0px;
+    font-weight: bold;
+}
+
+
+.table-custom > tbody > tr > td {
+    font-weight: normal !important;
+}
+
+.main-sidebar .nav .nav-item .nav-link i {
+    font-size: 1.125rem;
+    top: -1px;
+}
+
+.table-responsive {
+    display: table;
+}
+
+.clickable-row {
+    cursor: pointer;
+}
+
+.modal-backdrop.fade {
+    opacity: .5 !important;
+}
+
+.main-sidebar {
+    z-index: 1039 !important;
+}
+
+.modal.in {
+    display: block!important;
+    -webkit-transition: all .5s ease-in-out;
+    transition: all .5s ease-in-out;
+    opacity: 1 !important;
+}
+
+.modal-dialog {
+    margin-top: 15% !important;
+}
+
+.form-group .react-datepicker-wrapper {
+    display: block;
+}
+
+.form-group .react-datepicker__input-container {
+    width: 100%;
+}
+
+
+.profile-user {
+    position: relative;
+    min-height: 250px;
+    margin-bottom: 30px;
+}
+
+.profile-user .btn-group.open .dropdown-toggle {
+    -webkit-box-shadow: none !important;
+    box-shadow: none !important;
+}
+
+.profile-user .btn-profile {
+    position: absolute;
+    right: 10px;
+}
+
+.profile-wrapper img {
+    width: 100px;
+}
+
+.profile-wrapper .title {
+    font-weight: 700;
+    font-size: 1.2em;
+    color: #3d9cdb;
+}
+
+.bottom-profile {
+    margin-top: 20px;
+}
+
+.bottom-profile .text-small {
+    font-size: .8em;
+}
+
+.img-circle {
+    border-radius: 50%;
+}
+
+.btn-transparent {
+    background-color: transparent;
+    float: right;
+}
