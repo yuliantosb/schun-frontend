@@ -3,6 +3,7 @@ import Logo from '../images/shards-dashboards-logo.svg';
 import { Link, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import {login} from '../store/actions/authActions';
+import {Helmet} from 'react-helmet';
 
 class Login extends React.Component {
     state = {
@@ -26,6 +27,9 @@ class Login extends React.Component {
         if (sessionStorage.getItem('token')) return (<Redirect to="/" />);
         return (
             <main className="main-content col mt-5">
+                <Helmet>
+                    <title>Login</title>
+                </Helmet>
                 <div className="main-content-container container-fluid px-4 my-auto h-100">
                     <div className="row no-gutters h-100">
                         <div className="col-lg-3 col-md-5 auth-form mx-auto my-auto">

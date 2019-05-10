@@ -9,6 +9,7 @@ import UsersByDevice from "./../components/blog/UsersByDevice";
 import UsersByDick from "./../components/blog/UsersByDick";
 import TableDick from './../components/blog/TableDick';
 import {Redirect} from 'react-router-dom';
+import {Helmet} from 'react-helmet';
 
 class BlogOverview extends React.Component {
   render() {
@@ -16,6 +17,9 @@ class BlogOverview extends React.Component {
     const { smallStats } = this.props;
     return (
       <Container fluid className="main-content-container px-4">
+          <Helmet>
+              <title>Dashboard</title>
+          </Helmet>
         {/* Page Header */}
         <Row noGutters className="page-header py-4">
           <PageTitle title="Production Overview" subtitle="Dashboard" className="text-sm-left mb-3" />
