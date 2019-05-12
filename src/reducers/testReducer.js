@@ -13,7 +13,7 @@ const testReducer = (state = initState, action) => {
                 response: action.response,
             }
         case 'FETCH_FAILED':
-            localStorage.removeItem('token');
+            sessionStorage.removeItem('token');
             return {
                 ...state,
                 response: action.response,

@@ -425,3 +425,37 @@ span.label:not(:last-child) {
 .not-found {
   padding: 18% 0px;
 }
+
+.profile-user {
+  position: relative;
+  min-height: 250px;
+  margin-bottom: 30px;
+}
+
+.profile-user .btn-group.open .dropdown-toggle {
+  -webkit-box-shadow: none !important;
+  box-shadow: none !important;
+}
+
+.profile-user .btn-profile {
+  position: absolute;
+  right: 10px;
+}
+
+.profile-wrapper img {
+  width: 100px;
+}
+
+.profile-wrapper .title {
+  font-weight: 700;
+  font-size: 1.2em;
+  color: #3d9cdb;
+}
+
+.bottom-profile {
+  margin-top: 20px;
+}
+
+.bottom-profile .text-small {
+  font-size: .8em;
+}

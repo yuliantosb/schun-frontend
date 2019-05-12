@@ -1,21 +1,29 @@
 const initState = {
-    response : {
-        type: null,
-        message: null
-    }
+    fetching: false,
+    fetched: false,
+    error: null,
+    payload : {}
 }
 const authReducer = (state = initState, action) => {
     switch(action.type) {
-        case 'LOGIN_ERROR':
+        case 'LOGIN' : 
             return {
                 ...state,
-                response: action.response,
+                fetching: true
             }
-        case 'LOGIN_SUCCESS':
-            localStorage.setItem('token', action.response.token);
+        case 'LOGIN_REJECTED':
             return {
                 ...state,
-                response: action.response,
+                error: action.payload,
+                fetching: false
+            }
+        case 'LOGIN_FULLFILLED':
+            // sessionStorage.setItem('token', action.payload.data.token);
+            return {
+                ...state,
+                fetching: false,
+                fetched: true,
+                payload: action.payload,
             }
         default:
             return state

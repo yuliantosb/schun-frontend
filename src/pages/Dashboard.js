@@ -5,8 +5,8 @@ import Layout from '../components/Layout';
 
 class Dashboard extends React.Component {
     render() {
-        const token = localStorage.getItem('token');
-        if (!token) return <Redirect to='/login' />
+        // const token = sessionStorage.getItem('token');
+        // if (!token) return <Redirect to='/login' />
         return (
             <Layout>
                 <div className="row content">

@@ -13,6 +13,8 @@ import Giftcard from './pages/Giftcard';
 import StockOpname from './pages/StockOpname';
 import Report from './pages/Report';
 import Setting from './pages/Setting';
+import User from './pages/User';
+
 import NotFound from './pages/NotFound';
 import Login from './pages/Auth/Login';
 import './style.css';
@@ -34,6 +36,7 @@ function App() {
           <Route path='/stock-opname' component={StockOpname} />
           <Route path='/report' component={Report} />
           <Route path='/setting' component={Setting} />
+          <Route path='/user' component={User} />
           <Route path='/login' component={Login} />
           <Route path="*" component={NotFound} />
         </Switch>

@@ -14,7 +14,7 @@ class Report extends React.Component {
     render() {
         // console.log(this.props);
         const { response } = this.props;
-        if (!localStorage.getItem('token')) return <Redirect to='login' />
+        if (!sessionStorage.getItem('token')) return <Redirect to='login' />
         return (
             <Layout loading={!response ? true : false}>
                 <h1>Report</h1>

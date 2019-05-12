@@ -71,7 +71,7 @@ class Giftcard extends React.Component {
                 <tr key={tbody.id}>
                     <td>
                         <p className="text-primary"><strong>{tbody.card_no}</strong></p>
-                        <small className="text-muted">{moment(new Date).format('MM/DD/YYYY HH:mm:ss')}</small>
+                        <small className="text-muted">{moment(new Date()).format('MM/DD/YYYY HH:mm:ss')}</small>
                         <div>
                             <button className="btn btn-link text-success btn-xs">Edit</button>
                             <button className="btn btn-link text-info btn-xs">View</button>

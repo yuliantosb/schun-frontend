@@ -20,8 +20,9 @@ class Login extends React.Component {
        this.props.login(this.state);
     }
     render() {
-        const {response} = this.props;
-        const token = localStorage.getItem('token');
+        const { error, payload } = this.props;
+        console.log(this.props);
+        const token = sessionStorage.getItem('token');
         if (token) return <Redirect to='/' />
         return (
             <div className="clearfix login-wrapper">
@@ -36,15 +37,16 @@ class Login extends React.Component {
                         </div>
                     </div>
                     <form className="mt-20" onSubmit={this.handleSubmit}>
-                        <div className={`form-group ${ response.type === 'error' && 'has-error'}`}>
+                        <div className={`form-group ${error && errorEmail && 'has-error'}`}>
                             <label className="control-label">Email</label>
                             <input type="email" className="form-control" id="email" placeholder="Email" onChange={this.handleChange} />
-                            {response.type === 'error' && (<span className="help-block">{response.message}</span>) }
+                            { error && error.response.data.errors.email !== undefined && <span className="help-block">{error.response.data.errors.email[0]}</span> }
                         </div>
 
-                        <div className="form-group">
+                        <div className={`form-group ${error && errorEmail !== undefined && 'has-error'}`}>
                             <label className="control-label">Password</label>
                             <input type="password" id="password" className="form-control" placeholder="Password" onChange={this.handleChange} />
+                            { error && error.response.data.errors.password !== undefined && <span className="help-block">{error.response.data.errors.password[0]}</span> }
                         </div>
                         <div className="row">
                             <div className="col-sm-5">
@@ -68,7 +70,8 @@ class Login extends React.Component {
 const mapStateToProps = (state) => {
     return {
         ...state,
-        response: state.auth.response,
+        payload: state.auth.payload,
+        error: state.auth.error
     }
 }
 

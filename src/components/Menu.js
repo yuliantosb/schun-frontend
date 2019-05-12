@@ -82,6 +82,11 @@ class Menu extends React.Component {
               </NavLink>
           </li>
           <li>
+              <NavLink to="/service">
+                <i className="mdi mdi-face-agent" /> Service
+              </NavLink>
+          </li>
+          <li>
               <button onClick={this.handleChildren} id="purchase">
                 <i className="mdi mdi-shopping" /> Purchase
                 <span className="dropdown"><i className="mdi mdi-chevron-down"></i></span>
@@ -104,14 +109,38 @@ class Menu extends React.Component {
               </NavLink>
           </li>
           <li>
+              <button onClick={this.handleChildren} id="users">
+                <i className="mdi mdi-account-group" /> Users
+                <span className="dropdown"><i className="mdi mdi-chevron-down"></i></span>
+              </button>
+              { isToggle === 'users' && 
+              <ul className="child" >
+                <li><NavLink to="/user">Employee</NavLink></li>
+                <li><NavLink to="/customer">Customer</NavLink></li>
+                <li><NavLink to="/distributor">Distributor</NavLink></li>
+              </ul>
+              }
+          </li>
+          <li>
               <NavLink to="/report">
                 <i className="mdi mdi-file" /> Report
               </NavLink>
           </li>
           <li>
-              <NavLink to="/setting">
+              <button onClick={this.handleChildren} id="setting">
                 <i className="mdi mdi-settings" /> Settings
-              </NavLink>
+                <span className="dropdown"><i className="mdi mdi-chevron-down"></i></span>
+              </button>
+              { isToggle === 'setting' && 
+              <ul className="child" >
+                <li><NavLink to="/setting">Site Setting</NavLink></li>
+                <li><NavLink to="/store">Store</NavLink></li>
+                <li><NavLink to="/role">Role</NavLink></li>
+                <li><NavLink to="/permission">Permission</NavLink></li>
+                <li><NavLink to="/printer">Printer</NavLink></li>
+                <li><NavLink to="/backup">Backup</NavLink></li>
+              </ul>
+              }
           </li>
         </ul>
     )

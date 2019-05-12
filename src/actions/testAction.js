@@ -3,7 +3,7 @@ const test = () => {
     return (dispatch, getState) => {
         axios.get('http://localhost:8000/api/user', {
             headers: {
-                Authorization: `Bearer ${localStorage.getItem('token')}`
+                Authorization: `Bearer ${sessionStorage.getItem('token')}`
             }
         }).then(res => {
             dispatch({
