@@ -14,8 +14,7 @@ const authReducer = (state = initState, action) => {
         case 'LOGIN_REJECTED':
             return {
                 ...state,
-                error: action.payload,
-                fetching: false
+                error: action.payload.response.data.message,
             }
         case 'LOGIN_FULLFILLED':
             // sessionStorage.setItem('token', action.payload.data.token);

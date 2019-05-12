@@ -36,17 +36,21 @@ class Login extends React.Component {
                             <span className="title-header">Login</span>
                         </div>
                     </div>
+                    { error &&
+                    <div className="alert alert-danger alert-dismissible mt-20" role="alert">
+                        <button type="button" className="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <strong>Error!</strong> { error }
+                    </div>
+                    }
                     <form className="mt-20" onSubmit={this.handleSubmit}>
-                        <div className={`form-group ${error && errorEmail && 'has-error'}`}>
+                        <div className="form-group">
                             <label className="control-label">Email</label>
                             <input type="email" className="form-control" id="email" placeholder="Email" onChange={this.handleChange} />
-                            { error && error.response.data.errors.email !== undefined && <span className="help-block">{error.response.data.errors.email[0]}</span> }
                         </div>
 
-                        <div className={`form-group ${error && errorEmail !== undefined && 'has-error'}`}>
+                        <div className="form-group">
                             <label className="control-label">Password</label>
                             <input type="password" id="password" className="form-control" placeholder="Password" onChange={this.handleChange} />
-                            { error && error.response.data.errors.password !== undefined && <span className="help-block">{error.response.data.errors.password[0]}</span> }
                         </div>
                         <div className="row">
                             <div className="col-sm-5">
