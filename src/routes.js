@@ -111,10 +111,5 @@ export default [
     path: "/user",
     layout: DefaultLayout,
     component: User
-  },
-  // {
-  //   path: '*',
-  //   layout: DefaultLayout,
-  //   component: () => <Errors type="404" title="Not Found" message="Page not found, maybe you're typo" />
-  // }
+  }
 ];

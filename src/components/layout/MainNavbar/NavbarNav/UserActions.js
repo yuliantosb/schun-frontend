@@ -9,6 +9,7 @@ import {
   NavItem,
   NavLink
 } from "shards-react";
+import {Redirect} from 'react-router-dom';
 
 export default class UserActions extends React.Component {
   constructor(props) {
@@ -19,6 +20,10 @@ export default class UserActions extends React.Component {
     };
 
     this.toggleUserActions = this.toggleUserActions.bind(this);
+  }
+
+  handleClickLogOut = () => {
+    sessionStorage.removeItem('token');
   }
 
   toggleUserActions() {
@@ -52,7 +57,7 @@ export default class UserActions extends React.Component {
             <i className="material-icons">&#xE896;</i> Transactions
           </DropdownItem>
           <DropdownItem divider />
-          <DropdownItem tag={Link} to="/login" className="text-danger">
+          <DropdownItem onClick={this.handleClickLogOut} className="text-danger">
             <i className="material-icons text-danger">&#xE879;</i> Logout
           </DropdownItem>
         </Collapse>
