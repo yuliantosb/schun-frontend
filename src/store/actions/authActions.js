@@ -12,3 +12,16 @@ export const login = (creds) => {
         })
     }
 }
+
+export const logout = () => {
+    return (dispatch, getState) => {
+        dispatch({
+            type: 'LOGOUT',
+            payload: axios.post(`${url}/logout`, {}, {
+                headers: {
+                    Authorization: `Bearer ${sessionStorage.getItem('token')}`
+                }
+            })
+        })
+    }
+}

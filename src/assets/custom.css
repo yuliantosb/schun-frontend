@@ -95,3 +95,36 @@ a {
     background-color: transparent;
     float: right;
 }
+
+button:focus {
+    outline:0 !important;
+}
+
+.page-link:focus {
+    box-shadow: none !important;
+}
+
+.css-1pcexqc-container {
+    font-weight: 200 !important;
+    font-size: .8125rem !important;
+}
+
+.css-lszy77t-control:hover {
+    border: none !important;
+    color: #495057;
+    background-color: #fff;
+    border-color: #007bff;
+    box-shadow: 0 0.313rem 0.719rem rgba(0,123,255,.1), 0 0.156rem 0.125rem rgba(0,0,0,.06)
+}
+
+.css-lszy77t-control {
+    border: none !important;
+    color: #495057;
+    background-color: #fff;
+    border-color: #007bff;
+    box-shadow: 0 0.313rem 0.719rem rgba(0,123,255,.1), 0 0.156rem 0.125rem rgba(0,0,0,.06)
+}
+
+.css-kj6f9i-menu {
+    z-index: 999 !important;
+}

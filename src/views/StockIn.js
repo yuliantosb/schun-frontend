@@ -2,14 +2,25 @@ import React from 'react';
 import { Container, Row, Col, Card, CardHeader, CardBody, DatePicker } from "shards-react";
 import PageTitle from "../components/common/PageTitle";
 import "../assets/range-date-picker.css";
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import { appName } from '../global';
 import { Helmet } from 'react-helmet';
+import { fetchStockIn } from '../store/actions/stockInAction';
+import {connect} from 'react-redux';
+import moment from 'moment';
+import Error500 from './Error500';
+import Loading from 'react-loading-bar';
+import 'react-loading-bar/dist/index.css';
+
 
 class StockIn extends React.Component {
     state = {
-        startDate: undefined,
-        endDate: undefined
+        startDate: null,
+        endDate: null,
+        search: null,
+        page: 1,
+        perpage: 10,
+        keyword: null
     }
 
     handleStartDateChange = (value) => {
@@ -26,9 +37,95 @@ class StockIn extends React.Component {
         });
     }
 
+    handleClickPage = (e) => {
+        this.setState({
+            ...this.state,
+            page: e
+        });
+    }
+
+    hanldeChangePage  = (e) => {
+        this.setState({
+            ...this.state,
+            perpage: e.target.value
+        });
+    }
+
+    handleChangeKeyword = (e) => {
+        this.setState({
+            ...this.state,
+            [e.target.id]: e.target.value
+        });
+    }
+
+    handleClickKeyword = () => {
+        this.props.fetchStockIn(this.state);
+    }
+
+    handlePressKeyword = (e) => {
+        if (e.key === 'Enter') {
+            this.props.fetchStockIn(this.state);
+        }
+    }
+    
+    componentWillUpdate(nextProps, nextState) {
+        if (this.state.page !== nextState.page) {
+            this.props.fetchStockIn(nextState);
+        }
+
+        if (this.state.perpage !== nextState.perpage) {
+            this.props.fetchStockIn(nextState);
+        }
+
+        if (this.state.startDate !== nextState.startDate) {
+            this.props.fetchStockIn(nextState);
+        }
+
+        if (this.state.endDate !== nextState.endDate) {
+            this.props.fetchStockIn(nextState);
+        }
+    }
+
+    componentDidMount = ()  => {
+        this.props.fetchStockIn(this.state);
+    }
+
     render() {
+        const {payload, error, fetching} =  this.props;
+        if (error && error.status === 401) {
+            sessionStorage.removeItem('token');
+            return <Redirect to="/" />
+        } else if (error && error.status === 500) {
+            return <Error500 message={error.data.message} />
+        }        
+
+        const stockIns = payload.data && payload.data.data.map(stockIn => {
+            return (
+            <tr key={stockIn._id}>
+                <td>
+                    <p className="text-primary">{ moment(stockIn.stock_in_date).format('MMM Do, YYYY') }</p>
+                    <button className="btn btn-sm btn-link text-success py-0 px-0 pr-2">Edit</button>
+                    <button className="btn btn-sm btn-link text-danger py-0 px-0 pr-2">Delete</button>
+                </td>
+                <td>
+                    <p className="text-secondary">{ stockIn.items.name }</p>
+                    <small>{ stockIn.items.item_code }</small>
+                </td>
+                <td>{ stockIn.items.uom.name }</td>
+                <td>{ stockIn.qty }</td>
+                <td>{ stockIn.formatted_price }</td>
+                <td><Link to="/">{ stockIn.evidence }</Link></td>
+            </tr>
+            );
+        });
+
         return (
             <Container fluid className="main-content-container px-4">
+                <Loading
+                    show={fetching}
+                    color="blue"
+                    showSpinner={false}
+                    />
                 <Helmet>
                     <title>Stock In | {appName} </title>
                 </Helmet>
@@ -72,17 +169,18 @@ class StockIn extends React.Component {
                                                 </div>
                                             </div>
                                         </div>
-
+                                        
                                         <div className="col-md-4 offset-md-3 text-right">
                                             <div className="input-group mb-3">
-                                                <input type="text" className="form-control" placeholder="" aria-label="Example text with button addon" aria-describedby="button-addon1" />
+                                                <input onKeyPress={this.handlePressKeyword} onChange={this.handleChangeKeyword} id="keyword" type="text" className="form-control" placeholder="" aria-label="Example text with button addon" aria-describedby="button-addon1" />
                                                 <div className="input-group-prepend">
-                                                    <button className="btn btn-secondary" type="button" id="button-addon1"><i className="mdi mdi-magnify"></i> Search </button>
+                                                    <button onClick={this.handleClickKeyword} className="btn btn-secondary" type="submit" id="button-addon1"><i className="mdi mdi-magnify"></i> Search </button>
                                                 </div>
                                             </div>
                                             <Link to="/stockin/create" className="btn btn-secondary mr-2"><i className="mdi mdi-plus"></i> Add</Link>
-                                            <button className="btn btn-primary"><i className="mdi mdi-download"></i> Download</button>
+                                            <button type="button" className="btn btn-primary"><i className="mdi mdi-download"></i> Download</button>
                                         </div>
+                                        
                                     </div>
                                 </div>
                                 <div className="col-md-12 mt-3">
@@ -98,109 +196,60 @@ class StockIn extends React.Component {
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <tr>
-                                                <td>
-                                                    <p className="text-primary">05/13/2019</p>
-                                                    <button className="btn btn-sm btn-link text-success py-0 px-0 pr-2">Edit</button>
-                                                    <button className="btn btn-sm btn-link text-danger py-0 px-0 pr-2">Delete</button>
-                                                </td>
-                                                <td>
-                                                    <p className="text-secondary">Semen Gresik Tipe 1</p>
-                                                    <small>SEMEN</small>
-                                                </td>
-                                                <td>Ton</td>
-                                                <td>232</td>
-                                                <td>723,918</td>
-                                                <td><Link to="/">semen_gresik_91839.jpg (260KB)</Link></td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    <p className="text-primary">05/13/2019</p>
-                                                    <button className="btn btn-sm btn-link text-success py-0 px-0 pr-2">Edit</button>
-                                                    <button className="btn btn-sm btn-link text-danger py-0 px-0 pr-2">Delete</button>
-                                                </td>
-                                                <td>
-                                                    <p className="text-secondary">Semen Gresik Tipe 1</p>
-                                                    <small>SEMEN</small>
-                                                </td>
-                                                <td>Ton</td>
-                                                <td>232</td>
-                                                <td>723,918</td>
-                                                <td><Link to="/">semen_gresik_91839.jpg (260KB)</Link></td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    <p className="text-primary">05/13/2019</p>
-                                                    <button className="btn btn-sm btn-link text-success py-0 px-0 pr-2">Edit</button>
-                                                    <button className="btn btn-sm btn-link text-danger py-0 px-0 pr-2">Delete</button>
-                                                </td>
-                                                <td>
-                                                    <p className="text-secondary">Semen Gresik Tipe 1</p>
-                                                    <small>SEMEN</small>
-                                                </td>
-                                                <td>Ton</td>
-                                                <td>232</td>
-                                                <td>723,918</td>
-                                                <td><Link to="/">semen_gresik_91839.jpg (260KB)</Link></td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    <p className="text-primary">05/13/2019</p>
-                                                    <button className="btn btn-sm btn-link text-success py-0 px-0 pr-2">Edit</button>
-                                                    <button className="btn btn-sm btn-link text-danger py-0 px-0 pr-2">Delete</button>
-                                                </td>
-                                                <td>
-                                                    <p className="text-secondary">Semen Gresik Tipe 1</p>
-                                                    <small>SEMEN</small>
-                                                </td>
-                                                <td>Ton</td>
-                                                <td>232</td>
-                                                <td>723,918</td>
-                                                <td><Link to="/">semen_gresik_91839.jpg (260KB)</Link></td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    <p className="text-primary">05/13/2019</p>
-                                                    <button className="btn btn-sm btn-link text-success py-0 px-0 pr-2">Edit</button>
-                                                    <button className="btn btn-sm btn-link text-danger py-0 px-0 pr-2">Delete</button>
-                                                </td>
-                                                <td>
-                                                    <p className="text-secondary">Semen Gresik Tipe 1</p>
-                                                    <small>SEMEN</small>
-                                                </td>
-                                                <td>Ton</td>
-                                                <td>232</td>
-                                                <td>723,918</td>
-                                                <td><Link to="/">semen_gresik_91839.jpg (260KB)</Link></td>
-                                            </tr>
-                                            <tr>
-                                                <td>
-                                                    <p className="text-primary">05/13/2019</p>
-                                                    <button className="btn btn-sm btn-link text-success py-0 px-0 pr-2">Edit</button>
-                                                    <button className="btn btn-sm btn-link text-danger py-0 px-0 pr-2">Delete</button>
-                                                </td>
-                                                <td>
-                                                    <p className="text-secondary">Semen Gresik Tipe 1</p>
-                                                    <small>SEMEN</small>
-                                                </td>
-                                                <td>Ton</td>
-                                                <td>232</td>
-                                                <td>723,918</td>
-                                                <td><Link to="/">semen_gresik_91839.jpg (260KB)</Link></td>
-                                            </tr>
+                                            { payload.data && payload.data.data.length > 0 ? stockIns : (
+                                                <tr>
+                                                    <td className="text-center" colSpan="6">Data not found</td>
+                                                </tr>
+                                            ) }
                                         </tbody>
                                     </table>
                                 </div>
-                                <div className="col-md-12 text-right py-3">
-                                    <nav aria-label="Page navigation example">
-                                        <ul className="pagination">
-                                            <li className="page-item disabled"><Link to="/" aria-disabled="true" className="page-link">Previous</Link></li>
-                                            <li className="page-item active"><Link to="/" className="page-link">1</Link></li>
-                                            <li className="page-item"><Link to="/" className="page-link">2</Link></li>
-                                            <li className="page-item"><Link to="/" className="page-link">3</Link></li>
-                                            <li className="page-item"><Link to="/" className="page-link">Next</Link></li>
-                                        </ul>
-                                    </nav>
+                                <div className="col-md-12 py-3">
+                                    <div className="row">
+                                        <div className="col-md-10">
+                                            { payload.data && payload.data.total > 1 && (
+                                                <p>Showing { payload.data && payload.data.from.toLocaleString() } to { payload.data && payload.data.to.toLocaleString() } of { payload.data && payload.data.total.toLocaleString() } record(s)</p>
+
+                                            )}
+
+                                            {
+                                                payload.data && payload.data.total > 1 && (
+                                                    <nav aria-label="Page navigation example">
+                                                        <ul className="pagination">
+
+                                                            { payload.data.current_page > 1 && <li key="prev" className="page-item"><button onClick={this.handleClickPage.bind(null, payload.data.current_page - 1)} className="page-link">Prev</button></li> }
+
+                                                            {
+                                                                payload.data.pages.map((page, index) => {
+                                                                    return (
+                                                                        
+                                                                        <li key={index} className={`page-item ${page === '...' ? 'disabled' : '' } ${page === payload.data.current_page ? 'active' : '' }`}><button onClick={this.handleClickPage.bind(null, page)} className="page-link">{page}</button></li>
+                                                                        
+                                                                    )
+                                                                })
+                                                            }
+
+                                                            { payload.data.current_page < payload.data.last_page && <li key="next" className="page-item"><button onClick={this.handleClickPage.bind(null, payload.data.current_page + 1)} className="page-link">Next</button></li> }
+
+
+                                                        </ul>
+                                                    </nav>
+                                                )
+                                            }
+                                            
+                                        </div>
+                                        <div className="col-md-2 text-right">
+                                            <div className="form-group">
+                                                <label className="control-label">Showing per page </label>
+                                                <select defaultValue={this.state.perpage} id="perpage" className="form-control custom-select" onChange={this.hanldeChangePage}>
+                                                    <option value="10">10</option>
+                                                    <option value="20">20</option>
+                                                    <option value="50">50</option>
+                                                    <option value="100">100</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </CardBody>
                         </Card>
@@ -211,4 +260,19 @@ class StockIn extends React.Component {
     }
 }
 
-export default StockIn;
+const mapStateToProps = (state) => {
+    return {
+        ...state,
+        payload: state.stockIn.payload,
+        error: state.stockIn.error,
+        fetching: state.stockIn.fetching
+    }
+}
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        fetchStockIn: (filter) => dispatch(fetchStockIn(filter))
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(StockIn);

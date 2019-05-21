@@ -5,6 +5,8 @@ import { connect } from 'react-redux';
 import {login} from '../store/actions/authActions';
 import {Helmet} from 'react-helmet';
 import { appName } from '../global';
+import Loading from 'react-loading-bar';
+import 'react-loading-bar/dist/index.css';
 
 class Login extends React.Component {
     state = {
@@ -24,10 +26,16 @@ class Login extends React.Component {
     }
 
     render() {
-        const {error} = this.props;
+        console.log(this.state);
+        const {error, fetching} = this.props;
         if (sessionStorage.getItem('token')) return (<Redirect to="/" />);
         return (
             <main className="main-content col mt-5">
+                <Loading
+                    show={fetching}
+                    color="blue"
+                    showSpinner={false}
+                    />
                 <Helmet>
                     <title>Login | {appName} </title>
                 </Helmet>
@@ -89,7 +97,8 @@ const mapStateToProps = (state) => {
     return {
         ...state,
         payload: state.auth.payload,
-        error: state.auth.error
+        error: state.auth.error,
+        fetching: state.auth.fetching
     }
 }
 
