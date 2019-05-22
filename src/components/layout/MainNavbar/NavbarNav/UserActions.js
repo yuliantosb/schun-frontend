@@ -39,7 +39,6 @@ class UserActions extends React.Component {
 
   render() {
     const {isLogout, message, error, fetching} = this.props;
-    console.log(isLogout);
     // console.log(isLogout);
     
     return (

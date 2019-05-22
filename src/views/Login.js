@@ -11,7 +11,8 @@ import 'react-loading-bar/dist/index.css';
 class Login extends React.Component {
     state = {
         email: '',
-        password: ''
+        password: '',
+        dismisAlert: true,
     }
 
     handleChangeCreds = (e) => {
@@ -25,8 +26,14 @@ class Login extends React.Component {
         this.props.login(this.state);
     }
 
+    handleClickDismissAlert = () => {
+        this.setState({
+            ...this.state,
+            dismisAlert: true
+        });
+    }
+
     render() {
-        console.log(this.state);
         const {error, fetching} = this.props;
         if (sessionStorage.getItem('token')) return (<Redirect to="/" />);
         return (
@@ -45,11 +52,11 @@ class Login extends React.Component {
                             <div className="card">
                                 <div className="card-body">
                                     <img className="auth-form__logo d-table mx-auto mb-3" src={Logo} alt="Shards Dashboards - Register Template" />
-                                    <h5 className="auth-form__title text-center mb-4">Access Your Account</h5>
-                                    { error && (
+                                    <h5 className="auth-form__title text-center mb-4">Access Your Account { this.state.dismisAlert ? 'true' : 'false' } </h5>
+                                    { error && !this.state.dismisAlert && (
                                     <div className="alert alert-danger alert-dismissible fade show" role="alert">
                                         <strong>Error!</strong> { error }
-                                        <button type="button" className="close" data-dismiss="alert" aria-label="Close">
+                                        <button type="button" className="close" onClick={this.handleClickDismissAlert}>
                                             <span aria-hidden="true">&times;</span>
                                         </button>
                                     </div> ) }

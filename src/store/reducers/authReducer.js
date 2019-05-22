@@ -15,7 +15,7 @@ const authReducer = (state = initState, action) => {
         case 'LOGIN_REJECTED':
             return {
                 ...state,
-                error: action.payload.response.data.message,
+                error: action.payload.response ? action.payload.response.data.message : action.payload.message,
                 fetching: false
             }
         case 'LOGIN_FULFILLED':

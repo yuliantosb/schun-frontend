@@ -27,7 +27,7 @@ export default [
     path: "/",
     exact: true,
     layout: DefaultLayout,
-    component: () => <Redirect to="/blog-overview" />
+    component: () => <Redirect to="/dashboard" />
   },
   {
     path: '/resume-material',
@@ -35,7 +35,7 @@ export default [
     component: ResumeMaterial
   },
   {
-    path: "/blog-overview",
+    path: "/dashboard",
     layout: DefaultLayout,
     component: BlogOverview
   },
