@@ -100,7 +100,7 @@ UsersByDevice.propTypes = {
 };
 
 UsersByDevice.defaultProps = {
-  title: "Material Used",
+  title: "Daily Sales",
   chartData: {
     datasets: [
       {

@@ -59,19 +59,6 @@ class UsersByDick extends React.Component {
             <h6 className="m-0">{title}</h6>
           </CardHeader>
           <CardBody className="pt-0">
-            <Row className="border-bottom py-2 bg-light">
-              <Col sm="6" className="d-flex mb-2 mb-sm-0">
-                <RangeDatePicker />
-              </Col>
-              <Col>
-                <Button
-                  size="sm"
-                  className="d-flex btn-white ml-auto mr-auto ml-sm-auto mr-sm-0 mt-3 mt-sm-0"
-                >
-                  View Full Report &rarr;
-                </Button>
-              </Col>
-            </Row>
             <canvas
               height="120"
               ref={this.canvasRef}
@@ -99,22 +86,28 @@ class UsersByDick extends React.Component {
   };
   
   UsersByDick.defaultProps = {
-    title: "Inventory Stock Material",
+    title: "Sales and Purchase",
     chartData: {
-        labels: ["Sand", "Concrete", "Gravel", "Cement"],
+        labels: ["Bougenvilled", "Jasminum", "Rosa", "Orchidaceae", "Nymphaea"],
         datasets: [
             {
-                label: 'Stock In',
-                data: [5427, 5243, 5514, 3789],
-                backgroundColor: 'rgba(0, 99, 132, 0.6)',
-                borderWidth: 0,
-                yAxisID: "y-axis-stock-in"
+                label: 'Sales',
+                data: [5427, 5243, 5514, 3789, 3200],
+                backgroundColor: "rgba(0,123,255,0.1)",
+                borderColor: "rgba(0,123,255,1)",
+                pointBackgroundColor: "#ffffff",
+                pointHoverBackgroundColor: "rgb(0,123,255)",
+                yAxisID: "y-axis-stock-in",
+                borderWidth: 2,
             },
             {
-                label: 'Stock Out',
-                data: [3971, 6209, 4898, 3137],
-                backgroundColor: 'rgba(99, 132, 0, 0.6)',
-                borderWidth: 0,
+                label: 'Purchase',
+                data: [3971, 6209, 4898, 3137, 2800],
+                backgroundColor: "rgba(255,65,105,0.1)",
+                borderColor: "rgba(255,65,105,1)",
+                pointBackgroundColor: "#ffffff",
+                pointHoverBackgroundColor: "rgba(255,65,105,1)",
+                borderWidth: 2,
                 yAxisID: "y-axis-stock-out"
             }        
         ]

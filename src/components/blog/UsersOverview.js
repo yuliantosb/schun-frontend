@@ -92,20 +92,7 @@ class UsersOverview extends React.Component {
         <CardHeader className="border-bottom">
           <h6 className="m-0">{title}</h6>
         </CardHeader>
-        <CardBody className="pt-0">
-          <Row className="border-bottom py-2 bg-light">
-            <Col sm="6" className="d-flex mb-2 mb-sm-0">
-              <RangeDatePicker />
-            </Col>
-            <Col>
-              <Button
-                size="sm"
-                className="d-flex btn-white ml-auto mr-auto ml-sm-auto mr-sm-0 mt-3 mt-sm-0"
-              >
-                View Full Report &rarr;
-              </Button>
-            </Col>
-          </Row>
+        <CardBody className="pt-0 mt-1">
           <canvas
             height="120"
             ref={this.canvasRef}
@@ -133,12 +120,12 @@ UsersOverview.propTypes = {
 };
 
 UsersOverview.defaultProps = {
-  title: "Daily Production",
+  title: "Summary",
   chartData: {
     labels: Array.from(new Array(31), (_, i) => (i === 0 ? 1 : i)),
     datasets: [
       {
-        label: "Fabricated",
+        label: "Sales",
         fill: "start",
         data: [
           500,
@@ -150,28 +137,28 @@ UsersOverview.defaultProps = {
           230,
           650,
           590,
-          1200,
+          120,
           750,
-          940,
-          1420,
-          1200,
-          960,
-          1450,
-          1820,
-          2800,
-          2102,
-          1920,
-          3920,
-          3202,
-          3140,
-          2800,
-          3200,
-          3200,
-          3400,
-          2910,
-          3100,
-          4250,
-          2940
+          140,
+          142,
+          120,
+          160,
+          145,
+          182,
+          280,
+          210,
+          192,
+          392,
+          320,
+          314,
+          280,
+          320,
+          320,
+          340,
+          291,
+          310,
+          425,
+          294
         ],
         backgroundColor: "rgba(0,123,255,0.1)",
         borderColor: "rgba(0,123,255,1)",
@@ -182,7 +169,7 @@ UsersOverview.defaultProps = {
         pointHoverRadius: 3
       },
       {
-        label: "Invoiced",
+        label: "Purchase",
         fill: "start",
         data: [
           380,
@@ -214,8 +201,8 @@ UsersOverview.defaultProps = {
           630,
           720,
           780,
-          1200,
-          1120
+          120,
+          112
         ],
         backgroundColor: "rgba(255,65,105,0.1)",
         borderColor: "rgba(255,65,105,1)",
@@ -226,7 +213,99 @@ UsersOverview.defaultProps = {
         pointRadius: 0,
         pointHoverRadius: 2,
         pointBorderColor: "rgba(255,65,105,1)"
-      }
+      },
+      {
+        label: "Return",
+        fill: "start",
+        data: [
+          100,
+          230,
+          80,
+          30,
+          50,
+          50,
+          42,
+          19,
+          91,
+          99,
+          120,
+          5,
+          12,
+          140,
+          60,
+          50,
+          45,
+          35,
+          120,
+          150,
+          60,
+          40,
+          85,
+          190,
+          250,
+          350,
+          405,
+          104,
+          201,
+          150,
+          90
+        ],
+        backgroundColor: "rgba(23,198,113,0.1)",
+        borderColor: "rgba(23,198,113,1)",
+        pointBackgroundColor: "#ffffff",
+        pointHoverBackgroundColor: "rgba(23,198,113,1)",
+        // borderDash: [3, 3],
+        borderWidth: 1,
+        pointRadius: 0,
+        pointHoverRadius: 2,
+        pointBorderColor: "rgba(23,198,113,1)"
+      },
+      {
+        label: "Broken",
+        fill: "start",
+        data: [
+          600,
+          340,
+          120,
+          520,
+          210,
+          450,
+          120,
+          302,
+          98,
+          102,
+          90,
+          60,
+          50,
+          60,
+          60,
+          30,
+          20,
+          50,
+          120,
+          302,
+          210,
+          180,
+          230,
+          540,
+          102,
+          90,
+          80,
+          40,
+          45,
+          130,
+          50
+        ],
+        backgroundColor: "rgba(255,180,0,0.1)",
+        borderColor: "rgba(255,180,0,1)",
+        pointBackgroundColor: "#ffffff",
+        pointHoverBackgroundColor: "rgba(255,180,0,1)",
+        // borderDash: [3, 3],
+        borderWidth: 1,
+        pointRadius: 0,
+        pointHoverRadius: 2,
+        pointBorderColor: "rgba(255,180,0,1)"
+      },
     ]
   }
 };

@@ -6,21 +6,17 @@ import { DefaultLayout, BlankLayout } from "./layouts";
 
 // Route Views
 import BlogOverview from "./views/BlogOverview";
-import UserProfileLite from "./views/UserProfileLite";
-import AddNewPost from "./views/AddNewPost";
-import ComponentsOverview from "./views/ComponentsOverview";
-import Tables from "./views/Tables";
-import BlogPosts from "./views/BlogPosts";
-import ResumeMaterial from "./views/ResumeMaterial";
 import Login from "./views/Login";
 import ForgotPassword from "./views/ForgotPassword";
 import Register from "./views/Register";
-import Delivery from "./views/Delivery";
-import StockIn from "./views/StockIn";
-import AddStockIn from "./views/AddStockIn";
-import StockOut from "./views/StockOut";
-import AddStockOut from "./views/AddStockOut";
-import User from "./views/User";
+import Role from "./views/Role";
+import Permission from "./views/Permission";
+import Employee from "./views/Employee";
+import Customer from "./views/Customer";
+import Supplier from "./views/Supplier";
+import Settings from "./views/Settings";
+import Category from "./views/Category";
+import Expense from "./views/Expense";
 
 export default [
   {
@@ -30,39 +26,9 @@ export default [
     component: () => <Redirect to="/dashboard" />
   },
   {
-    path: '/resume-material',
-    layout: DefaultLayout,
-    component: ResumeMaterial
-  },
-  {
     path: "/dashboard",
     layout: DefaultLayout,
     component: BlogOverview
-  },
-  {
-    path: "/user-profile-lite",
-    layout: DefaultLayout,
-    component: UserProfileLite
-  },
-  {
-    path: "/add-new-post",
-    layout: DefaultLayout,
-    component: AddNewPost
-  },
-  {
-    path: "/components-overview",
-    layout: DefaultLayout,
-    component: ComponentsOverview
-  },
-  {
-    path: "/tables",
-    layout: DefaultLayout,
-    component: Tables
-  },
-  {
-    path: "/blog-posts",
-    layout: DefaultLayout,
-    component: BlogPosts
   },
   {
     path: "/login",
@@ -80,36 +46,44 @@ export default [
     component: Register
   },
   {
-    path: "/delivery",
+    path: "/role",
     layout: DefaultLayout,
-    component: Delivery
+    component: Role
   },
   {
-    path: "/stockin",
-    exact: true,
+    path: "/permission",
     layout: DefaultLayout,
-    component: StockIn
+    component: Permission
   },
   {
-    path: "/stockin/create",
-    exact: true,
+    path: "/employee",
     layout: DefaultLayout,
-    component: AddStockIn
+    component: Employee
   },
   {
-    path: "/stockout",
-    exact: true,
+    path: "/customer",
     layout: DefaultLayout,
-    component: StockOut
+    component: Customer
   },
   {
-    path: "/stockout/create",
+    path: "/supplier",
     layout: DefaultLayout,
-    component: AddStockOut
+    component: Supplier
   },
   {
-    path: "/user",
+    path: "/settings",
     layout: DefaultLayout,
-    component: User
+    component: Settings
+  },
+  {
+    path: "/category",
+    layout: DefaultLayout,
+    component: Category
+  },
+  {
+    path: "/expense",
+    layout: DefaultLayout,
+    component: Expense
   }
+  
 ];

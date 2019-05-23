@@ -9,30 +9,33 @@ import Error404 from './views/Error404';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './shards-dashboard/styles/shards-dashboards.1.3.1.min.css';
 import './assets/custom.css';
+import ScrollToTop from './components/layout/ScrollToTop';
 
 class App extends React.Component {
 	render() {
 		return (
 			<Router basename={process.env.REACT_APP_BASENAME || ''}>
-				<Switch>
-						{routes.map((route, index) => {
-							return (
-								<Route
-									key={index}
-									path={route.path}
-									exact={route.exact}
-									component={(props) => {
-										return (
-											<route.layout {...props}>
-												<route.component {...props} />
-											</route.layout>
-										);
-									}}
-								/>
-							);
-						})}
-						<Route component={Error404} />
-				</Switch>
+				<ScrollToTop>
+					<Switch>
+							{routes.map((route, index) => {
+								return (
+									<Route
+										key={index}
+										path={route.path}
+										exact={route.exact}
+										component={(props) => {
+											return (
+												<route.layout {...props}>
+													<route.component {...props} />
+												</route.layout>
+											);
+										}}
+									/>
+								);
+							})}
+							<Route component={Error404} />
+					</Switch>
+				</ScrollToTop>
 			</Router>
 		)
 	}

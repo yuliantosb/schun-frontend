@@ -23,13 +23,13 @@ class BlogOverview extends React.Component {
             </Helmet>
         {/* Page Header */}
         <Row noGutters className="page-header py-4">
-          <PageTitle title="Production Overview" subtitle="Dashboard" className="text-sm-left mb-3" />
+          <PageTitle title="Daily Report" subtitle="Dashboard" className="text-sm-left mb-3" />
         </Row>
 
         {/* Small Stats Blocks */}
         <Row>
           {smallStats.map((stats, idx) => (
-            <Col className="col-lg-6 mb-4" key={idx} {...stats.attrs}>
+            <Col className="col-lg-4 mb-4" key={idx} {...stats.attrs}>
               <SmallStats
                 id={`small-stats-${idx}`}
                 variation="1"
@@ -56,13 +56,14 @@ class BlogOverview extends React.Component {
             <UsersByDevice />
           </Col>
 
-          <Col xs="12" className="mb-4">
+          <Col xs="4" className="mb-4">
+            <TableDick />
+          </Col>
+
+          <Col xs="8" className="mb-4">
             <UsersByDick />
           </Col>
 
-          <Col xs="12" className="mb-4">
-            <TableDick />
-          </Col>
 
         </Row>
       </Container>
@@ -80,8 +81,8 @@ BlogOverview.propTypes = {
 BlogOverview.defaultProps = {
   smallStats: [
     {
-      label: "Fabricated",
-      value: "2,390 m3",
+      label: "Sales",
+      value: "4,502,240.98",
       percentage: "4.7%",
       increase: true,
       chartLabels: [null, null, null, null, null, null, null],
@@ -98,8 +99,8 @@ BlogOverview.defaultProps = {
       ]
     },
     {
-      label: "Invoiced",
-      value: "182 m3",
+      label: "Purchase & Expense",
+      value: "1,466,920.00",
       percentage: "12.4%",
       increase: true,
       chartLabels: [null, null, null, null, null, null, null],
@@ -112,6 +113,24 @@ BlogOverview.defaultProps = {
           backgroundColor: "rgba(0, 184, 216, 0.1)",
           borderColor: "rgb(0, 184, 216)",
           data: [1, 2, 3, 3, 3, 4, 4]
+        }
+      ]
+    },
+    {
+      label: "Income Nett",
+      value: "3,563,938.98",
+      percentage: "12.4%",
+      increase: false,
+      chartLabels: [null, null, null, null, null, null, null],
+      attrs: { md: "6", sm: "6" },
+      datasets: [
+        {
+          label: "Today",
+          fill: "start",
+          borderWidth: 1.5,
+          backgroundColor: "rgba(196, 24, 60, 0.1)",
+          borderColor: "rgb(196, 24, 60)",
+          data: [1, 2, 3, 3, 3, 4, 1]
         }
       ]
     },
