@@ -10,25 +10,23 @@ import {
   NavLink
 } from "shards-react";
 
-import Loading from 'react-loading-bar';
-import 'react-loading-bar/dist/index.css';
-import { logout } from "../../../../store/actions/authActions";
-import {connect} from 'react-redux';
-
 class UserActions extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
       visible: false,
-      logout: false,
+      logout: false
     };
 
     this.toggleUserActions = this.toggleUserActions.bind(this);
   }
 
   handleClickLogOut = () => {
-    this.props.logout();
+    this.setState({
+      ...this.state,
+      logout: true
+    });
   }
 
   toggleUserActions() {
@@ -38,14 +36,12 @@ class UserActions extends React.Component {
   }
 
   render() {
-    const {isLogout, message, error, fetching} = this.props;
-    // console.log(isLogout);
-    
+    if (this.state.logout) {
+      sessionStorage.removeItem('token');
+      return <Redirect to="/login" />
+    }
     return (
       <NavItem tag={Dropdown} caret toggle={this.toggleUserActions}>
-        <Loading show={fetching}
-                    color="blue"
-                    showSpinner={false} />
         <DropdownToggle caret tag={NavLink} className="text-nowrap px-3">
           <img
             className="user-avatar rounded-circle mr-2"
@@ -77,20 +73,4 @@ class UserActions extends React.Component {
   }
 }
 
-const mapStateToProps = (state) => {
-  return {
-    ...state,
-    message: state.auth.payload,
-    error: state.auth.error,
-    fetching: state.auth.fetching.data,
-    isLogout: state.auth.logout
-  }
-}
-
-const mapDispatchToProps = (dispatch) => {
-  return {
-    logout: () => dispatch(logout())
-  }
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(UserActions);
+export default UserActions;

@@ -17,6 +17,10 @@ import Supplier from "./views/Supplier";
 import Settings from "./views/Settings";
 import Category from "./views/Category";
 import Expense from "./views/Expense";
+import Stores from "./views/Stores";
+import AddRole from "./views/AddRole";
+import AddPermission from "./views/AddPermission";
+import EditPermission from "./views/EditPermission";
 
 export default [
   {
@@ -48,12 +52,29 @@ export default [
   {
     path: "/role",
     layout: DefaultLayout,
-    component: Role
+    component: Role,
+    exact: true
+  },
+  {
+    path: "/role/create",
+    layout: DefaultLayout,
+    component: AddRole
   },
   {
     path: "/permission",
     layout: DefaultLayout,
-    component: Permission
+    component: Permission,
+    exact: true
+  },
+  {
+    path: "/permission/create",
+    layout: DefaultLayout,
+    component: AddPermission,
+  },
+  {
+    path: "/permission/edit/:id",
+    layout: DefaultLayout,
+    component: EditPermission,
   },
   {
     path: "/employee",
@@ -84,6 +105,11 @@ export default [
     path: "/expense",
     layout: DefaultLayout,
     component: Expense
+  },
+  {
+    path: "/stores",
+    layout: DefaultLayout,
+    component: Stores
   }
   
 ];

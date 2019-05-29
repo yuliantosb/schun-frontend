@@ -127,6 +127,7 @@ button:focus {
 
 .css-kj6f9i-menu {
     z-index: 999 !important;
+    cursor: pointer !important;
 }
 
 .list-group-flush {
@@ -160,4 +161,29 @@ button:focus {
 
 .profile-card p {
     margin-bottom: 5px;
+}
+
+.css-1a57z3m-control {
+    cursor: pointer !important;
+}
+
+.messagebox {
+    position: absolute;
+    z-index: 9999;
+    box-shadow: 5px 3px 30px rgba(29, 29, 29, 0.17);
+    background: #fff;
+    padding: 30px;
+    top: 0px;
+    margin: 5% 25%;
+    border: 1px solid #e1e1e1;
+}
+
+.backdrop {
+    position: fixed;
+    background-color: #33333342;
+    width: 100%;
+    height: 100%;
+    z-index: 1040;
+    top: 0;
+    left: 0;
 }

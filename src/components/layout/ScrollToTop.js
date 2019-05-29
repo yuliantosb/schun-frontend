@@ -12,6 +12,14 @@ class ScrollToTop extends Component {
         }
     }
 
+    componentDidMount = () => {
+        window.scroll({
+            top: 0, 
+            left: 0, 
+            behavior: 'smooth'
+        });
+    }
+
     render() {
         return this.props.children;
     }
