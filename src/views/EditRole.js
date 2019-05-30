@@ -10,7 +10,7 @@ import Error500 from './Error500';
 import {Redirect} from 'react-router-dom';
 import Loading from 'react-loading-bar';
 
-class AddRole extends React.Component {
+class EditRole extends React.Component {
 
     state = {
         permissions: null
@@ -70,16 +70,16 @@ class AddRole extends React.Component {
                     showSpinner={false}
                     />
 				<Helmet>
-					<title>Add Role | {appName} </title>
+					<title>Edit Role | {appName} </title>
 				</Helmet>
 				<Row noGutters className="page-header py-4">
-					<PageTitle sm="4" title="Add Role" subtitle="Role" className="text-sm-left" />
+					<PageTitle sm="4" title="Edit Role" subtitle="Role" className="text-sm-left" />
 				</Row>
 				<Row>
 					<Col>
 						<Card small className="mb-4">
 							<CardHeader className="border-bottom">
-								<h6 className="m-0">Add Role</h6>
+								<h6 className="m-0">Edit Role</h6>
 							</CardHeader>
 							<CardBody className="p-0 pb-3">
                                 <form onSubmit={this.handleSubmit}>
@@ -135,4 +135,4 @@ const mapDispatchToProps = (dispatch) => {
 }
 
 
-export default connect(mapStateToProps, mapDispatchToProps)(AddRole);
+export default connect(mapStateToProps, mapDispatchToProps)(EditRole);

@@ -21,6 +21,7 @@ import Stores from "./views/Stores";
 import AddRole from "./views/AddRole";
 import AddPermission from "./views/AddPermission";
 import EditPermission from "./views/EditPermission";
+import EditRole from "./views/EditRole";
 
 export default [
   {
@@ -59,6 +60,11 @@ export default [
     path: "/role/create",
     layout: DefaultLayout,
     component: AddRole
+  },
+  {
+    path: "/role/edit/:id",
+    layout: DefaultLayout,
+    component: EditRole
   },
   {
     path: "/permission",
