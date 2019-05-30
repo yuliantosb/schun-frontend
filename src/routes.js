@@ -59,12 +59,14 @@ export default [
   {
     path: "/role/create",
     layout: DefaultLayout,
-    component: AddRole
+    component: AddRole,
+    exact: true,
   },
   {
     path: "/role/edit/:id",
     layout: DefaultLayout,
-    component: EditRole
+    component: EditRole,
+    exact: true
   },
   {
     path: "/permission",
