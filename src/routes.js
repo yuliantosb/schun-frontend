@@ -12,6 +12,7 @@ import Register from "./views/Register";
 import Role from "./views/Role";
 import Permission from "./views/Permission";
 import Employee from "./views/Employee";
+import AddEmployee from "./views/AddEmployee";
 import Customer from "./views/Customer";
 import Supplier from "./views/Supplier";
 import Settings from "./views/Settings";
@@ -22,6 +23,9 @@ import AddRole from "./views/AddRole";
 import AddPermission from "./views/AddPermission";
 import EditPermission from "./views/EditPermission";
 import EditRole from "./views/EditRole";
+import AddStockIn from './views/AddStockIn';
+import EditEmployee from "./views/EditEmployee";
+import ViewEmployee from "./views/ViewEmployee";
 
 export default [
   {
@@ -87,7 +91,23 @@ export default [
   {
     path: "/employee",
     layout: DefaultLayout,
-    component: Employee
+    component: Employee,
+    exact: true
+  },
+  {
+    path: "/employee/create",
+    layout: DefaultLayout,
+    component: AddEmployee
+  },
+  {
+    path: "/employee/edit/:id",
+    layout: DefaultLayout,
+    component: EditEmployee
+  },
+  {
+    path: "/employee/view/:id",
+    layout: DefaultLayout,
+    component: ViewEmployee
   },
   {
     path: "/customer",
@@ -118,6 +138,11 @@ export default [
     path: "/stores",
     layout: DefaultLayout,
     component: Stores
+  },
+  {
+    path: "/stockin",
+    layout: DefaultLayout,
+    component: AddStockIn
   }
   
 ];

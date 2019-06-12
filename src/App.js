@@ -10,33 +10,36 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import './shards-dashboard/styles/shards-dashboards.1.3.1.min.css';
 import './assets/custom.css';
 import ScrollToTop from './components/layout/ScrollToTop';
+import { ToastProvider } from 'react-toast-notifications';
 
 class App extends React.Component {
 	render() {
 		return (
-			<Router basename={process.env.REACT_APP_BASENAME || ''}>
-				<ScrollToTop>
-					<Switch>
-							{routes.map((route, index) => {
-								return (
-									<Route
-										key={index}
-										path={route.path}
-										exact={route.exact}
-										component={(props) => {
-											return (
-												<route.layout {...props}>
-													<route.component {...props} />
-												</route.layout>
-											);
-										}}
-									/>
-								);
-							})}
-							<Route component={Error404} />
-					</Switch>
-				</ScrollToTop>
-			</Router>
+			<ToastProvider styles={{ container: (provided) => ({ ...provided, zIndex: 1039 }) }}>
+				<Router basename={process.env.REACT_APP_BASENAME || ''}>
+					<ScrollToTop>
+						<Switch>
+								{routes.map((route, index) => {
+									return (
+										<Route
+											key={index}
+											path={route.path}
+											exact={route.exact}
+											component={(props) => {
+												return (
+													<route.layout {...props}>
+														<route.component {...props} />
+													</route.layout>
+												);
+											}}
+										/>
+									);
+								})}
+								<Route component={Error404} />
+						</Switch>
+					</ScrollToTop>
+				</Router>
+			</ToastProvider>
 		)
 	}
 }

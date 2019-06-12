@@ -9,6 +9,7 @@ import { getPermission, saveRole } from '../store/actions/roleActions';
 import Error500 from './Error500';
 import {Redirect} from 'react-router-dom';
 import Loading from 'react-loading-bar';
+import {Link} from 'react-router-dom';
 
 class AddRole extends React.Component {
 
@@ -53,7 +54,7 @@ class AddRole extends React.Component {
 
         const permissions = payload && payload.data.map(permission => {
             return (
-                <div className="col-md-3" key={permission._id}>
+                <div className="col-md-3 mt-3" key={permission._id}>
                     <FormCheckbox value={permission.slug} onChange={this.handleChangePermission}>{ permission.name }</FormCheckbox>
                     { permission.children && permission.children.map(child => {
                         return <FormCheckbox key={child._id} value={child.slug} onChange={this.handleChangePermission}>{ child.name }</FormCheckbox>
@@ -79,7 +80,12 @@ class AddRole extends React.Component {
 					<Col>
 						<Card small className="mb-4">
 							<CardHeader className="border-bottom">
-								<h6 className="m-0">Add Role</h6>
+                                <div className="float-left">
+								    <h6 className="m-0">Add Role</h6>
+                                </div>
+                                <div className="float-right">
+                                    <Link className="btn btn-secondary" to="/role">Back</Link>
+                                </div>
 							</CardHeader>
 							<CardBody className="p-0 pb-3">
                                 <form onSubmit={this.handleSubmit}>

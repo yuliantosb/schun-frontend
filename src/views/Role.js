@@ -6,10 +6,11 @@ import { Link, Redirect } from 'react-router-dom';
 import { appName } from '../global';
 import { Helmet } from 'react-helmet';
 import {connect} from 'react-redux';
-import { fetchRole } from '../store/actions/roleActions';
+import { fetchRole, deleteRole } from '../store/actions/roleActions';
 import moment from 'moment';
 import Error500 from './Error500';
 import Loading from 'react-loading-bar';
+import ScrollToTop from '../components/layout/ScrollToTop';
 
 class Role extends React.Component {
 	state = {
@@ -48,6 +49,33 @@ class Role extends React.Component {
         });
 	}
 	
+	handleClickDelete = (e) => {
+		this.setState({
+			...this.state,
+			deleteId: e.target.id,
+			showMsgBox: true
+		});
+	}
+	
+	handleClickYes = () => {
+
+		this.setState({
+			...this.state,
+			alertMsgBox: true,
+			showMsgBox: false
+		});
+
+		this.props.deleteRole(this.state.deleteId);
+	}
+
+	handleClickNo = () => {
+		this.setState({
+			...this.state,
+			showMsgBox: false,
+			deleteId: null
+		});
+	}
+
 	componentWillUpdate(nextProps, nextState) {
         if (this.state.page !== nextState.page) {
             this.props.fetchRole(nextState);
@@ -77,6 +105,12 @@ class Role extends React.Component {
 
 	}
 
+	componentDidUpdate = (prevProps, nextState) => {
+		if (prevProps.message !== this.props.message) {
+			this.props.fetchRole(this.state);
+		}
+	}
+
 	componentDidMount = ()  => {
 		this.showAlertTimeout();
         this.props.fetchRole(this.state);
@@ -97,7 +131,7 @@ class Role extends React.Component {
 					<small className="text-muted">{ moment(role.created_at).format('MMM Do, YYYY') }</small>
 					<br/>
                     <Link to={`role/edit/${role._id}`} className="btn btn-sm btn-link text-success py-0 px-0 pr-2">Edit</Link>
-                    <button className="btn btn-sm btn-link text-danger py-0 px-0 pr-2">Delete</button>
+                    <button id={role._id} onClick={this.handleClickDelete} className="btn btn-sm btn-link text-danger py-0 px-0 pr-2">Delete</button>
                 </td>
                 <td>
                     { role.description }
@@ -133,6 +167,19 @@ class Role extends React.Component {
 						<PageTitle sm="4" title="Role" subtitle="Role" className="text-sm-left" />
 					</Row>
 					<Row>
+						{
+							this.state.showMsgBox &&
+							(
+								<ScrollToTop>
+									<div className="messagebox">
+										<p className="mb-5">Are you sure want to delete this data?</p>
+										<button className="btn btn-secondary mr-4" onClick={this.handleClickYes}>Yes</button>
+										<button className="btn btn-white" onClick={this.handleClickNo}>No Cancel</button>
+									</div>
+									<div className="backdrop"></div>
+								</ScrollToTop>
+							)
+						}
 						<Col>
 							<Card small className="mb-4">
 								<CardHeader className="border-bottom">
@@ -256,13 +303,15 @@ const mapStateToProps = (state) => {
         ...state,
         payload: state.role.payload,
         error: state.role.error,
-        fetching: state.role.fetching
+		fetching: state.role.fetching,
+		message: state.role.message
     }
 }
 
 const mapDispatchToProps = (dispatch) => {
 	return {
-        fetchRole: (filter) => dispatch(fetchRole(filter))
+		fetchRole: (filter) => dispatch(fetchRole(filter)),
+		deleteRole: (id) => dispatch(deleteRole(id))
     }
 }
 

@@ -3,20 +3,20 @@ const initState = {
 	fetched: false,
 	error: null,
 	payload: {},
+	parents: {},
 	saved: false,
 	message: null,
-	permission: {},
-	role: {}
+	employee: {}
 };
 
-const roleReducer = (state = initState, action) => {
+const employeeReducer = (state = initState, action) => {
 	switch (action.type) {
-		case 'ROLE_PENDING':
+		case 'EMPLOYEE_PENDING':
 			return {
 				...state,
 				fetching: true
 			};
-		case 'ROLE_REJECTED':
+		case 'EMPLOYEE_REJECTED':
 			
 			if (action.payload.response.status === 401) {
 				sessionStorage.removeItem('token');
@@ -27,22 +27,21 @@ const roleReducer = (state = initState, action) => {
 				error: action.payload.response,
 				fetching: false
 			};
-		case 'ROLE_FULFILLED':
+		case 'EMPLOYEE_FULFILLED':
 			return {
 				...state,
 				fetching: false,
 				fetched: true,
 				payload: action.payload.data,
 				error: null,
-				saved: false
+				saved: false,
 			};
-		case 'GET_PERMISSION_PENDING':
+		case 'SAVE_EMPLOYEE_PENDING' : 
 			return {
 				...state,
 				fetching: true
 			};
-		case 'GET_PERMISSION_REJECTED':
-			
+		case 'SAVE_EMPLOYEE_REJECTED' :
 			if (action.payload.response.status === 401) {
 				sessionStorage.removeItem('token');
 			}
@@ -50,33 +49,10 @@ const roleReducer = (state = initState, action) => {
 			return {
 				...state,
 				error: action.payload.response,
-				fetching: false
-			};
-		case 'GET_PERMISSION_FULFILLED':
-			return {
-				...state,
 				fetching: false,
-				fetched: true,
-				permissions: action.payload.data,
-				error: null
+				fetched: false
 			};
-		case 'SAVE_ROLE_PENDING':
-			return {
-				...state,
-				fetching: true
-			};
-		case 'SAVE_ROLE_REJECTED':
-			
-			if (action.payload.response.status === 401) {
-				sessionStorage.removeItem('token');
-			}
-			
-			return {
-				...state,
-				error: action.payload.response,
-				fetching: false
-			};
-		case 'SAVE_ROLE_FULFILLED':
+		case 'SAVE_EMPLOYEE_FULFILLED':
 			return {
 				...state,
 				fetching: false,
@@ -85,12 +61,12 @@ const roleReducer = (state = initState, action) => {
 				error: null,
 				saved: true
 			};
-		case 'GET_ROLE_PENDING':
+		case 'GET_EMPLOYEE_PENDING':
 			return {
 				...state,
 				fetching: true
 			};
-		case 'GET_ROLE_REJECTED':
+		case 'GET_EMPLOYEE_REJECTED':
 			
 			if (action.payload.response.status === 401) {
 				sessionStorage.removeItem('token');
@@ -101,21 +77,21 @@ const roleReducer = (state = initState, action) => {
 				error: action.payload.response,
 				fetching: false
 			};
-		case 'GET_ROLE_FULFILLED':
+		case 'GET_EMPLOYEE_FULFILLED':
 			return {
 				...state,
 				fetching: false,
 				fetched: true,
-				role: action.payload.data,
+				employee: action.payload.data,
 				error: null,
 				saved: false,
 			};
-		case 'UPDATE_ROLE_PENDING' : 
+		case 'UPDATE_EMPLOYEE_PENDING' : 
 			return {
 				...state,
 				fetching: true
 			};
-		case 'UPDATE_ROLE_REJECTED' :
+		case 'UPDATE_EMPLOYEE_REJECTED' :
 			if (action.payload.response.status === 401) {
 				sessionStorage.removeItem('token');
 			}
@@ -123,9 +99,10 @@ const roleReducer = (state = initState, action) => {
 			return {
 				...state,
 				error: action.payload.response,
-				fetching: false
+				fetching: false,
+				fetched: false
 			};
-		case 'UPDATE_ROLE_FULFILLED':
+		case 'UPDATE_EMPLOYEE_FULFILLED':
 			return {
 				...state,
 				fetching: false,
@@ -134,12 +111,12 @@ const roleReducer = (state = initState, action) => {
 				error: null,
 				saved: true
 			};
-		case 'DELETE_ROLE_PENDING' : 
+		case 'DELETE_EMPLOYEE_PENDING' : 
 			return {
 				...state,
 				fetching: true
 			};
-		case 'DELETE_ROLE_REJECTED' :
+		case 'DELETE_EMPLOYEE_REJECTED' :
 			if (action.payload.response.status === 401) {
 				sessionStorage.removeItem('token');
 			}
@@ -149,7 +126,7 @@ const roleReducer = (state = initState, action) => {
 				error: action.payload.response,
 				fetching: false
 			};
-		case 'DELETE_ROLE_FULFILLED':
+		case 'DELETE_EMPLOYEE_FULFILLED':
 			return {
 				...state,
 				fetching: false,
@@ -163,4 +140,4 @@ const roleReducer = (state = initState, action) => {
 	}
 };
 
-export default roleReducer;
+export default employeeReducer;

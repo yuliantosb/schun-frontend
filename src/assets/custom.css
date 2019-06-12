@@ -150,6 +150,7 @@ button:focus {
     height: 120px;
     margin-bottom: 20px;
     border: 2px solid #e1e1e1;
+    object-fit: cover;
 }
 
 .profile-card h2 {
@@ -186,4 +187,13 @@ button:focus {
     z-index: 1040;
     top: 0;
     left: 0;
+}
+
+.css-e110bw {
+    z-index: 1039 !important;
+}
+
+.css-1wa3eu0-placeholder, .css-1uccc91-singleValue {
+    font-size: 13px !important;
+    font-weight: normal !important;
 }

@@ -108,54 +108,54 @@ const permissionReducer = (state = initState, action) => {
 				error: null,
 				saved: false,
 			};
-			case 'UPDATE_PERMISSION_PENDING' : 
-				return {
-					...state,
-					fetching: true
-				};
-			case 'UPDATE_PERMISSION_REJECTED' :
-				if (action.payload.response.status === 401) {
-					sessionStorage.removeItem('token');
-				}
-				
-				return {
-					...state,
-					error: action.payload.response,
-					fetching: false
-				};
-			case 'UPDATE_PERMISSION_FULFILLED':
-				return {
-					...state,
-					fetching: false,
-					fetched: true,
-					message: action.payload.data.message,
-					error: null,
-					saved: true
-				};
-			case 'DELETE_PERMISSION_PENDING' : 
-				return {
-					...state,
-					fetching: true
-				};
-			case 'DELETE_PERMISSION_REJECTED' :
-				if (action.payload.response.status === 401) {
-					sessionStorage.removeItem('token');
-				}
-				
-				return {
-					...state,
-					error: action.payload.response,
-					fetching: false
-				};
-			case 'DELETE_PERMISSION_FULFILLED':
-				return {
-					...state,
-					fetching: false,
-					fetched: true,
-					message: action.payload.data.message,
-					error: null,
-					saved: true
-				};
+		case 'UPDATE_PERMISSION_PENDING' : 
+			return {
+				...state,
+				fetching: true
+			};
+		case 'UPDATE_PERMISSION_REJECTED' :
+			if (action.payload.response.status === 401) {
+				sessionStorage.removeItem('token');
+			}
+			
+			return {
+				...state,
+				error: action.payload.response,
+				fetching: false
+			};
+		case 'UPDATE_PERMISSION_FULFILLED':
+			return {
+				...state,
+				fetching: false,
+				fetched: true,
+				message: action.payload.data.message,
+				error: null,
+				saved: true
+			};
+		case 'DELETE_PERMISSION_PENDING' : 
+			return {
+				...state,
+				fetching: true
+			};
+		case 'DELETE_PERMISSION_REJECTED' :
+			if (action.payload.response.status === 401) {
+				sessionStorage.removeItem('token');
+			}
+			
+			return {
+				...state,
+				error: action.payload.response,
+				fetching: false
+			};
+		case 'DELETE_PERMISSION_FULFILLED':
+			return {
+				...state,
+				fetching: false,
+				fetched: true,
+				message: action.payload.data.message,
+				error: null,
+				saved: true
+			};
 		default:
 			return state;
 	}

@@ -49,4 +49,47 @@ const saveRole = (data) => {
     }
 }
 
-export {fetchRole, getPermission, saveRole};
+const getRole = (id) => {
+    return (dispatch, getState) => {
+        dispatch({
+            type: 'GET_ROLE',
+            payload: Axios.get(`${url}/role/${id}`, {
+                headers: {
+                    Authorization: `Bearer ${sessionStorage.getItem('token')}`
+                }
+            })
+        })
+    }
+}
+
+const updateRole = (id, data) => {
+    return (dispatch, getState) => {
+        dispatch({
+            type: 'UPDATE_ROLE',
+            payload: Axios.put(`${url}/role/${id}`, {
+                name: data.name,
+                description: data.description,
+                permissions: data.permissions
+            }, {
+                headers: {
+                    Authorization: `Bearer ${sessionStorage.getItem('token')}`
+                }
+            })
+        })
+    }
+}
+
+const deleteRole = (id) => {
+    return (dispatch, getState) => {
+        dispatch({
+            type: 'DELETE_ROLE',
+            payload: Axios.delete(`${url}/role/${id}`, {
+                headers: {
+                    Authorization: `Bearer ${sessionStorage.getItem('token')}`
+                }
+            })
+        })
+    }
+}
+
+export {fetchRole, getPermission, saveRole, getRole, updateRole, deleteRole};
