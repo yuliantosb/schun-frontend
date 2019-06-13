@@ -1,15 +1,136 @@
 import React from 'react';
-import { Container, Row, Col, Card, CardHeader, CardBody, FormCheckbox } from 'shards-react';
+import { Container, Row, Col, Card, CardHeader, CardBody } from 'shards-react';
 import PageTitle from '../components/common/PageTitle';
 import '../assets/range-date-picker.css';
 import { Link } from 'react-router-dom';
 import { appName } from '../global';
 import { Helmet } from 'react-helmet';
+import ScrollToTop from '../components/layout/ScrollToTop';
+import { withToastManager } from 'react-toast-notifications';
+import { fetchSupplier, deleteSupplier } from '../store/actions/supplierAction';
+import Loading from 'react-loading-bar';
+import moment from 'moment';
+import {connect} from 'react-redux';
 
 class Supplier extends React.Component {
+
+	state = {
+        search: null,
+        page: 1,
+        perpage: 10,
+		keyword: null,
+		alert: true,
+		alertMsgBox: false,
+		deleteId: null,
+		showMsgBox: false
+    }
+
+    handleChangeKeyword = (e) => {
+		this.setState({
+			...this.state,
+			[e.target.id]: e.target.value
+		});
+	}
+
+	handleSubmitKeyword = (e) => {
+		e.preventDefault();
+		this.props.fetchSupplier(this.state);
+	}
+
+	handleClickPage = (e) => {
+        this.setState({
+            ...this.state,
+            page: e
+        });
+    }
+
+    hanldeChangePage  = (e) => {
+        this.setState({
+            ...this.state,
+            perpage: e.target.value
+        });
+    }
+    
+    handleClickDelete = (e) => {
+		this.setState({
+			...this.state,
+			deleteId: e.target.id,
+			showMsgBox: true
+		});
+	}
+	
+	handleClickYes = () => {
+
+		this.setState({
+			...this.state,
+			alertMsgBox: true,
+			showMsgBox: false
+		});
+
+		this.props.deleteSupplier(this.state.deleteId);
+	}
+
+	handleClickNo = () => {
+		this.setState({
+			...this.state,
+			showMsgBox: false,
+			deleteId: null
+		});
+	}
+
+    componentWillUpdate(nextProps, nextState) {
+        if (this.state.page !== nextState.page) {
+            this.props.fetchSupplier(nextState);
+        }
+
+        if (this.state.perpage !== nextState.perpage) {
+            this.props.fetchSupplier(nextState);
+        }
+    }
+    
+    componentDidUpdate = (prevProps, prevState) => {
+        if (prevProps.message !== this.props.message) {
+
+            const { toastManager } = this.props;
+            toastManager.add(this.props.message, {
+                appearance: 'success',
+                autoDismiss: true
+            });
+
+            this.props.fetchSupplier(this.state);
+        }
+    }
+
+    componentDidMount = () => {
+        this.props.fetchSupplier(this.state)
+    }	
+
 	render() {
+		const {payload, fetching} = this.props;
+		const suppliers = payload.data && payload.data.data.map(supplier => {
+            return (
+            <tr key={supplier._id}>
+                <td>
+                    <p className="text-primary">{ supplier.name }</p>
+					<small className="text-muted">{ moment(supplier.created_at).format('MMM Do, YYYY') }</small>
+					<br/>
+                    <Link to={`/supplier/edit/${supplier._id}`} className="btn btn-sm btn-link text-success py-0 px-0 pr-2">Edit</Link>
+                    <button id={supplier._id} onClick={this.handleClickDelete} className="btn btn-sm btn-link text-danger py-0 px-0 pr-2">Delete</button>
+                </td>
+				<td>{ supplier.email }</td>
+				<td>{ supplier.phone_number }</td>
+				<td>{ supplier.address }</td>
+            </tr>
+            );
+		});
+
 		return (
 			<Container fluid className="main-content-container px-4">
+				<Loading
+						show={fetching}
+						color="blue"
+						showSpinner={false}
+						/>
 				<Helmet>
 					<title>Supplier | {appName} </title>
 				</Helmet>
@@ -17,6 +138,19 @@ class Supplier extends React.Component {
 					<PageTitle sm="4" title="Supplier" subtitle="Supplier" className="text-sm-left" />
 				</Row>
 				<Row>
+					{
+						this.state.showMsgBox &&
+						(
+							<ScrollToTop>
+								<div className="messagebox">
+									<p className="mb-5">Are you sure want to delete this data?</p>
+									<button className="btn btn-secondary mr-4" onClick={this.handleClickYes}>Yes</button>
+									<button className="btn btn-white" onClick={this.handleClickNo}>No Cancel</button>
+								</div>
+								<div className="backdrop"></div>
+							</ScrollToTop>
+						)
+					}
 					<Col>
 						<Card small className="mb-4">
 							<CardHeader className="border-bottom">
@@ -26,30 +160,33 @@ class Supplier extends React.Component {
 								<div className="col-md-12 mt-4">
 									<div className="row">
                                         <div className="col-md-8">
-                                            <Link to="/stockin/create" className="btn btn-secondary mr-2">
+                                            <Link to="/supplier/create" className="btn btn-secondary mr-2">
                                                 <i className="mdi mdi-plus" /> Add
                                             </Link>
                                         </div>
 										<div className="col-md-4 text-right">
-											<div className="input-group mb-3">
-												<input
-													id="keyword"
-													type="text"
-													className="form-control"
-													placeholder=""
-													aria-label="Example text with button addon"
-													aria-describedby="button-addon1"
-												/>
-												<div className="input-group-prepend">
-													<button
-														className="btn btn-secondary"
-														type="submit"
-														id="button-addon1"
-													>
-														<i className="mdi mdi-magnify" /> Search{' '}
-													</button>
+											<form onSubmit={this.handleSubmitKeyword}>
+												<div className="input-group mb-3">
+													<input
+														id="keyword"
+														type="text"
+														className="form-control"
+														placeholder=""
+														aria-label="Example text with button addon"
+														aria-describedby="button-addon1"
+														onChange={this.handleChangeKeyword}
+													/>
+													<div className="input-group-prepend">
+														<button
+															className="btn btn-secondary"
+															type="submit"
+															id="button-addon1"
+														>
+															<i className="mdi mdi-magnify" /> Search{' '}
+														</button>
+													</div>
 												</div>
-											</div>
+											</form>
 										</div>
 									</div>
 								</div>
@@ -57,75 +194,18 @@ class Supplier extends React.Component {
 									<table className="table table-bordered table-custom table-responsive">
 										<thead>
 											<tr>
-                                                <th>#</th>
 												<th>Name</th>
                                                 <th>Email</th>
 												<th>Phone</th>
                                                 <th>Address</th>
-                                                <th>Status</th>
 											</tr>
 										</thead>
 										<tbody>
-											<tr>
-												<td>
-													<p className="text-primary">61516271</p>
-													<small className="text-muted">May 23 2019</small>
-													<br />
-													<button className="btn btn-sm btn-link text-success py-0 px-0 pr-2">
-														Edit
-													</button>
-													<button className="btn btn-sm btn-link text-danger py-0 px-0 pr-2">
-														Delete
-													</button>
-												</td>
-                                                <td>PT. Perkasa Sejati</td>
-                                                <td>ptperkasasejati@gmail.com</td>
-                                                <td>08123456789</td>
-                                                <td>Jl. Sukaduka No 19</td>
-                                                <td>
-                                                    <span className="text-success">Active</span>
-                                                </td>
-											</tr>
-                                            <tr>
-												<td>
-													<p className="text-primary">178317</p>
-													<small className="text-muted">May 23 2019</small>
-													<br />
-													<button className="btn btn-sm btn-link text-success py-0 px-0 pr-2">
-														Edit
-													</button>
-													<button className="btn btn-sm btn-link text-danger py-0 px-0 pr-2">
-														Delete
-													</button>
-												</td>
-                                                <td>PT Anugerah Abadi</td>
-                                                <td>anugerahabadi@gmail.com</td>
-                                                <td>08123456789</td>
-                                                <td>Jl. Sukaduka No 20</td>
-                                                <td>
-                                                    <span className="text-success">Active</span>
-                                                </td>
-											</tr>
-                                            <tr>
-												<td>
-													<p className="text-primary">173618</p>
-													<small className="text-muted">May 23 2019</small>
-													<br />
-													<button className="btn btn-sm btn-link text-success py-0 px-0 pr-2">
-														Edit
-													</button>
-													<button className="btn btn-sm btn-link text-danger py-0 px-0 pr-2">
-														Delete
-													</button>
-												</td>
-                                                <td>PT Anak Bangsa</td>
-                                                <td>anakbangsa@gmail.com</td>
-                                                <td>08123456789</td>
-                                                <td>Jl. Sukaduka No 21</td>
-                                                <td>
-                                                    <span className="text-success">Active</span>
-                                                </td>
-											</tr>
+											{ payload.data && payload.data.data.length > 0 ? suppliers : (
+													<tr>
+														<td className="text-center" colSpan="4">Data not found</td>
+													</tr>
+												) }
 										</tbody>
 									</table>
 								</div>
@@ -133,36 +213,35 @@ class Supplier extends React.Component {
 								<div className="col-md-12 py-3">
 									<div className="row">
 										<div className="col-md-10">
-                                            <p>Showing 1 to 10 of 1,290 record(s)</p>
-											<nav aria-label="Page navigation example">
-												<ul className="pagination">
-													<li className="page-item disabled">
-														<Link to="/" aria-disabled="true" className="page-link">
-															Previous
-														</Link>
-													</li>
-													<li className="page-item active">
-														<Link to="/" className="page-link">
-															1
-														</Link>
-													</li>
-													<li className="page-item">
-														<Link to="/" className="page-link">
-															2
-														</Link>
-													</li>
-													<li className="page-item">
-														<Link to="/" className="page-link">
-															3
-														</Link>
-													</li>
-													<li className="page-item">
-														<Link to="/" className="page-link">
-															Next
-														</Link>
-													</li>
-												</ul>
-											</nav>
+											{ payload.data && payload.data.total > 1 && (
+												<p>Showing { payload.data && payload.data.from.toLocaleString() } to { payload.data && payload.data.to.toLocaleString() } of { payload.data && payload.data.total.toLocaleString() } record(s)</p>
+
+											)}
+
+											{
+												payload.data && payload.data.total > 1 && (
+													<nav aria-label="Page navigation example">
+														<ul className="pagination">
+
+															{ payload.data.current_page > 1 && <li key="prev" className="page-item"><button onClick={this.handleClickPage.bind(null, payload.data.current_page - 1)} className="page-link">Prev</button></li> }
+
+															{
+																payload.data.pages.map((page, index) => {
+																	return (
+																		
+																		<li key={index} className={`page-item ${page === '...' ? 'disabled' : '' } ${page === payload.data.current_page ? 'active' : '' }`}><button onClick={this.handleClickPage.bind(null, page)} className="page-link">{page}</button></li>
+																		
+																	)
+																})
+															}
+
+															{ payload.data.current_page < payload.data.last_page && <li key="next" className="page-item"><button onClick={this.handleClickPage.bind(null, payload.data.current_page + 1)} className="page-link">Next</button></li> }
+
+
+														</ul>
+													</nav>
+												)
+											}
 										</div>
 										<div className="col-md-2 text-right">
 											<div className="form-group">
@@ -191,4 +270,22 @@ class Supplier extends React.Component {
 	}
 }
 
-export default Supplier;
+
+const mapStateToProps = (state) => {
+    return {
+        ...state,
+        payload: state.supplier.payload,
+        error: state.supplier.error,
+		fetching: state.supplier.fetching,
+		message: state.supplier.message
+    }
+}
+
+const mapDispatchToProps = (dispatch) => {
+	return {
+		fetchSupplier: (filter) => dispatch(fetchSupplier(filter)),
+		deleteSupplier: (id) => dispatch(deleteSupplier(id))
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(withToastManager(Supplier));

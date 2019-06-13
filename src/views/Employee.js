@@ -2,7 +2,7 @@ import React from 'react';
 import { Container, Row, Col } from 'shards-react';
 import PageTitle from '../components/common/PageTitle';
 import '../assets/range-date-picker.css';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import { appName } from '../global';
 import { Helmet } from 'react-helmet';
 import { connect } from 'react-redux';
@@ -11,6 +11,7 @@ import moment from 'moment';
 import Loading from 'react-loading-bar';
 import ScrollToTop from '../components/layout/ScrollToTop';
 import { withToastManager } from 'react-toast-notifications';
+import Error500 from './Error500';
 
 class Employee extends React.Component {
 
@@ -115,7 +116,10 @@ class Employee extends React.Component {
 
 	render() {
 
-        const { payload, fetching } = this.props;
+        const { payload, fetching, error } = this.props;
+        
+        if (!sessionStorage.getItem('token')) return <Redirect to="/login" />
+		if (error && error.status === 500) return <Error500 message={error.data.message} />
 
         const users = payload.data && payload.data.data.map(user => {
             return (

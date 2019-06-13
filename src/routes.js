@@ -26,6 +26,14 @@ import EditRole from "./views/EditRole";
 import AddStockIn from './views/AddStockIn';
 import EditEmployee from "./views/EditEmployee";
 import ViewEmployee from "./views/ViewEmployee";
+import AddCustomer from "./views/AddCustomer";
+import EditCustomer from "./views/EditCustomer";
+import AddSupplier from "./views/AddSupplier";
+import EditSupplier from "./views/EditSupplier";
+import AddExpense from "./views/AddExpense";
+import EditExpense from "./views/EditExpense";
+import AddCategory from "./views/AddCategory";
+import EditCategory from "./views/EditCategory";
 
 export default [
   {
@@ -112,12 +120,36 @@ export default [
   {
     path: "/customer",
     layout: DefaultLayout,
-    component: Customer
+    component: Customer,
+    exact: true
+  },
+  {
+    path: "/customer/create",
+    layout: DefaultLayout,
+    component: AddCustomer,
+  },
+  {
+    path: "/customer/edit/:id",
+    layout: DefaultLayout,
+    component: EditCustomer,
   },
   {
     path: "/supplier",
     layout: DefaultLayout,
-    component: Supplier
+    component: Supplier,
+    exact: true
+  },
+  {
+    path: "/supplier/create",
+    layout: DefaultLayout,
+    component: AddSupplier,
+    exact: true
+  },
+  {
+    path: "/supplier/edit/:id",
+    layout: DefaultLayout,
+    component: EditSupplier,
+    exact: true
   },
   {
     path: "/settings",
@@ -127,12 +159,36 @@ export default [
   {
     path: "/category",
     layout: DefaultLayout,
-    component: Category
+    component: Category,
+    exact: true
+  },
+  {
+    path: "/category/create",
+    layout: DefaultLayout,
+    component: AddCategory,
+    exact: true
+  },
+  {
+    path: "/category/edit/:id",
+    layout: DefaultLayout,
+    component: EditCategory,
+    exact: true
   },
   {
     path: "/expense",
     layout: DefaultLayout,
-    component: Expense
+    component: Expense,
+    exact: true
+  },
+  {
+    path: "/expense/create",
+    layout: DefaultLayout,
+    component: AddExpense,
+  },
+  {
+    path: "/expense/edit/:id",
+    layout: DefaultLayout,
+    component: EditExpense
   },
   {
     path: "/stores",

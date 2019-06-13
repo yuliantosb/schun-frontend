@@ -1,3 +1,4 @@
+// export const url = 'http://localhost:8000/api';
 export const url = 'https://shard-backend.herokuapp.com/api';
 export const appName = 'POS';
 export const customerStyles = { 

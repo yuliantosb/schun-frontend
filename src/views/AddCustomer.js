@@ -2,23 +2,19 @@ import React from 'react';
 import { Container, Row, Col, Card, CardHeader, CardBody, DatePicker } from 'shards-react';
 import PageTitle from '../components/common/PageTitle';
 import '../assets/range-date-picker.css';
-import { appName, url } from '../global';
+import { appName } from '../global';
 import { Helmet } from 'react-helmet';
 import { Link, Redirect } from 'react-router-dom';
 import { withToastManager } from 'react-toast-notifications';
-import AsyncSelect from 'react-select/async';
-import { customerStyles } from '../utils/selectStyle';
-import Axios from 'axios';
-import { saveEmployee } from '../store/actions/employeeAction';
+import { saveCustomer } from '../store/actions/customerAction';
 import {connect} from 'react-redux';
 import Loading from 'react-loading-bar';
 import Error500 from './Error500';
 
-class AddEmployee extends React.Component {
+class AddCustomer extends React.Component {
 
     state = {
 		date_of_birth: undefined,
-		photo: 'Choose file...'
     };
     
     handleDateOfBirthChange = (value) => {
@@ -26,32 +22,6 @@ class AddEmployee extends React.Component {
 			...this.state,
 			date_of_birth: new Date(value)
 		});
-    };
-
-    handleChangeRole = (value) => {
-        this.setState({
-			...this.state,
-			role_id: value ? value.value : null
-		});
-    }
-    
-    handleChangeUpload = (e) => {
-		const value = e.target.value;
-		const filename = value.split('\\');
-		this.setState({
-			...this.state,
-			photo: filename[filename.length - 1],
-		});
-
-		const file = e.target.files[0];
-        const reader = new FileReader();
-        reader.readAsDataURL(file);
-        reader.onload = (e) => {
-            this.setState({
-				...this.state,
-				file: e.target.result
-			})
-		}
     };
     
     handleChange = (e) => {
@@ -63,7 +33,7 @@ class AddEmployee extends React.Component {
 
 	handleSubmit = (e) => {
 		e.preventDefault();
-        this.props.saveEmployee(this.state);
+        this.props.saveCustomer(this.state);
     }
 
     componentDidUpdate = (prevProps, prevState) => {
@@ -75,7 +45,7 @@ class AddEmployee extends React.Component {
                 autoDismiss: true
             });
 
-            this.props.history.push('/employee');
+            this.props.history.push('/customer');
         }
 
         if (prevProps.error !== this.props.error) {
@@ -92,7 +62,7 @@ class AddEmployee extends React.Component {
     }
     
 	render() {      
-        const { fetching, saved, error } = this.props;
+        const { fetching, error } = this.props;
         if (!sessionStorage.getItem('token')) return <Redirect to="/login" />
         if (error && error.status === 500) return <Error500 message={error.data.message} />
 		return (
@@ -104,20 +74,20 @@ class AddEmployee extends React.Component {
 						showSpinner={false}
 						/>
 				<Helmet>
-					<title>Add Employee | {appName} </title>
+					<title>Add Customer | {appName} </title>
 				</Helmet>
 				<Row noGutters className="page-header py-4">
-					<PageTitle sm="4" title="Add Employee" subtitle="Employee" className="text-sm-left" />
+					<PageTitle sm="4" title="Add Customer" subtitle="Customer" className="text-sm-left" />
 				</Row>
 				<Row>
 					<Col>
 						<Card small className="mb-4">
 							<CardHeader className="border-bottom">
                                 <div className="float-left">
-								    <h6 className="m-0">Add Employee</h6>
+								    <h6 className="m-0">Add Customer</h6>
                                 </div>
                                 <div className="float-right">
-                                    <Link className="btn btn-secondary" to="/employee">Back</Link>
+                                    <Link className="btn btn-secondary" to="/customer">Back</Link>
                                 </div>
 							</CardHeader>
 							    <CardBody className="p-0 pb-3">
@@ -130,14 +100,6 @@ class AddEmployee extends React.Component {
                                                         <input type="text" id="name" className={`form-control ${ error && error.data.errors.name && 'is-invalid' }`} onChange={this.handleChange} placeholder="eg: John Doe" />
                                                         { 
                                                             error && error.data.errors.name && <div class="invalid-feedback">{ error.data.errors.name[0] }</div>
-                                                        }
-                                                    </div>
-
-                                                    <div className="form-group">
-                                                        <label className="control-label">Reg Number <span className="text-danger">*</span></label>
-                                                        <input type="text" id="reg_number" className={`form-control ${ error && error.data.errors.reg_number && 'is-invalid' }`} onChange={this.handleChange} placeholder="Unique registration number" />
-                                                        { 
-                                                            error && error.data.errors.reg_number && <div class="invalid-feedback">{ error.data.errors.reg_number[0] }</div>
                                                         }
                                                     </div>
 
@@ -162,43 +124,6 @@ class AddEmployee extends React.Component {
                                                         </div>
                                                     </div>
 
-                                                    <div className="row">
-                                                        <div className="col-md-6">
-                                                            <div className="form-group">
-                                                                <label className="control-label">Password <span className="text-danger">*</span></label>
-                                                                <input type="password" id="password" className={`form-control ${ error && error.data.errors.password && 'is-invalid' }`} onChange={this.handleChange} placeholder="secret password" />
-                                                                { 
-                                                                    error && error.data.errors.password && <div class="invalid-feedback">{ error.data.errors.password[0] }</div>
-                                                                }
-                                                            </div>
-                                                        </div>
-                                                        <div className="col-md-6">
-                                                            <div className="form-group">
-                                                                <label className="control-label">Retype Password <span className="text-danger">*</span></label>
-                                                                <input type="password" id="password_confirmation" className="form-control" onChange={this.handleChange} placeholder="retype your password" />
-                                                            </div>
-                                                        </div>
-                                                    </div>
-
-                                                    <div className="form-group">
-                                                        <label className="control-label">Photo</label>
-                                                        <div className="custom-file mb-3">
-                                                            <input
-                                                                id="photo"
-                                                                type="file"
-                                                                className="custom-file-input"
-                                                                onChange={this.handleChangeUpload}
-                                                            />
-                                                            <label
-                                                                className="custom-file-label"
-                                                                htmlFor="customFile2"
-                                                                id="placeholderCustomFile2"
-                                                            >
-                                                                {this.state.photo}
-                                                            </label>
-                                                        </div>
-                                                    </div>
-
                                                 </div>
 
 
@@ -214,14 +139,6 @@ class AddEmployee extends React.Component {
                                                     <div className="form-group">
                                                         <label className="control-label">Phone number</label>
                                                         <input type="text" id="phone_number" className="form-control" onChange={this.handleChange} placeholder="eg: 08123456789" />
-                                                    </div>
-
-                                                    <div className="form-group">
-                                                        <label className="control-label">Role <span className="text-danger">*</span></label>
-                                                        <AsyncSelect isClearable={true} className={error && error.data.errors.role_id && 'is-invalid'} styles={customerStyles} loadOptions={promiseOptions} id="role_id" placeholder="Type to search" onChange={this.handleChangeRole} />
-                                                        { 
-                                                            error && error.data.errors.role_id && <small class="text-danger">{ error.data.errors.role_id[0] }</small>
-                                                        }
                                                     </div>
 
                                                     <div className="form-group">
@@ -248,42 +165,22 @@ class AddEmployee extends React.Component {
 	}
 }
 
-const filterRole = (roles) => {
-   const options = roles.map(role => {
-       return { label: role.name, value: role._id }
-   })
-
-   return options;
-};
-  
-const promiseOptions = (inputValue, callback) => {
-    Axios.get(`${url}/employee/role`, {
-        params: {
-            name: inputValue,
-        }, 
-        headers: {
-            Authorization: `Bearer ${sessionStorage.getItem('token')}`
-        }
-    }).then(response => {
-        callback(filterRole(response.data.data));
-    });
-}
 
 const mapStateToProps = (state) => {
     return {
         ...state,
-        saved: state.employee.saved,
-        fetching: state.employee.fetching,
-        fetched: state.employee.fetched,
-        message: state.employee.message,
-        error: state.employee.error
+        saved: state.customer.saved,
+        fetching: state.customer.fetching,
+        fetched: state.customer.fetched,
+        message: state.customer.message,
+        error: state.customer.error
     }
 }
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        saveEmployee: data => dispatch(saveEmployee(data))
+        saveCustomer: data => dispatch(saveCustomer(data))
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(withToastManager(AddEmployee));
+export default connect(mapStateToProps, mapDispatchToProps)(withToastManager(AddCustomer));
