@@ -6,11 +6,11 @@ import MainNavbar from "../components/layout/MainNavbar/MainNavbar";
 import MainSidebar from "../components/layout/MainSidebar/MainSidebar";
 import MainFooter from "../components/layout/MainFooter";
 
-const DefaultLayout = ({ children, noNavbar, noFooter, noSidebar }) => (
+const DefaultLayout = ({ children, noNavbar, noFooter, noSidebar, setting }) => (
   <Container fluid>
     <Row>
       {!noSidebar && 
-        <MainSidebar />
+        <MainSidebar setting={setting} />
       }
       <Col
         className="main-content p-0"

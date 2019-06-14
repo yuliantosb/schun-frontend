@@ -109,7 +109,15 @@ class Expense extends React.Component {
         if (this.state.endDate !== nextState.endDate) {
             this.props.fetchExpense(nextState);
 		}
-    }
+	}
+	
+	handleClickDownloadEvidence = (e) => {
+
+		const linkSource = e.target.value;
+		e.href = linkSource;
+		e.click();
+		
+	}
     
     componentDidUpdate = (prevProps, prevState) => {
         if (prevProps.message !== this.props.message) {
@@ -147,7 +155,7 @@ class Expense extends React.Component {
 					<td>{ expense.amount_formatted }</td>
 					<td>{ expense.notes }</td>
 					<td>{ expense.user && expense.user.name }</td>
-					<td><a href={ expense.evidence_link } className="text-primary">{ expense.evidence }</a></td>
+					<td><a download={expense.evidence} href={ expense.file }>{ expense.evidence }</a></td>
 				</tr>
 			)
 		}) 		

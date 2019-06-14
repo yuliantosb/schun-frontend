@@ -34,6 +34,8 @@ import AddExpense from "./views/AddExpense";
 import EditExpense from "./views/EditExpense";
 import AddCategory from "./views/AddCategory";
 import EditCategory from "./views/EditCategory";
+import AddStores from "./views/AddStores";
+import EditStores from "./views/EditStores";
 
 export default [
   {
@@ -193,7 +195,18 @@ export default [
   {
     path: "/stores",
     layout: DefaultLayout,
-    component: Stores
+    component: Stores,
+    exact: true
+  },
+  {
+    path: "/stores/create",
+    layout: DefaultLayout,
+    component: AddStores
+  },
+  {
+    path: "/stores/edit/:id",
+    layout: DefaultLayout,
+    component: EditStores
   },
   {
     path: "/stockin",

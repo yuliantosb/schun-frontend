@@ -11,9 +11,17 @@ import './shards-dashboard/styles/shards-dashboards.1.3.1.min.css';
 import './assets/custom.css';
 import ScrollToTop from './components/layout/ScrollToTop';
 import { ToastProvider } from 'react-toast-notifications';
+import { fetchSetting } from './store/actions/settingActions';
+import {connect} from 'react-redux';
 
 class App extends React.Component {
-	render() {
+
+	componentDidMount = () => {
+		this.props.fetchSetting();
+	};
+
+	render() {		
+		const setting = this.props.setting;
 		return (
 			<ToastProvider styles={{ container: (provided) => ({ ...provided, zIndex: 1039 }) }}>
 				<Router basename={process.env.REACT_APP_BASENAME || ''}>
@@ -27,7 +35,7 @@ class App extends React.Component {
 											exact={route.exact}
 											component={(props) => {
 												return (
-													<route.layout {...props}>
+													<route.layout {...props} setting={setting}>
 														<route.component {...props} />
 													</route.layout>
 												);
@@ -44,4 +52,17 @@ class App extends React.Component {
 	}
 }
 
-export default App;
+const mapStateToProps = (state) => {
+	return {
+		setting: state.setting.setting.data
+	}
+}
+
+const mapDispatchToProps = (dispatch) => {
+	return {
+		fetchSetting: () => dispatch(fetchSetting())
+	};
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);
+// export default App;

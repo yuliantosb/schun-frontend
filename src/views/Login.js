@@ -26,6 +26,7 @@ class Login extends React.Component {
     }
 
     render() {
+        const setting = this.props.setting.setting.data;
         const {error, fetching, payload} = this.props;
         const errorMessage = payload.response ? payload.response.data.message : error;
         if (sessionStorage.getItem('token')) return (<Redirect to="/" />);
@@ -44,7 +45,7 @@ class Login extends React.Component {
                         <div className="col-lg-3 col-md-5 auth-form mx-auto my-auto">
                             <div className="card">
                                 <div className="card-body">
-                                    <img className="auth-form__logo d-table mx-auto mb-3" src={Logo} alt="Shards Dashboards - Register Template" />
+                                    <img className="auth-form__logo d-table mx-auto mb-3" src={ setting && setting.file } alt="Shards Dashboards - Register Template" />
                                     <h5 className="auth-form__title text-center mb-4">Access Your Account </h5>
                                     { error && !this.state.dismisAlert && (
                                     <div className="alert alert-danger fade show" role="alert">

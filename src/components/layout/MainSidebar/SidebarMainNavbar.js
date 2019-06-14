@@ -18,7 +18,7 @@ class SidebarMainNavbar extends React.Component {
   }
 
   render() {
-    const { hideLogoText } = this.props;
+    const { hideLogoText, setting } = this.props;
     return (
       <div className="main-navbar">
         <Navbar
@@ -35,12 +35,12 @@ class SidebarMainNavbar extends React.Component {
                 id="main-logo"
                 className="d-inline-block align-top mr-1"
                 style={{ maxWidth: "25px" }}
-                src={require("../../../images/shards-dashboards-logo.svg")}
-                alt="Shards Dashboard"
+                src={ setting && setting.file }
+                alt={ setting && setting.site_name }
               />
               {!hideLogoText && (
                 <span className="d-none d-md-inline ml-1">
-                  Shards Dashboard
+                  { setting && setting.site_name }
                 </span>
               )}
             </div>

@@ -20,6 +20,12 @@ const authReducer = (state = initState, action) => {
             }
         case 'LOGIN_FULFILLED':
             sessionStorage.setItem('token', action.payload.data.token);
+            sessionStorage.setItem('name', action.payload.data.user.name);
+            if (action.payload.data.user.employee) {
+                sessionStorage.setItem('photo', action.payload.data.user.employee.photo_url);
+            } else {
+                sessionStorage.setItem('photo', action.payload.data.user.photo_url);
+            }
             return {
                 ...state,
                 fetching: false,
@@ -38,7 +44,6 @@ const authReducer = (state = initState, action) => {
                 fetching: false
             }
         case 'LOGOUT_FULFILLED':
-            sessionStorage.setItem('token', action.payload.data.token);
             return {
                 ...state,
                 fetching: false,

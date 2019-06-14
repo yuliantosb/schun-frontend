@@ -8,6 +8,8 @@ import customerReducer from "./customerReducer";
 import supplierReducer from "./supplierReducer";
 import expenseReducer from "./expenseReducer";
 import categoryReducer from "./categoryReducer";
+import storeReducer from "./storeReducer";
+import settingReducer from "./settingReducer";
 
 
 const rootReducer = combineReducers({
@@ -19,7 +21,9 @@ const rootReducer = combineReducers({
     customer: customerReducer,
     supplier: supplierReducer,
     expense: expenseReducer,
-    category: categoryReducer
+    category: categoryReducer,
+    store: storeReducer,
+    setting: settingReducer
 });
 
 export default rootReducer;
