@@ -199,9 +199,17 @@ class Category extends React.Component {
 											</tr>
 										</thead>
 										<tbody>
-											{ payload.data && payload.data.data.length > 0 ? categories : (
+											{ 
+												fetching ? 
+												(
 													<tr>
-														<td className="text-center" colSpan="3">Data not found</td>
+														<td className="text-center" colSpan="4">Loading...</td>
+													</tr>
+												)
+												:
+												payload.data && payload.data.data.length > 0 ? categories : (
+													<tr>
+														<td className="text-center" colSpan="4">Data not found</td>
 													</tr>
 											) }
 										</tbody>

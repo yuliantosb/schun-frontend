@@ -1,5 +1,5 @@
 import React from 'react';
-import { Container, Row, Col, Card, CardHeader, CardBody } from 'shards-react';
+import { Container, Row, Col, Card, CardBody } from 'shards-react';
 import PageTitle from '../components/common/PageTitle';
 import '../assets/range-date-picker.css';
 import { Link } from 'react-router-dom';
@@ -9,7 +9,6 @@ import ScrollToTop from '../components/layout/ScrollToTop';
 import { withToastManager } from 'react-toast-notifications';
 import { fetchSupplier, deleteSupplier } from '../store/actions/supplierAction';
 import Loading from 'react-loading-bar';
-import moment from 'moment';
 import {connect} from 'react-redux';
 
 class Supplier extends React.Component {
@@ -199,9 +198,17 @@ class Supplier extends React.Component {
 											</tr>
 										</thead>
 										<tbody>
-											{ payload.data && payload.data.data.length > 0 ? suppliers : (
+											{ 
+												fetching ? 
+												(
 													<tr>
-														<td className="text-center" colSpan="4">Data not found</td>
+														<td className="text-center" colSpan="5">Loading...</td>
+													</tr>
+												)
+												:
+												payload.data && payload.data.data.length > 0 ? suppliers : (
+													<tr>
+														<td className="text-center" colSpan="5">Data not found</td>
 													</tr>
 												) }
 										</tbody>

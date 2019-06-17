@@ -142,20 +142,20 @@ class Expense extends React.Component {
 			return (
 				<tr key={expense._id}>
 					<td>
-						<p className="text-primary">{ expense.reference }</p>
-						<small className="text-muted">{ moment(expense.created_at).format('MMM Do, YYYY') }</small>
-						<br />
-						<Link className="btn btn-sm btn-link text-success py-0 px-0 pr-2" to={`expense/edit/${expense._id}`}>
-							Edit
-						</Link>
-						<button id={expense._id} onClick={this.handleClickDelete} className="btn btn-sm btn-link text-danger py-0 px-0 pr-2">
-							Delete
-						</button>
+						<strong>{ expense.reference }</strong>
 					</td>
 					<td>{ expense.amount_formatted }</td>
 					<td>{ expense.notes }</td>
 					<td>{ expense.user && expense.user.name }</td>
 					<td><a download={expense.evidence} href={ expense.file }>{ expense.evidence }</a></td>
+					<td>
+						<Link className="btn btn-sm btn-success mr-2" to={`expense/edit/${expense._id}`}>
+							<i className="mdi mdi-pencil"></i>
+						</Link>
+						<button id={expense._id} onClick={this.handleClickDelete} className="btn btn-sm btn-danger">
+							<i className="mdi mdi-delete"></i>
+						</button>
+					</td>
 				</tr>
 			)
 		}) 		
@@ -260,12 +260,20 @@ class Expense extends React.Component {
 												<th>Note</th>
                                                 <th>In Charge</th>
                                                 <th>Evidence</th>
+												<th>Options</th>
 											</tr>
 										</thead>
 										<tbody>
-											{ payload.data && payload.data.data.length > 0 ? expenses : (
+											{ 
+												fetching ? (
 													<tr>
-														<td className="text-center" colSpan="5">Data not found</td>
+														<td className="text-center" colSpan="6">Loading...</td>
+													</tr>
+												) : 
+
+												payload.data && payload.data.data.length > 0 ? expenses : (
+													<tr>
+														<td className="text-center" colSpan="6">Data not found</td>
 													</tr>
 											) }
 										</tbody>

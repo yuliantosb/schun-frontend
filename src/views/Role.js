@@ -225,11 +225,22 @@ class Role extends React.Component {
 												</tr>
 											</thead>
 											<tbody>
-												{ payload.data && payload.data.data.length > 0 ? roles : (
-													<tr>
-														<td className="text-center" colSpan="6">Data not found</td>
-													</tr>
-												) }
+
+												{
+													fetching ? (
+														<tr>
+															<td className="text-center" colSpan="3">Loading...</td>
+														</tr>
+													) : 
+													
+													 payload.data && payload.data.data.length > 0 ? roles : (
+														<tr>
+															<td className="text-center" colSpan="3">Data not found</td>
+														</tr>
+													)													
+												}
+
+												
 											</tbody>
 										</table>
 									</div>

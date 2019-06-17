@@ -197,9 +197,17 @@ class Customer extends React.Component {
 											</tr>
 										</thead>
 										<tbody>
-											{ payload.data && payload.data.data.length > 0 ? customers : (
+											{ 
+												fetching ? 
+													(
+														<tr>
+															<td className="text-center" colSpan="5">Loading...</td>
+														</tr>	
+													)
+												:
+												payload.data && payload.data.data.length > 0 ? customers : (
 													<tr>
-														<td className="text-center" colSpan="4">Data not found</td>
+														<td className="text-center" colSpan="5">Data not found</td>
 													</tr>
 												) }
 										</tbody>

@@ -231,9 +231,17 @@ class Permission extends React.Component {
 												</tr>
 											</thead>
 											<tbody>
-												{ payload.data && payload.data.data.length > 0 ? permissions : (
+
+												{
+													fetching ? (
+														<tr>
+															<td className="text-center" colSpan="4">Loading...</td>
+														</tr>
+													) : 
+
+													payload.data && payload.data.data.length > 0 ? permissions : (
 													<tr>
-														<td className="text-center" colSpan="3">Data not found</td>
+														<td className="text-center" colSpan="4">Data not found</td>
 													</tr>
 												) }
 											</tbody>

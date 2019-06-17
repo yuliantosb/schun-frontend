@@ -208,6 +208,14 @@ class Employee extends React.Component {
                         <div className="col-md-12 mt-5 mb-5">
                             <div className="row">
                                 {
+                                    fetching ? (
+                                        <div className="col-md-12 py-5">
+                                            <div className="text-center">
+                                                <h3 className="text-muted">Loading ...</h3>
+                                            </div>
+                                        </div>
+                                    )
+                                    :
                                     payload.data && payload.data.data.length > 0 ? users : (
                                         <div className="col-md-12 py-5">
                                             <div className="text-center">

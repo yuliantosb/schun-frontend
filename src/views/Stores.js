@@ -117,14 +117,18 @@ class Stores extends React.Component {
             return (
             <tr key={store._id}>
                 <td>
-                    <p className="text-primary">{ store.name }</p>
-					<small className="text-muted">{ moment(store.created_at).format('MMM Do, YYYY') }</small>
-					<br/>
-                    <Link to={`/stores/edit/${store._id}`} className="btn btn-sm btn-link text-success py-0 px-0 pr-2">Edit</Link>
-                    <button id={store._id} onClick={this.handleClickDelete} className="btn btn-sm btn-link text-danger py-0 px-0 pr-2">Delete</button>
+                    <strong>{ store.name }</strong>
                 </td>
 				<td>{ store.phone_number }</td>
 				<td>{ store.address }</td>
+				<td>
+					<Link to={`/stores/edit/${store._id}`} className="btn btn-sm btn-success mr-2">
+						<i className="mdi mdi-pencil"></i>
+					</Link>
+                    <button id={store._id} onClick={this.handleClickDelete} className="btn btn-sm btn-link text-danger">
+						<i className="mdi mdi-dele"></i>
+					</button>
+				</td>
             </tr>
             );
 		});
@@ -199,12 +203,19 @@ class Stores extends React.Component {
 												<th>Name</th>
                                                 <th>Phone</th>
 												<th>Address</th>
+												<th>Options</th>
 											</tr>
 										</thead>
 										<tbody>
-											{ payload.data && payload.data.data.length > 0 ? stores : (
+											{ 
+												fetching ? (
 													<tr>
-														<td className="text-center" colSpan="3">Data not found</td>
+														<td className="text-center" colSpan="4">Loading...</td>
+													</tr>
+												) :
+												payload.data && payload.data.data.length > 0 ? stores : (
+													<tr>
+														<td className="text-center" colSpan="4">Data not found</td>
 													</tr>
 											) }
 										</tbody>
