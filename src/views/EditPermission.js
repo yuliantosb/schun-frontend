@@ -87,19 +87,16 @@ class EditPermission extends React.Component {
 					<title>Edit Permission | {appName} </title>
 				</Helmet>
 				<Row noGutters className="page-header py-4">
-					<PageTitle sm="4" title="Edit Permission" subtitle="Permission" className="text-sm-left" />
+                <div className="col-md-8">
+					    <PageTitle sm="4" title="Edit Permission" className="text-sm-left" />
+                    </div>
+                    <div className="col-md-4 text-right">
+                         <Link className="btn btn-secondary" to="/Permission">Back</Link>
+                    </div>
 				</Row>
 				<Row>
 					<Col>
 						<Card small className="mb-4">
-							<CardHeader className="border-bottom">
-                                <div className="float-left">
-								    <h6 className="m-0">Edit Permission </h6>
-                                </div>
-                                <div className="float-right">
-                                    <Link className="btn btn-secondary" to="/permission">Back</Link>
-                                </div>
-							</CardHeader>
 							    <CardBody className="p-0 pb-3">
                                     <form onSubmit={this.handleSubmit}>
                                         <div className="col-md-12 mt-4">

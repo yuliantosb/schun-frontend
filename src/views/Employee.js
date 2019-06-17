@@ -170,7 +170,7 @@ class Employee extends React.Component {
                         )
                     }
                     <div className="col-md-8">
-					    <PageTitle sm="4" title="Employee" subtitle="Employee" className="text-sm-left" />
+					    <PageTitle sm="4" title="Employee" className="text-sm-left" />
                     </div>
                     <div className="col-md-4 text-right">
                         <form onSubmit={this.handleSubmitKeyword}>

@@ -140,7 +140,7 @@ class Stores extends React.Component {
 					<title>Stores | {appName} </title>
 				</Helmet>
 				<Row noGutters className="page-header py-4">
-					<PageTitle sm="4" title="Stores" subtitle="Stores" className="text-sm-left" />
+					<PageTitle sm="4" title="Stores" className="text-sm-left" />
 				</Row>
 				<Row>
 					{
@@ -158,9 +158,6 @@ class Stores extends React.Component {
 					}
 					<Col>
 						<Card small className="mb-4">
-							<CardHeader className="border-bottom">
-								<h6 className="m-0">Stores</h6>
-							</CardHeader>
 							<CardBody className="p-0 pb-3">
 								<div className="col-md-12 mt-4">
 									<div className="row">

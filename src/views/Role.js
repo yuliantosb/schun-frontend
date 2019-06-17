@@ -126,16 +126,15 @@ class Role extends React.Component {
 		const roles = payload.data && payload.data.data.map(role => {
             return (
             <tr key={role._id}>
-                <td>
-                    <p className="text-primary">{ role.name }</p>
-					<small className="text-muted">{ moment(role.created_at).format('MMM Do, YYYY') }</small>
-					<br/>
-                    <Link to={`role/edit/${role._id}`} className="btn btn-sm btn-link text-success py-0 px-0 pr-2">Edit</Link>
-                    <button id={role._id} onClick={this.handleClickDelete} className="btn btn-sm btn-link text-danger py-0 px-0 pr-2">Delete</button>
+                <td>{ role.name }
                 </td>
                 <td>
                     { role.description }
                 </td>
+				<td className="text-center"> 
+					<Link to={`role/edit/${role._id}`} className="btn btn-sm btn-success mr-2"><i className="mdi mdi-pencil"></i></Link>
+                    <button id={role._id} onClick={this.handleClickDelete} className="btn btn-sm btn-danger"><i className="mdi mdi-delete"></i></button>
+				</td>
             </tr>
             );
         });
@@ -164,7 +163,7 @@ class Role extends React.Component {
 						showSpinner={false}
 						/>
 					<Row noGutters className="page-header py-4">
-						<PageTitle sm="4" title="Role" subtitle="Role" className="text-sm-left" />
+						<PageTitle sm="4" title="Role"  className="text-sm-left" />
 					</Row>
 					<Row>
 						{
@@ -182,9 +181,6 @@ class Role extends React.Component {
 						}
 						<Col>
 							<Card small className="mb-4">
-								<CardHeader className="border-bottom">
-									<h6 className="m-0">Role</h6>
-								</CardHeader>
 								<CardBody className="p-0 pb-3">
 									<div className="col-md-12 mt-4">
 										<div className="row">
@@ -225,6 +221,7 @@ class Role extends React.Component {
 												<tr>
 													<th>Name</th>
 													<th>Description</th>
+													<th><center>Options</center></th>
 												</tr>
 											</thead>
 											<tbody>

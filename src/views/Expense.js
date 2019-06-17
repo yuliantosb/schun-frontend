@@ -171,7 +171,7 @@ class Expense extends React.Component {
 					<title>Expense | {appName} </title>
 				</Helmet>
 				<Row noGutters className="page-header py-4">
-					<PageTitle sm="4" title="Expense" subtitle="Expense" className="text-sm-left" />
+					<PageTitle sm="4" title="Expense" className="text-sm-left" />
 				</Row>
 				<Row>
 					{
@@ -189,9 +189,6 @@ class Expense extends React.Component {
 						}
 					<Col>
 						<Card small className="mb-4">
-							<CardHeader className="border-bottom">
-								<h6 className="m-0">Expense</h6>
-							</CardHeader>
 							<CardBody className="p-0 pb-3">
 								<div className="col-md-12 mt-4">
 									<div className="row">

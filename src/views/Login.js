@@ -45,8 +45,8 @@ class Login extends React.Component {
                         <div className="col-lg-3 col-md-5 auth-form mx-auto my-auto">
                             <div className="card">
                                 <div className="card-body">
-                                    <img className="auth-form__logo d-table mx-auto mb-3" src={ setting && setting.file } alt="Shards Dashboards - Register Template" />
-                                    <h5 className="auth-form__title text-center mb-4">Access Your Account </h5>
+                                    <img className="auth-form__logo_custom d-table mx-auto mb-3" src={ setting && setting.file } alt="Shards Dashboards - Register Template" />
+                                    <h5 className="auth-form__title text-center mb-4">Login </h5>
                                     { error && !this.state.dismisAlert && (
                                     <div className="alert alert-danger fade show" role="alert">
                                         <strong>Error!</strong> { errorMessage }
@@ -60,27 +60,15 @@ class Login extends React.Component {
                                             <label htmlFor="password">Password</label>
                                             <input type="password" className="form-control" id="password" placeholder="Password" onChange={this.handleChangeCreds} />
                                         </div>
-                                        <div className="form-group mb-3 d-table mx-auto">
-                                            <div className="custom-control custom-checkbox mb-1">
-                                                <input type="checkbox" className="custom-control-input" id="customCheck2" />
-                                                <label className="custom-control-label" htmlFor="customCheck2">Remember me for 30 days.</label>
-                                            </div>
-                                        </div>
-                                        <button type="submit" className="btn btn-pill btn-accent d-table mx-auto">Access Account</button>
+                                        
+                                        <button type="submit" className="btn btn-pill btn-accent d-table mx-auto mt-4">Access Account</button>
                                     </form>
                                 </div>
                                 <div className="card-footer border-top">
-                                    <ul className="auth-form__social-icons d-table mx-auto">
-                                        <li><Link to="/"><i className="fab fa-facebook-f"></i></Link></li>
-                                        <li><Link to="/"><i className="fab fa-twitter"></i></Link></li>
-                                        <li><Link to="/"><i className="fab fa-github"></i></Link></li>
-                                        <li><Link to="/"><i className="fab fa-google-plus-g"></i></Link></li>
-                                    </ul>
                                 </div>
                             </div>
-                            <div className="auth-form__meta d-flex mt-4">
+                            <div className="auth-form__meta text-center mt-4">
                                 <Link to="forgot-password">Forgot your password?</Link>
-                                <Link className="ml-auto" to="register">Create new account?</Link>
                             </div>
                         </div>
                     </div>

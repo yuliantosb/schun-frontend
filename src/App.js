@@ -36,7 +36,7 @@ class App extends React.Component {
 											component={(props) => {
 												return (
 													<route.layout {...props} setting={setting}>
-														<route.component {...props} />
+														<route.component {...props} setting={setting} />
 													</route.layout>
 												);
 											}}

@@ -102,19 +102,16 @@ class EditCustomer extends React.Component {
 					<title>Edit Customer | {appName} </title>
 				</Helmet>
 				<Row noGutters className="page-header py-4">
-					<PageTitle sm="4" title="Edit Customer" subtitle="Customer" className="text-sm-left" />
+                <div className="col-md-8">
+					    <PageTitle sm="4" title="Edit Customer" className="text-sm-left" />
+                    </div>
+                    <div className="col-md-4 text-right">
+                         <Link className="btn btn-secondary" to="/Customer">Back</Link>
+                    </div>
 				</Row>
 				<Row>
 					<Col>
 						<Card small className="mb-4">
-							<CardHeader className="border-bottom">
-                                <div className="float-left">
-								    <h6 className="m-0">Edit Customer</h6>
-                                </div>
-                                <div className="float-right">
-                                    <Link className="btn btn-secondary" to="/customer">Back</Link>
-                                </div>
-							</CardHeader>
 							    <CardBody className="p-0 pb-3">
                                     <div className="col-md-12 mt-3">
                                         <form onSubmit={this.handleSubmit}>

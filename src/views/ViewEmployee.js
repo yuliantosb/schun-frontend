@@ -32,7 +32,13 @@ class ViewEmployee extends React.Component {
 					<title>View Employee | {appName} </title>
 				</Helmet>
 				<Row noGutters className="page-header py-4">
-					<PageTitle sm="4" title="View Employee" subtitle="Employee" className="text-sm-left" />
+                    <div className="col-md-8">
+                         <PageTitle sm="4" title="View Employee" className="text-sm-left" />
+                    </div>
+                    <div className="col-md-4 text-right">
+                    <Link className="btn btn-secondary" to="/employee">Back</Link>
+                    </div>
+					
 				</Row>
 				<Row>
 					<Col lg="4">
@@ -97,10 +103,6 @@ class ViewEmployee extends React.Component {
                                                     <Col md="6" className="form-group">
                                                         <label htmlFor="feFirstName">Address</label>
                                                         <p className="help-block">{ data && data.employee.address }</p>
-                                                    </Col>
-                                                    <Col md="12" className="form-group text-right">
-                                                        <hr/>
-                                                        <Link to="/employee" className="btn btn-secondary">Back</Link>
                                                     </Col>
                                                 </Row>
                                             </Form>

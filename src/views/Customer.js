@@ -110,16 +110,14 @@ class Customer extends React.Component {
 		const customers = payload.data && payload.data.data.map(customer => {
             return (
             <tr key={customer._id}>
-                <td>
-                    <p className="text-primary">{ customer.name }</p>
-					<small className="text-muted">{ moment(customer.created_at).format('MMM Do, YYYY') }</small>
-					<br/>
-                    <Link to={`/customer/edit/${customer._id}`} className="btn btn-sm btn-link text-success py-0 px-0 pr-2">Edit</Link>
-                    <button id={customer._id} onClick={this.handleClickDelete} className="btn btn-sm btn-link text-danger py-0 px-0 pr-2">Delete</button>
-                </td>
+                <td>{ customer.name }</td>
 				<td>{ customer.email }</td>
 				<td>{ customer.phone_number }</td>
 				<td>{ customer.address }</td>
+				<td>
+					<Link to={`/customer/edit/${customer._id}`} className="btn btn-success btn-sm mx-2"><i className="mdi mdi-pencil"></i></Link>
+                    <button id={customer._id} onClick={this.handleClickDelete} className="btn btn-danger btn-sm"><i className="mdi mdi-delete"></i></button>
+				</td>
             </tr>
             );
 		});
@@ -135,7 +133,7 @@ class Customer extends React.Component {
 					<title>Customer | {appName} </title>
 				</Helmet>
 				<Row noGutters className="page-header py-4">
-					<PageTitle sm="4" title="Customer" subtitle="Customer" className="text-sm-left" />
+					<PageTitle sm="4" title="Customer" className="text-sm-left" />
 				</Row>
 				<Row>
 					{
@@ -153,9 +151,6 @@ class Customer extends React.Component {
 					}
 					<Col>
 						<Card small className="mb-4">
-							<CardHeader className="border-bottom">
-								<h6 className="m-0">Customer</h6>
-							</CardHeader>
 							<CardBody className="p-0 pb-3">
 								<div className="col-md-12 mt-4">
 									<div className="row">
@@ -198,6 +193,7 @@ class Customer extends React.Component {
                                                 <th>Email</th>
 												<th>Phone</th>
                                                 <th>Address</th>
+												<th>Options</th>
 											</tr>
 										</thead>
 										<tbody>

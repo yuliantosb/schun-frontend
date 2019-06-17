@@ -197,3 +197,20 @@ button:focus {
     font-size: 13px !important;
     font-weight: normal !important;
 }
+
+.auth-form__logo_custom {
+    width: 5rem !important;
+}
+.main-logo-custom {
+    width: 40px !important;
+}
+
+.main-navbar__search .brand {
+    display: block;
+    padding: 15px 20px;
+    font-size: 1.5em;
+}
+
+.main-sidebar .nav .nav-item .nav-link {
+    padding: .6rem 1rem !important;
+}

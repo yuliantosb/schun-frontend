@@ -102,14 +102,12 @@ class Settings extends React.Component {
 					<title>Settings | {appName} </title>
 				</Helmet>
 				<Row noGutters className="page-header py-4">
-					<PageTitle sm="4" title="Settings" subtitle="Settings" className="text-sm-left" />
+					<PageTitle sm="4" title="Settings" className="text-sm-left" />
 				</Row>
 				<Row>
 					<Col>
 						<Card small className="mb-4">
-							<CardHeader className="border-bottom">
-								<h6 className="m-0">Settings</h6>
-							</CardHeader>
+							
 							<CardBody className="mt-3">
                                 <form onSubmit={this.handleSubmit} >
                                     <div className="row">

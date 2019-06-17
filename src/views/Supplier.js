@@ -111,15 +111,15 @@ class Supplier extends React.Component {
             return (
             <tr key={supplier._id}>
                 <td>
-                    <p className="text-primary">{ supplier.name }</p>
-					<small className="text-muted">{ moment(supplier.created_at).format('MMM Do, YYYY') }</small>
-					<br/>
-                    <Link to={`/supplier/edit/${supplier._id}`} className="btn btn-sm btn-link text-success py-0 px-0 pr-2">Edit</Link>
-                    <button id={supplier._id} onClick={this.handleClickDelete} className="btn btn-sm btn-link text-danger py-0 px-0 pr-2">Delete</button>
+                   { supplier.name }
                 </td>
 				<td>{ supplier.email }</td>
 				<td>{ supplier.phone_number }</td>
 				<td>{ supplier.address }</td>
+				<td className="text-center"> 
+					<Link to={`/supplier/edit/${supplier._id}`}  className="btn btn-sm btn-success mr-2"><i className="mdi mdi-pencil"></i></Link>
+                    <button id={supplier._id} onClick={this.handleClickDelete} className="btn btn-sm btn-danger"><i className="mdi mdi-delete"></i></button>
+				</td>
             </tr>
             );
 		});
@@ -135,7 +135,7 @@ class Supplier extends React.Component {
 					<title>Supplier | {appName} </title>
 				</Helmet>
 				<Row noGutters className="page-header py-4">
-					<PageTitle sm="4" title="Supplier" subtitle="Supplier" className="text-sm-left" />
+					<PageTitle sm="4" title="Supplier" className="text-sm-left" />
 				</Row>
 				<Row>
 					{
@@ -153,9 +153,6 @@ class Supplier extends React.Component {
 					}
 					<Col>
 						<Card small className="mb-4">
-							<CardHeader className="border-bottom">
-								<h6 className="m-0">Supplier</h6>
-							</CardHeader>
 							<CardBody className="p-0 pb-3">
 								<div className="col-md-12 mt-4">
 									<div className="row">
@@ -198,6 +195,7 @@ class Supplier extends React.Component {
                                                 <th>Email</th>
 												<th>Phone</th>
                                                 <th>Address</th>
+												<th><center>Options</center></th>
 											</tr>
 										</thead>
 										<tbody>

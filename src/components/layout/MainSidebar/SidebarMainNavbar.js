@@ -33,16 +33,10 @@ class SidebarMainNavbar extends React.Component {
             <div className="d-table m-auto">
               <img
                 id="main-logo"
-                className="d-inline-block align-top mr-1"
-                style={{ maxWidth: "25px" }}
+                className="main-logo-custom"
                 src={ setting && setting.file }
                 alt={ setting && setting.site_name }
               />
-              {!hideLogoText && (
-                <span className="d-none d-md-inline ml-1">
-                  { setting && setting.site_name }
-                </span>
-              )}
             </div>
           </NavbarBrand>
           {/* eslint-disable-next-line */}

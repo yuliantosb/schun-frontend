@@ -6,6 +6,7 @@ import { Helmet } from 'react-helmet';
 
 class ForgotPassword extends React.Component {
     render() {
+        const setting = this.props.setting;
         return (
             <main className="main-content col mt-5">
                 <Helmet>
@@ -16,7 +17,7 @@ class ForgotPassword extends React.Component {
                     <div className="col-lg-3 col-md-5 auth-form mx-auto my-auto">
                         <div className="card">
                         <div className="card-body">
-                            <img className="auth-form__logo d-table mx-auto mb-3" src={Logo} alt="logo" />
+                            <img className="auth-form__logo_custom d-table mx-auto mb-3" src={ setting && setting.file } alt="logo" />
                             <h5 className="auth-form__title text-center mb-4">Reset Password</h5>
                             <form>
                             <div className="form-group mb-4">
