@@ -5,7 +5,8 @@ const initState = {
 	payload: {},
 	saved: false,
 	message: null,
-	category: {}
+	category: {},
+	isDeleted: false
 };
 
 const categoryReducer = (state = initState, action) => {
@@ -34,6 +35,7 @@ const categoryReducer = (state = initState, action) => {
 				payload: action.payload.data,
 				error: null,
 				saved: false,
+				isDeleted: false
 			};
 		case 'SAVE_CATEGORY_PENDING' : 
 			return {
@@ -132,7 +134,8 @@ const categoryReducer = (state = initState, action) => {
 				fetched: true,
 				message: action.payload.data.message,
 				error: null,
-				saved: true
+				saved: true,
+				isDeleted: true
 			};
 		default:
 			return state;

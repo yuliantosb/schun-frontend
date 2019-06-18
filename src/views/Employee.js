@@ -52,10 +52,10 @@ class Employee extends React.Component {
         });
     }
     
-    handleClickDelete = (e) => {
+    handleClickDelete = (id) => {
 		this.setState({
 			...this.state,
-			deleteId: e.target.id,
+			deleteId: id,
 			showMsgBox: true
 		});
 	}
@@ -87,27 +87,31 @@ class Employee extends React.Component {
         if (this.state.perpage !== nextState.perpage) {
             this.props.fetchEmployee(nextState);
         }
-
-        if (this.state.startDate !== nextState.startDate) {
-            this.props.fetchEmployee(nextState);
-        }
-
-        if (this.state.endDate !== nextState.endDate) {
-            this.props.fetchEmployee(nextState);
-		}
     }
     
     componentDidUpdate = (prevProps, prevState) => {
-        if (prevProps.message !== this.props.message) {
-
-            const { toastManager } = this.props;
-            toastManager.add(this.props.message, {
-                appearance: 'success',
-                autoDismiss: true
-            });
-
-            this.props.fetchEmployee(this.state);
-        }
+        if (prevProps.error !== this.props.error) {
+            if (!this.props.fetched) {
+                if (this.props.error) {
+                    const { toastManager } = this.props;
+                    toastManager.add(this.props.error.data.message, {
+                        appearance: 'error',
+                        autoDismiss: true
+                    });
+                }
+            }
+		}
+		
+		if (prevProps.isDeleted !== this.props.isDeleted) {
+			if (this.props.isDeleted) {
+				const { toastManager } = this.props;
+				toastManager.add(this.props.message, {
+					appearance: 'success',
+					autoDismiss: true
+				});
+				this.props.fetchEmployee(this.state);
+			}
+		}
     }
 
     componentDidMount = () => {
@@ -137,7 +141,7 @@ class Employee extends React.Component {
                                 <Link className="btn btn-sm btn-link text-success py-0 px-0 pr-2" to={`employee/edit/${user._id}`}>
                                     Edit
                                 </Link>
-                                <button id={user._id} onClick={this.handleClickDelete} className="btn btn-sm btn-link text-danger py-0 px-0 pr-2">
+                                <button onClick={ () => this.handleClickDelete(user._id) } className="btn btn-sm btn-link text-danger py-0 px-0 pr-2">
                                     Delete
                                 </button>
                             </div>
@@ -293,7 +297,8 @@ const mapStateToProps = (state) => {
         payload: state.employee.payload,
         error: state.employee.error,
 		fetching: state.employee.fetching,
-		message: state.employee.message
+        message: state.employee.message,
+        isDeleted: state.employee.isDeleted
     }
 }
 

@@ -2,7 +2,7 @@ import React from 'react';
 import { Container, Row, Col, Card, CardHeader, CardBody, FormCheckbox } from 'shards-react';
 import PageTitle from '../components/common/PageTitle';
 import '../assets/range-date-picker.css';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import { appName } from '../global';
 import { Helmet } from 'react-helmet';
 import ScrollToTop from '../components/layout/ScrollToTop';
@@ -11,6 +11,7 @@ import { fetchCategory, deleteCategory } from '../store/actions/categoryAction';
 import moment from 'moment';
 import {connect} from 'react-redux';
 import Loading from 'react-loading-bar';
+import Error500 from './Error500';
 
 class Category extends React.Component {
 	state = {
@@ -20,8 +21,9 @@ class Category extends React.Component {
 		keyword: null,
 		alert: true,
 		alertMsgBox: false,
-		deleteId: null,
-		showMsgBox: false
+		deleteIdCategory: null,
+		showMsgBox: false,
+		isDeleted: false
     }
 
     handleChangeKeyword = (e) => {
@@ -53,7 +55,7 @@ class Category extends React.Component {
     handleClickDelete = (e) => {
 		this.setState({
 			...this.state,
-			deleteId: e.target.id,
+			deleteIdCategory: e.target.id,
 			showMsgBox: true
 		});
 	}
@@ -63,17 +65,18 @@ class Category extends React.Component {
 		this.setState({
 			...this.state,
 			alertMsgBox: true,
-			showMsgBox: false
+			showMsgBox: false,
+			isDeleted: true
 		});
 
-		this.props.deleteCategory(this.state.deleteId);
+		this.props.deleteCategory(this.state.deleteIdCategory);
 	}
 
 	handleClickNo = () => {
 		this.setState({
 			...this.state,
 			showMsgBox: false,
-			deleteId: null
+			deleteIdCategory: null
 		});
 	}
 
@@ -88,16 +91,29 @@ class Category extends React.Component {
     }
     
     componentDidUpdate = (prevProps, prevState) => {
-        if (prevProps.message !== this.props.message) {
 
-            const { toastManager } = this.props;
-            toastManager.add(this.props.message, {
-                appearance: 'success',
-                autoDismiss: true
-            });
-
-            this.props.fetchCategory(this.state);
-        }
+        if (prevProps.error !== this.props.error) {
+            if (!this.props.fetched) {
+                if (this.props.error) {
+                    const { toastManager } = this.props;
+                    toastManager.add(this.props.error.data.message, {
+                        appearance: 'error',
+                        autoDismiss: true
+                    });
+                }
+            }
+		}
+		
+		if (prevProps.isDeleted !== this.props.isDeleted) {
+			if (this.props.isDeleted) {
+				const { toastManager } = this.props;
+				toastManager.add(this.props.message, {
+					appearance: 'success',
+					autoDismiss: true
+				});
+				this.props.fetchCategory(this.state);
+			}
+		}
     }
 
     componentDidMount = () => {
@@ -105,7 +121,11 @@ class Category extends React.Component {
 	}	
 	
 	render() {
-		const {payload, fetching} = this.props;
+		const {payload, error, fetching} = this.props;
+		
+		if (!sessionStorage.getItem('token')) return <Redirect to="/login" />
+		if (error && error.status === 500) return <Error500 message={error.data.message} />
+
 		const categories = payload.data && payload.data.data.map(category => {
             return (
             <tr key={category._id}>
@@ -128,10 +148,10 @@ class Category extends React.Component {
 		return (
 			<Container fluid className="main-content-container px-4">
 				<Loading
-						show={fetching}
-						color="blue"
-						showSpinner={false}
-						/>
+					show={fetching}
+					color="blue"
+					showSpinner={false}
+					/>
 				<Helmet>
 					<title>Category | {appName} </title>
 				</Helmet>
@@ -284,7 +304,9 @@ const mapStateToProps = (state) => {
         payload: state.category.payload,
         error: state.category.error,
 		fetching: state.category.fetching,
-		message: state.category.message
+		message: state.category.message,
+		saved: state.category.saved,
+		isDeleted: state.category.isDeleted
     }
 }
 

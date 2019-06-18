@@ -6,7 +6,8 @@ const initState = {
 	parents: {},
 	saved: false,
 	message: null,
-	employee: {}
+	employee: {},
+	isDeleted: false
 };
 
 const employeeReducer = (state = initState, action) => {
@@ -35,6 +36,7 @@ const employeeReducer = (state = initState, action) => {
 				payload: action.payload.data,
 				error: null,
 				saved: false,
+				isDeleted: false
 			};
 		case 'SAVE_EMPLOYEE_PENDING' : 
 			return {
@@ -133,7 +135,8 @@ const employeeReducer = (state = initState, action) => {
 				fetched: true,
 				message: action.payload.data.message,
 				error: null,
-				saved: true
+				saved: true,
+				isDeleted: true
 			};
 		default:
 			return state;

@@ -5,7 +5,8 @@ const initState = {
 	payload: {},
 	saved: false,
 	message: null,
-	supplier: {}
+	supplier: {},
+	isDeleted: false
 };
 
 const supplierReducer = (state = initState, action) => {
@@ -34,6 +35,7 @@ const supplierReducer = (state = initState, action) => {
 				payload: action.payload.data,
 				error: null,
 				saved: false,
+				isDeleted: false
 			};
 		case 'SAVE_SUPPLIER_PENDING' : 
 			return {
@@ -132,7 +134,7 @@ const supplierReducer = (state = initState, action) => {
 				fetched: true,
 				message: action.payload.data.message,
 				error: null,
-				saved: true
+				isDeleted: true
 			};
 		default:
 			return state;

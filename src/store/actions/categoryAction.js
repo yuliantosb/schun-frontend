@@ -76,7 +76,7 @@ const deleteCategory = (id) => {
                     Authorization: `Bearer ${sessionStorage.getItem('token')}`
                 }
             })
-        })
+        });
     }
 }
 

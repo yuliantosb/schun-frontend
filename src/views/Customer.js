@@ -51,21 +51,23 @@ class Customer extends React.Component {
         });
     }
     
-    handleClickDelete = (e) => {
+    handleClickDelete = (id) => {
+		
 		this.setState({
 			...this.state,
-			deleteId: e.target.id,
+			deleteId: id,
 			showMsgBox: true
 		});
 	}
 	
-	handleClickYes = () => {
+	handleClickYes = () => {		
 
 		this.setState({
 			...this.state,
 			alertMsgBox: true,
 			showMsgBox: false
 		});
+
 
 		this.props.deleteCustomer(this.state.deleteId);
 	}
@@ -89,16 +91,30 @@ class Customer extends React.Component {
     }
     
     componentDidUpdate = (prevProps, prevState) => {
-        if (prevProps.message !== this.props.message) {
 
-            const { toastManager } = this.props;
-            toastManager.add(this.props.message, {
-                appearance: 'success',
-                autoDismiss: true
-            });
+        if (prevProps.error !== this.props.error) {
+            if (!this.props.fetched) {
+                if (this.props.error) {
+                    const { toastManager } = this.props;
+                    toastManager.add(this.props.error.data.message, {
+                        appearance: 'error',
+                        autoDismiss: true
+                    });
+                }
+            }
+		}
+		
+		if (prevProps.isDeleted !== this.props.isDeleted) {
+			if (this.props.isDeleted) {
+				const { toastManager } = this.props;
+				toastManager.add(this.props.message, {
+					appearance: 'success',
+					autoDismiss: true
+				});
+				this.props.fetchCustomer(this.state);
+			}
+		}
 
-            this.props.fetchCustomer(this.state);
-        }
     }
 
     componentDidMount = () => {
@@ -116,7 +132,7 @@ class Customer extends React.Component {
 				<td>{ customer.address }</td>
 				<td>
 					<Link to={`/customer/edit/${customer._id}`} className="btn btn-success btn-sm mx-2"><i className="mdi mdi-pencil"></i></Link>
-                    <button id={customer._id} onClick={this.handleClickDelete} className="btn btn-danger btn-sm"><i className="mdi mdi-delete"></i></button>
+                    <button onClick={() => this.handleClickDelete(customer._id) } className="btn btn-danger btn-sm"><i className="mdi mdi-delete"></i></button>
 				</td>
             </tr>
             );
@@ -281,7 +297,8 @@ const mapStateToProps = (state) => {
         payload: state.customer.payload,
         error: state.customer.error,
 		fetching: state.customer.fetching,
-		message: state.customer.message
+		message: state.customer.message,
+		isDeleted: state.customer.isDeleted
     }
 }
 

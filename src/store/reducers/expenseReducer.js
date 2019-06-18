@@ -6,7 +6,8 @@ const initState = {
 	parents: {},
 	saved: false,
 	message: null,
-	expense: {}
+	expense: {},
+	isDeleted: false
 };
 
 const expenseReducer = (state = initState, action) => {
@@ -35,6 +36,7 @@ const expenseReducer = (state = initState, action) => {
 				payload: action.payload.data,
 				error: null,
 				saved: false,
+				isDeleted: false
 			};
 		case 'SAVE_EXPENSE_PENDING' : 
 			return {
@@ -133,7 +135,7 @@ const expenseReducer = (state = initState, action) => {
 				fetched: true,
 				message: action.payload.data.message,
 				error: null,
-				saved: true
+				isDeleted: true
 			};
 		default:
 			return state;

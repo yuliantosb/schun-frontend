@@ -52,10 +52,10 @@ class Stores extends React.Component {
         });
     }
     
-    handleClickDelete = (e) => {
+    handleClickDelete = (id) => {
 		this.setState({
 			...this.state,
-			deleteId: e.target.id,
+			deleteId: id,
 			showMsgBox: true
 		});
 	}
@@ -90,16 +90,28 @@ class Stores extends React.Component {
     }
     
     componentDidUpdate = (prevProps, prevState) => {
-        if (prevProps.message !== this.props.message) {
-
-            const { toastManager } = this.props;
-            toastManager.add(this.props.message, {
-                appearance: 'success',
-                autoDismiss: true
-            });
-
-            this.props.fetchStore(this.state);
-        }
+        if (prevProps.error !== this.props.error) {
+            if (!this.props.fetched) {
+                if (this.props.error) {
+                    const { toastManager } = this.props;
+                    toastManager.add(this.props.error.data.message, {
+                        appearance: 'error',
+                        autoDismiss: true
+                    });
+                }
+            }
+		}
+		
+		if (prevProps.isDeleted !== this.props.isDeleted) {
+			if (this.props.isDeleted) {
+				const { toastManager } = this.props;
+				toastManager.add(this.props.message, {
+					appearance: 'success',
+					autoDismiss: true
+				});
+				this.props.fetchStore(this.state);
+			}
+		}
     }
 
     componentDidMount = () => {
@@ -125,8 +137,8 @@ class Stores extends React.Component {
 					<Link to={`/stores/edit/${store._id}`} className="btn btn-sm btn-success mr-2">
 						<i className="mdi mdi-pencil"></i>
 					</Link>
-                    <button id={store._id} onClick={this.handleClickDelete} className="btn btn-sm btn-link text-danger">
-						<i className="mdi mdi-dele"></i>
+                    <button onClick={() => this.handleClickDelete(store._id)} className="btn btn-sm btn-danger">
+						<i className="mdi mdi-delete"></i>
 					</button>
 				</td>
             </tr>
@@ -289,7 +301,8 @@ const mapStateToProps = (state) => {
         payload: state.store.payload,
         error: state.store.error,
 		fetching: state.store.fetching,
-		message: state.store.message
+		message: state.store.message,
+		isDeleted: state.store.isDeleted
     }
 }
 

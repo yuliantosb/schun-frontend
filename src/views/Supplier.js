@@ -50,10 +50,10 @@ class Supplier extends React.Component {
         });
     }
     
-    handleClickDelete = (e) => {
+    handleClickDelete = (id) => {
 		this.setState({
 			...this.state,
-			deleteId: e.target.id,
+			deleteId: id,
 			showMsgBox: true
 		});
 	}
@@ -88,16 +88,28 @@ class Supplier extends React.Component {
     }
     
     componentDidUpdate = (prevProps, prevState) => {
-        if (prevProps.message !== this.props.message) {
-
-            const { toastManager } = this.props;
-            toastManager.add(this.props.message, {
-                appearance: 'success',
-                autoDismiss: true
-            });
-
-            this.props.fetchSupplier(this.state);
-        }
+        if (prevProps.error !== this.props.error) {
+            if (!this.props.fetched) {
+                if (this.props.error) {
+                    const { toastManager } = this.props;
+                    toastManager.add(this.props.error.data.message, {
+                        appearance: 'error',
+                        autoDismiss: true
+                    });
+                }
+            }
+		}
+		
+		if (prevProps.isDeleted !== this.props.isDeleted) {
+			if (this.props.isDeleted) {
+				const { toastManager } = this.props;
+				toastManager.add(this.props.message, {
+					appearance: 'success',
+					autoDismiss: true
+				});
+				this.props.fetchSupplier(this.state);
+			}
+		}
     }
 
     componentDidMount = () => {
@@ -117,7 +129,7 @@ class Supplier extends React.Component {
 				<td>{ supplier.address }</td>
 				<td className="text-center"> 
 					<Link to={`/supplier/edit/${supplier._id}`}  className="btn btn-sm btn-success mr-2"><i className="mdi mdi-pencil"></i></Link>
-                    <button id={supplier._id} onClick={this.handleClickDelete} className="btn btn-sm btn-danger"><i className="mdi mdi-delete"></i></button>
+                    <button onClick={() => this.handleClickDelete(supplier._id) } className="btn btn-sm btn-danger"><i className="mdi mdi-delete"></i></button>
 				</td>
             </tr>
             );
@@ -282,7 +294,8 @@ const mapStateToProps = (state) => {
         payload: state.supplier.payload,
         error: state.supplier.error,
 		fetching: state.supplier.fetching,
-		message: state.supplier.message
+		message: state.supplier.message,
+		isDeleted: state.supplier.isDeleted
     }
 }
 

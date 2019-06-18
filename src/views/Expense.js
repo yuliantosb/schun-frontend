@@ -66,10 +66,10 @@ class Expense extends React.Component {
         });
     }
     
-    handleClickDelete = (e) => {
+    handleClickDelete = (id) => {
 		this.setState({
 			...this.state,
-			deleteId: e.target.id,
+			deleteId: id,
 			showMsgBox: true
 		});
 	}
@@ -111,25 +111,31 @@ class Expense extends React.Component {
 		}
 	}
 	
-	handleClickDownloadEvidence = (e) => {
-
-		const linkSource = e.target.value;
-		e.href = linkSource;
-		e.click();
-		
-	}
     
     componentDidUpdate = (prevProps, prevState) => {
-        if (prevProps.message !== this.props.message) {
 
-            const { toastManager } = this.props;
-            toastManager.add(this.props.message, {
-                appearance: 'success',
-                autoDismiss: true
-            });
-
-            this.props.fetchExpense(this.state);
-        }
+		if (prevProps.error !== this.props.error) {
+            if (!this.props.fetched) {
+                if (this.props.error) {
+                    const { toastManager } = this.props;
+                    toastManager.add(this.props.error.data.message, {
+                        appearance: 'error',
+                        autoDismiss: true
+                    });
+                }
+            }
+		}
+		
+		if (prevProps.isDeleted !== this.props.isDeleted) {
+			if (this.props.isDeleted) {
+				const { toastManager } = this.props;
+				toastManager.add(this.props.message, {
+					appearance: 'success',
+					autoDismiss: true
+				});
+				this.props.fetchExpense(this.state);
+			}
+		}
     }
 
     componentDidMount = () => {
@@ -152,7 +158,7 @@ class Expense extends React.Component {
 						<Link className="btn btn-sm btn-success mr-2" to={`expense/edit/${expense._id}`}>
 							<i className="mdi mdi-pencil"></i>
 						</Link>
-						<button id={expense._id} onClick={this.handleClickDelete} className="btn btn-sm btn-danger">
+						<button onClick={ () => this.handleClickDelete(expense._id) } className="btn btn-sm btn-danger">
 							<i className="mdi mdi-delete"></i>
 						</button>
 					</td>
@@ -348,7 +354,8 @@ const mapStateToProps = (state) => {
         payload: state.expense.payload,
         error: state.expense.error,
 		fetching: state.expense.fetching,
-		message: state.expense.message
+		message: state.expense.message,
+		isDeleted: state.expense.isDeleted
     }
 }
 

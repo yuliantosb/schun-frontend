@@ -5,7 +5,8 @@ const initState = {
 	payload: {},
 	saved: false,
 	message: null,
-	customer: {}
+	customer: {},
+	isDeleted: false,
 };
 
 const customerReducer = (state = initState, action) => {
@@ -34,6 +35,7 @@ const customerReducer = (state = initState, action) => {
 				payload: action.payload.data,
 				error: null,
 				saved: false,
+				isDeleted: false
 			};
 		case 'SAVE_CUSTOMER_PENDING' : 
 			return {
@@ -132,7 +134,7 @@ const customerReducer = (state = initState, action) => {
 				fetched: true,
 				message: action.payload.data.message,
 				error: null,
-				saved: true
+				isDeleted: true
 			};
 		default:
 			return state;
