@@ -12,6 +12,7 @@ import moment from 'moment';
 import {connect} from 'react-redux';
 import Loading from 'react-loading-bar';
 import Error500 from './Error500';
+import Table from '../components/table/Table';
 
 class Category extends React.Component {
 	state = {
@@ -23,7 +24,23 @@ class Category extends React.Component {
 		alertMsgBox: false,
 		deleteIdCategory: null,
 		showMsgBox: false,
-		isDeleted: false
+		isDeleted: false,
+		ordering: {
+            type: 'name',
+            sort: 'asc'
+        }
+	}
+	
+    handleSorting = (e) => {
+        const type = e.target.id;
+        const sort = this.state.ordering.sort;
+        this.setState({
+			...this.state,
+            ordering: {
+                type: type,
+                sort: sort === 'asc' ? 'desc' : 'asc'
+            }
+        });
     }
 
     handleChangeKeyword = (e) => {
@@ -52,10 +69,10 @@ class Category extends React.Component {
         });
     }
     
-    handleClickDelete = (e) => {
+    handleClickDelete = (id) => {
 		this.setState({
 			...this.state,
-			deleteIdCategory: e.target.id,
+			deleteIdCategory: id,
 			showMsgBox: true
 		});
 	}
@@ -87,7 +104,11 @@ class Category extends React.Component {
 
         if (this.state.perpage !== nextState.perpage) {
             this.props.fetchCategory(nextState);
-        }
+		}
+		
+		if (this.state.ordering !== nextState.ordering) {
+			this.props.fetchCategory(nextState);
+		}
     }
     
     componentDidUpdate = (prevProps, prevState) => {
@@ -126,6 +147,14 @@ class Category extends React.Component {
 		if (!sessionStorage.getItem('token')) return <Redirect to="/login" />
 		if (error && error.status === 500) return <Error500 message={error.data.message} />
 
+		const {ordering} = this.state;
+        const theads = [
+            {name:'name', 'value': 'Name', sortable: true},
+            {name:'parent_name', 'value': 'Parent', sortable: true},
+            {name:'description', 'value': 'Description', sortable: true},
+            {name:'option', 'value': 'Options', sortable: false}
+        ];
+
 		const categories = payload.data && payload.data.data.map(category => {
             return (
             <tr key={category._id}>
@@ -138,7 +167,7 @@ class Category extends React.Component {
 				<td>{ category.description }</td>
 				<td className="text-center">
 					<Link to={`/category/edit/${category._id}`} className="btn btn-sm btn-success mr-2"><i className="mdi mdi-pencil"></i></Link>
-                    <button id={category._id} onClick={this.handleClickDelete} className="btn btn-sm btn-danger"><i className="mdi mdi-delete"></i></button>
+                    <button onClick={() => this.handleClickDelete(category._id)} className="btn btn-sm btn-danger"><i className="mdi mdi-delete"></i></button>
 				</td>
             </tr>
             );
@@ -209,7 +238,24 @@ class Category extends React.Component {
 									</div>
 								</div>
 								<div className="col-md-12 mt-3">
-									<table className="table table-bordered table-custom table-responsive">
+
+									<Table theads={theads} ordering={ordering} handleSorting={this.handleSorting}>
+										{ 
+											fetching ? 
+											(
+												<tr>
+													<td className="text-center" colSpan="4">Loading...</td>
+												</tr>
+											)
+											:
+											payload.data && payload.data.data.length > 0 ? categories : (
+												<tr>
+													<td className="text-center" colSpan="4">Data not found</td>
+												</tr>
+										) }
+									</Table>
+
+									{/* <table className="table table-bordered table-custom table-responsive">
 										<thead>
 											<tr>
 												<th>Name</th>
@@ -233,7 +279,7 @@ class Category extends React.Component {
 													</tr>
 											) }
 										</tbody>
-									</table>
+									</table> */}
 								</div>
 
 								<div className="col-md-12 py-3">

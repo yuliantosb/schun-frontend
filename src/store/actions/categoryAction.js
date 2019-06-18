@@ -9,7 +9,8 @@ const fetchCategory = (filter) => {
                 params: {
                     page: filter.page,
                     perpage: filter.perpage,
-                    keyword: filter.keyword
+                    keyword: filter.keyword,
+                    ordering: filter.ordering
                 },
                 headers: {
                     Authorization: `Bearer ${sessionStorage.getItem('token')}`
