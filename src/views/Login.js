@@ -26,8 +26,8 @@ class Login extends React.Component {
     }
 
     render() {
-        const setting = this.props.setting.setting.data;
         const {error, fetching, payload} = this.props;
+        const setting = this.props.setting.setting.data;
         const errorMessage = payload.response ? payload.response.data.message : error;
         if (sessionStorage.getItem('token')) return (<Redirect to="/" />);
         return (
@@ -53,8 +53,8 @@ class Login extends React.Component {
                                     </div> ) }
                                     <form onSubmit={this.handleLoginSubmit}>
                                         <div className="form-group">
-                                            <label htmlFor="email">Email address</label>
-                                            <input type="email" className="form-control" id="email" aria-describedby="emailHelp" placeholder="Enter email" onChange={this.handleChangeCreds} />
+                                            <label htmlFor="email">Email address or username</label>
+                                            <input type="text" className="form-control" id="email" aria-describedby="emailHelp" placeholder="Enter email or username" onChange={this.handleChangeCreds} />
                                         </div>
                                         <div className="form-group">
                                             <label htmlFor="password">Password</label>

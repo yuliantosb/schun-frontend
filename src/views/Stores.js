@@ -12,6 +12,7 @@ import { fetchStore, deleteStore } from '../store/actions/storeAction';
 import { withToastManager } from 'react-toast-notifications';
 import { connect } from 'react-redux';
 import Error500 from './Error500';
+import Table from '../components/table/Table';
 
 class Stores extends React.Component {
 
@@ -23,7 +24,11 @@ class Stores extends React.Component {
 		alert: true,
 		alertMsgBox: false,
 		deleteId: null,
-		showMsgBox: false
+		showMsgBox: false,
+		ordering: {
+            type: 'name',
+            sort: 'asc'
+        }
     }
 
     handleChangeKeyword = (e) => {
@@ -79,6 +84,18 @@ class Stores extends React.Component {
 		});
 	}
 
+	handleSorting = (e) => {
+        const type = e.target.id;
+        const sort = this.state.ordering.sort;
+        this.setState({
+			...this.state,
+            ordering: {
+                type: type,
+                sort: sort === 'asc' ? 'desc' : 'asc'
+            }
+        });
+    }
+
     componentWillUpdate(nextProps, nextState) {
         if (this.state.page !== nextState.page) {
             this.props.fetchStore(nextState);
@@ -86,7 +103,11 @@ class Stores extends React.Component {
 
         if (this.state.perpage !== nextState.perpage) {
             this.props.fetchStore(nextState);
-        }
+		}
+		
+		if (this.state.ordering !== nextState.ordering) {
+			this.props.fetchStore(nextState);
+		}
     }
     
     componentDidUpdate = (prevProps, prevState) => {
@@ -125,6 +146,15 @@ class Stores extends React.Component {
 		if (!sessionStorage.getItem('token')) return <Redirect to="/login" />
 		if (error && error.status === 500) return <Error500 message={error.data.message} />
 
+		const {ordering} = this.state;
+        const theads = [
+
+			{ name: 'name', value: 'Name', sortable: true },
+			{ name: 'phone_number', value: 'Phone', sortable: true },
+			{ name: 'address', value: 'Address', sortable: true },
+			{ name: 'options', value: 'Options', sortable: false },
+		];
+
 		const stores = payload.data && payload.data.data.map(store => {
             return (
             <tr key={store._id}>
@@ -133,11 +163,11 @@ class Stores extends React.Component {
                 </td>
 				<td>{ store.phone_number }</td>
 				<td>{ store.address }</td>
-				<td>
-					<Link to={`/stores/edit/${store._id}`} className="btn btn-sm btn-success mr-2">
+				<td className="text-center">
+					<Link to={`/stores/edit/${store._id}`} className="btn btn-link text-success btn-sm  py-0 px-0 pr-4">
 						<i className="mdi mdi-pencil"></i>
 					</Link>
-                    <button onClick={() => this.handleClickDelete(store._id)} className="btn btn-sm btn-danger">
+                    <button onClick={() => this.handleClickDelete(store._id)} className="btn btn-link text-danger btn-sm  py-0 px-0">
 						<i className="mdi mdi-delete"></i>
 					</button>
 				</td>
@@ -209,29 +239,23 @@ class Stores extends React.Component {
 									</div>
 								</div>
 								<div className="col-md-12 mt-3">
-									<table className="table table-bordered table-custom table-responsive">
-										<thead>
+									
+								<Table theads={theads} ordering={ordering} handleSorting={this.handleSorting}>
+									{ 
+										fetching ? 
+											(
+												<tr>
+													<td className="text-center" colSpan="5">Loading...</td>
+												</tr>	
+											)
+										:
+										payload.data && payload.data.data.length > 0 ? stores : (
 											<tr>
-												<th>Name</th>
-                                                <th>Phone</th>
-												<th>Address</th>
-												<th>Options</th>
+												<td className="text-center" colSpan="5">Data not found</td>
 											</tr>
-										</thead>
-										<tbody>
-											{ 
-												fetching ? (
-													<tr>
-														<td className="text-center" colSpan="4">Loading...</td>
-													</tr>
-												) :
-												payload.data && payload.data.data.length > 0 ? stores : (
-													<tr>
-														<td className="text-center" colSpan="4">Data not found</td>
-													</tr>
-											) }
-										</tbody>
-									</table>
+										) }
+									</Table>
+									
 								</div>
 
 								<div className="col-md-12 py-3">

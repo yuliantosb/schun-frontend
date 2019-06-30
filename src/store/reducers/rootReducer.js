@@ -10,6 +10,7 @@ import expenseReducer from "./expenseReducer";
 import categoryReducer from "./categoryReducer";
 import storeReducer from "./storeReducer";
 import settingReducer from "./settingReducer";
+import passwordReducer from "./passwordReducer";
 
 
 const rootReducer = combineReducers({
@@ -23,7 +24,8 @@ const rootReducer = combineReducers({
     expense: expenseReducer,
     category: categoryReducer,
     store: storeReducer,
-    setting: settingReducer
+    setting: settingReducer,
+    password: passwordReducer
 });
 
 export default rootReducer;

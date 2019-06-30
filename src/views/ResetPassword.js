@@ -3,14 +3,16 @@ import Logo from '../images/shards-dashboards-logo.svg';
 import { Link } from 'react-router-dom';
 import { appName } from '../global';
 import { Helmet } from 'react-helmet';
-import { forgotPassword } from '../store/actions/authActions';
+import { resetPassword } from '../store/actions/authActions';
 import {connect} from 'react-redux';
 import Loading from 'react-loading-bar';
 import Error500 from './Error500';
 
-class ForgotPassword extends React.Component {
+class ResetPassword extends React.Component {
     state = {
         email: '',
+        new_password: '',
+        new_password_confirmation: '',
         message: '',
         type: ''
     }
@@ -22,7 +24,7 @@ class ForgotPassword extends React.Component {
     }
     handleSubmit = (e) => {
         e.preventDefault();
-        this.props.forgotPassword(this.state);
+        this.props.resetPassword(this.state);
     }
     componentDidUpdate = (prevProps, prevState) => {
         if (prevProps.saved !== this.props.saved) {
@@ -47,6 +49,12 @@ class ForgotPassword extends React.Component {
             }
         }
     }
+    componentDidMount = () => {
+        this.setState({
+            ...this.state,
+            token: this.props.match.params.token
+        })
+    }
     render() {
         const { fetching, saved, error } = this.props;
         const setting = this.props.setting.setting.data;
@@ -59,7 +67,7 @@ class ForgotPassword extends React.Component {
                     showSpinner={false}
                     />
                 <Helmet>
-                    <title>Forgot Password | {appName} </title>
+                    <title>Reset Password | {appName} </title>
                 </Helmet>
                 <div className="main-content-container container-fluid px-4 my-auto h-100">
                     <div className="row no-gutters h-100">
@@ -75,13 +83,23 @@ class ForgotPassword extends React.Component {
                             </div> ) }
                             <div className="form-group mb-4">
                                 <label htmlFor="exampleInputEmail1">Email address</label>
-                                <input onChange={this.handleChange} type="email" className={`form-control ${ error && error.data.errors.email && 'is-invalid' }`} aria-describedby="emailHelp" placeholder="Enter email" id="email" />
+                                <input onChange={this.handleChange} type="email" className={`form-control ${ error && error.status === 422 && error.data.errors.email && 'is-invalid' }`} aria-describedby="emailHelp" placeholder="Enter email" id="email" />
                                 { 
-                                    error && error.data.errors.email && <div class="invalid-feedback">{ error.data.errors.email[0] }</div>
+                                    error && error.status === 422 && error.data.errors.email && <div class="invalid-feedback">{ error.data.errors.email[0] }</div>
                                 }
-                                <small id="emailHelp" className="form-text text-muted text-center">You will receive an email with a unique token.</small>
                             </div>
-                            <button type="submit" className="btn btn-pill btn-accent d-table mx-auto">Reset Password</button>
+                            <div className="form-group mb-4">
+                                <label htmlFor="exampleInputEmail1">New password</label>
+                                <input onChange={this.handleChange} type="password" className={`form-control ${ error && error.status === 422 && error.data.errors.new_password && 'is-invalid' }`} aria-describedby="new_passwordHelp" placeholder="Enter new password" id="new_password" />
+                                { 
+                                    error && error.status === 422 && error.data.errors.new_password && <div class="invalid-feedback">{ error.data.errors.new_password[0] }</div>
+                                }
+                            </div>
+                            <div className="form-group mb-4">
+                                <label htmlFor="exampleInputEmail1">Confirm new password</label>
+                                <input onChange={this.handleChange} type="password" className="form-control" aria-describedby="password_confirmationHelp" placeholder="Enter password confirmation" id="password_confirmation" />
+                            </div>
+                            <button type="submit" className="btn btn-pill btn-accent d-table mx-auto">Change Password</button>
                             </form>
                         </div>
                         </div>
@@ -109,9 +127,9 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        forgotPassword: data => dispatch(forgotPassword(data))
+        resetPassword: data => dispatch(resetPassword(data))
     }
 }
 
 
-export default connect(mapStateToProps, mapDispatchToProps)(ForgotPassword);
+export default connect(mapStateToProps, mapDispatchToProps)(ResetPassword);

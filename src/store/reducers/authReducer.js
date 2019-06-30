@@ -4,6 +4,8 @@ const initState = {
     error: null,
     payload : {},
     logout: false,
+    message: '',
+    saved: false,
 }
 const authReducer = (state = initState, action) => {
     switch(action.type) {
@@ -21,6 +23,7 @@ const authReducer = (state = initState, action) => {
         case 'LOGIN_FULFILLED':
             sessionStorage.setItem('token', action.payload.data.token);
             sessionStorage.setItem('name', action.payload.data.user.name);
+            sessionStorage.setItem('_id', action.payload.data.user._id);
             if (action.payload.data.user.employee) {
                 sessionStorage.setItem('photo', action.payload.data.user.employee.photo_url);
             } else {

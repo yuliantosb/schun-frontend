@@ -166,8 +166,8 @@ class Category extends React.Component {
 				<td>{ category.parent && category.parent.name }</td>
 				<td>{ category.description }</td>
 				<td className="text-center">
-					<Link to={`/category/edit/${category._id}`} className="btn btn-sm btn-success mr-2"><i className="mdi mdi-pencil"></i></Link>
-                    <button onClick={() => this.handleClickDelete(category._id)} className="btn btn-sm btn-danger"><i className="mdi mdi-delete"></i></button>
+					<Link to={`/category/edit/${category._id}`} className="btn btn-link text-success btn-sm  py-0 px-0 pr-4"><i className="mdi mdi-pencil"></i></Link>
+                    <button onClick={() => this.handleClickDelete(category._id)} className="btn btn-link text-danger btn-sm  py-0 px-0"><i className="mdi mdi-delete"></i></button>
 				</td>
             </tr>
             );

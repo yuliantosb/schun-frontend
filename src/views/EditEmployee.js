@@ -20,7 +20,7 @@ class EditEmployee extends React.Component {
 		date_of_birth: undefined,
         photo: 'Choose file...',
         name: '',
-        reg_number: '',
+        username: '',
         place_of_birth: '',
         date_of_birth: '',
         photo: '',
@@ -112,7 +112,7 @@ class EditEmployee extends React.Component {
                 this.setState({
                     ...this.state,
                     name: nextProps.data.name ? nextProps.data.name : '',
-                    reg_number: nextProps.data.employee.reg_number ? nextProps.data.employee.reg_number : '',
+                    username: nextProps.data.employee.username ? nextProps.data.employee.username : '',
                     place_of_birth: nextProps.data.employee.place_of_birth ? nextProps.data.employee.place_of_birth : '',
                     date_of_birth: nextProps.data.employee.date_of_birth ? new Date(nextProps.data.employee.date_of_birth) : undefined,
                     photo: nextProps.data.employee.photo ? nextProps.data.employee.photo : 'Choose file ...',
@@ -165,10 +165,10 @@ class EditEmployee extends React.Component {
                                                     </div>
 
                                                     <div className="form-group">
-                                                        <label className="control-label">Reg Number <span className="text-danger">*</span></label>
-                                                        <input value={this.state.reg_number} type="text" id="reg_number" className={`form-control ${ error && error.data.errors.reg_number && 'is-invalid' }`} onChange={this.handleChange} placeholder="Unique registration number" />
+                                                        <label className="control-label">Username <span className="text-danger">*</span></label>
+                                                        <input value={this.state.username} type="text" id="username" className={`form-control ${ error && error.data.errors.username && 'is-invalid' }`} onChange={this.handleChange} placeholder="Unique username" />
                                                         { 
-                                                            error && error.data.errors.reg_number && <div class="invalid-feedback">{ error.data.errors.reg_number[0] }</div>
+                                                            error && error.data.errors.username && <div class="invalid-feedback">{ error.data.errors.username[0] }</div>
                                                         }
                                                     </div>
 

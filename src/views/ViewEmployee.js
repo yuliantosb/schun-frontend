@@ -54,7 +54,7 @@ class ViewEmployee extends React.Component {
                                 />
                             </div>
                             <h4 className="mb-0">{ data && data.name }</h4>
-                            <h6 className="text-secondary">{ data && data.employee.reg_number }</h6>
+                            <h6 className="text-secondary">{ data && data.employee.username }</h6>
                             <small className="text-muted">{ data && data.employee.place_of_birth }, { data && moment(data.employee.date_of_birth).format('LL') } ({ data && data.employee.age })</small>
                             <span className="text-muted d-block mb-2">{ data && data.role.name }</span>
                             </CardHeader>
@@ -77,8 +77,8 @@ class ViewEmployee extends React.Component {
                                                         <p className="help-block">{ data && data.name }</p>
                                                     </Col>
                                                     <Col md="6" className="form-group">
-                                                        <label htmlFor="feFirstName">Reg Number</label>
-                                                        <p className="help-block">{ data && data.employee.reg_number }</p>
+                                                        <label htmlFor="feFirstName">Username</label>
+                                                        <p className="help-block">{ data && data.employee.username }</p>
                                                     </Col>
                                                     <Col md="6" className="form-group">
                                                         <label htmlFor="feFirstName">Email</label>

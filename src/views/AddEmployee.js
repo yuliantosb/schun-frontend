@@ -131,10 +131,10 @@ class AddEmployee extends React.Component {
                                                     </div>
 
                                                     <div className="form-group">
-                                                        <label className="control-label">Reg Number <span className="text-danger">*</span></label>
-                                                        <input type="text" id="reg_number" className={`form-control ${ error && error.data.errors.reg_number && 'is-invalid' }`} onChange={this.handleChange} placeholder="Unique registration number" />
+                                                        <label className="control-label">Username <span className="text-danger">*</span></label>
+                                                        <input type="text" id="username" className={`form-control ${ error && error.data.errors.username && 'is-invalid' }`} onChange={this.handleChange} placeholder="Unique username" />
                                                         { 
-                                                            error && error.data.errors.reg_number && <div class="invalid-feedback">{ error.data.errors.reg_number[0] }</div>
+                                                            error && error.data.errors.username && <div class="invalid-feedback">{ error.data.errors.username[0] }</div>
                                                         }
                                                     </div>
 

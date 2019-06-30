@@ -132,7 +132,7 @@ class Employee extends React.Component {
                             <div className="profile-card">
                                 <img src={user.employee.photo_url} alt={user.name} className="img img-circle" />
                                 <h2 className="title-profile">{ user.name }</h2>
-                                <p className="text-secondary">{ user.employee.reg_number }</p>
+                                <p className="text-secondary">@{ user.employee.username }</p>
                                 <small className="text-muted">{ user.employee.place_of_birth }, { moment(user.employee.date_of_birth).format('LL') } ({ user.employee.age })</small>
                                 <p className="text-primary">{ user.role.name }</p>
                                 <Link className="btn btn-sm btn-link text-primary py-0 px-0 pr-2" to={`employee/view/${user._id}`}>

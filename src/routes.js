@@ -36,6 +36,7 @@ import AddCategory from "./views/AddCategory";
 import EditCategory from "./views/EditCategory";
 import AddStores from "./views/AddStores";
 import EditStores from "./views/EditStores";
+import ResetPassword from "./views/ResetPassword";
 
 export default [
   {
@@ -58,6 +59,12 @@ export default [
     path: "/forgot-password",
     layout: BlankLayout,
     component: ForgotPassword
+  },
+  {
+    path: "/password/reset/:token",
+    layout: BlankLayout,
+    component: ResetPassword,
+    exact: true
   },
   {
     path: "/register",

@@ -2,7 +2,7 @@ import React from 'react';
 import { Container, Row, Col, Card, CardHeader, CardBody } from 'shards-react';
 import PageTitle from '../components/common/PageTitle';
 import '../assets/range-date-picker.css';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import { appName } from '../global';
 import { Helmet } from 'react-helmet';
 import ScrollToTop from '../components/layout/ScrollToTop';
@@ -11,6 +11,8 @@ import { fetchCustomer, deleteCustomer } from '../store/actions/customerAction';
 import Loading from 'react-loading-bar';
 import moment from 'moment';
 import {connect} from 'react-redux';
+import Error500 from './Error500';
+import Table from '../components/table/Table';
 
 class Customer extends React.Component {
 
@@ -22,7 +24,11 @@ class Customer extends React.Component {
 		alert: true,
 		alertMsgBox: false,
 		deleteId: null,
-		showMsgBox: false
+		showMsgBox: false,
+		ordering: {
+            type: 'name',
+            sort: 'asc'
+        }
     }
 
     handleChangeKeyword = (e) => {
@@ -80,6 +86,18 @@ class Customer extends React.Component {
 		});
 	}
 
+	handleSorting = (e) => {
+        const type = e.target.id;
+        const sort = this.state.ordering.sort;
+        this.setState({
+			...this.state,
+            ordering: {
+                type: type,
+                sort: sort === 'asc' ? 'desc' : 'asc'
+            }
+        });
+    }
+
     componentWillUpdate(nextProps, nextState) {
         if (this.state.page !== nextState.page) {
             this.props.fetchCustomer(nextState);
@@ -87,7 +105,11 @@ class Customer extends React.Component {
 
         if (this.state.perpage !== nextState.perpage) {
             this.props.fetchCustomer(nextState);
-        }
+		}
+
+		if (this.state.ordering !== nextState.ordering) {
+			this.props.fetchCustomer(nextState);
+		}
     }
     
     componentDidUpdate = (prevProps, prevState) => {
@@ -122,7 +144,21 @@ class Customer extends React.Component {
     }	
 
 	render() {
-		const {payload, fetching} = this.props;
+		const {payload, fetching, error} = this.props;
+		
+		if (!sessionStorage.getItem('token')) return <Redirect to="/login" />
+		if (error && error.status === 500) return <Error500 message={error.data.message} />
+
+		const {ordering} = this.state;
+        const theads = [
+
+			{ name: 'name', value: 'Name', sortable: true },
+			{ name: 'email', value: 'Email', sortable: true },
+			{ name: 'phone', value: 'Phone', sortable: true },
+			{ name: 'address', value: 'Address', sortable: true },
+			{ name: 'options', value: 'Options', sortable: false },
+		];
+		
 		const customers = payload.data && payload.data.data.map(customer => {
             return (
             <tr key={customer._id}>
@@ -130,9 +166,9 @@ class Customer extends React.Component {
 				<td>{ customer.email }</td>
 				<td>{ customer.phone_number }</td>
 				<td>{ customer.address }</td>
-				<td>
-					<Link to={`/customer/edit/${customer._id}`} className="btn btn-success btn-sm mx-2"><i className="mdi mdi-pencil"></i></Link>
-                    <button onClick={() => this.handleClickDelete(customer._id) } className="btn btn-danger btn-sm"><i className="mdi mdi-delete"></i></button>
+				<td className="text-center">
+					<Link to={`/customer/edit/${customer._id}`} className="btn btn-link text-success btn-sm  py-0 px-0 pr-4"><i className="mdi mdi-pencil"></i></Link>
+                    <button onClick={() => this.handleClickDelete(customer._id) } className="btn btn-link text-danger btn-sm  py-0 px-0"><i className="mdi mdi-delete"></i></button>
 				</td>
             </tr>
             );
@@ -202,32 +238,23 @@ class Customer extends React.Component {
 									</div>
 								</div>
 								<div className="col-md-12 mt-3">
-									<table className="table table-bordered table-custom table-responsive">
-										<thead>
+
+								<Table theads={theads} ordering={ordering} handleSorting={this.handleSorting}>
+									{ 
+										fetching ? 
+											(
+												<tr>
+													<td className="text-center" colSpan="5">Loading...</td>
+												</tr>	
+											)
+										:
+										payload.data && payload.data.data.length > 0 ? customers : (
 											<tr>
-												<th>Name</th>
-                                                <th>Email</th>
-												<th>Phone</th>
-                                                <th>Address</th>
-												<th>Options</th>
+												<td className="text-center" colSpan="5">Data not found</td>
 											</tr>
-										</thead>
-										<tbody>
-											{ 
-												fetching ? 
-													(
-														<tr>
-															<td className="text-center" colSpan="5">Loading...</td>
-														</tr>	
-													)
-												:
-												payload.data && payload.data.data.length > 0 ? customers : (
-													<tr>
-														<td className="text-center" colSpan="5">Data not found</td>
-													</tr>
-												) }
-										</tbody>
-									</table>
+										) }
+									</Table>
+
 								</div>
 
 								<div className="col-md-12 py-3">

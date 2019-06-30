@@ -51,7 +51,7 @@ class UserActions extends React.Component {
           <span className="d-none d-md-inline-block">{ sessionStorage.getItem('name') }</span>
         </DropdownToggle>
         <Collapse tag={DropdownMenu} right small open={this.state.visible}>
-          <DropdownItem tag={Link} to="user-profile">
+          <DropdownItem tag={Link} to={`/employee/view/${sessionStorage.getItem('_id')}`}>
             <i className="material-icons">&#xE7FD;</i> My Profile
           </DropdownItem>
           <DropdownItem divider />

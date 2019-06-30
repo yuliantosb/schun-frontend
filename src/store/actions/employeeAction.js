@@ -26,7 +26,7 @@ const saveEmployee = (data) => {
             type: 'SAVE_EMPLOYEE',
             payload: Axios.post(`${url}/employee`, {
                 name: data.name,
-                reg_number: data.reg_number,
+                username: data.username,
                 place_of_birth: data.place_of_birth,
                 date_of_birth: moment(data.date_of_birth).format('YYYY-MM-DD'),
                 password: data.password,
@@ -65,7 +65,7 @@ const updateEmployee = (id, data) => {
             type: 'SAVE_EMPLOYEE',
             payload: Axios.put(`${url}/employee/${id}`, {
                 name: data.name,
-                reg_number: data.reg_number,
+                username: data.username,
                 place_of_birth: data.place_of_birth,
                 date_of_birth: moment(data.date_of_birth).format('YYYY-MM-DD'),
                 password: data.password,
