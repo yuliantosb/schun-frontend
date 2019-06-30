@@ -133,6 +133,10 @@ export default function() {
           to: "/settings",
         },
         {
+          title: "Discount",
+          to: "/discount",
+        },
+        {
           title: "Menu",
           to: "/menu",
         },

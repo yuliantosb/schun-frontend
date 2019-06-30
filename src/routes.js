@@ -37,6 +37,9 @@ import EditCategory from "./views/EditCategory";
 import AddStores from "./views/AddStores";
 import EditStores from "./views/EditStores";
 import ResetPassword from "./views/ResetPassword";
+import Discount from "./views/Discount";
+import AddDiscount from "./views/AddDiscount";
+import EditDiscount from "./views/EditDiscount";
 
 export default [
   {
@@ -219,6 +222,21 @@ export default [
     path: "/stockin",
     layout: DefaultLayout,
     component: AddStockIn
-  }
-  
+  },
+  {
+    path: "/discount",
+    layout: DefaultLayout,
+    component: Discount,
+    exact: true
+  },
+  {
+    path: "/discount/create",
+    layout: DefaultLayout,
+    component: AddDiscount    
+  },
+  {
+    path: "/discount/edit/:id",
+    layout: DefaultLayout,
+    component: EditDiscount    
+  },
 ];
