@@ -121,21 +121,42 @@ class AddCustomer extends React.Component {
                                                         </div>
                                                     </div>
 
+                                                    <div className="form-group">
+                                                        <label className="control-label">Other information</label>
+                                                        <textarea id="info" rows="5" className="form-control" onChange={this.handleChange} placeholder="Other information"></textarea>
+                                                    </div>
+
                                                 </div>
 
 
                                                 <div className="col-md-6">
-                                                    <div className="form-group">
-                                                        <label className="control-label">Email <span className="text-danger">*</span></label>
-                                                        <input type="text" id="email" className={`form-control ${ error && error.data.errors.email && 'is-invalid' }`} onChange={this.handleChange} placeholder="eg: johndoe@example.com" />
-                                                        { 
-                                                            error && error.data.errors.email && <div class="invalid-feedback">{ error.data.errors.email[0] }</div>
-                                                        }
+                                                    <div className="row">
+                                                        <div className="col-md-6">
+                                                            <div className="form-group">
+                                                                <label className="control-label">Email <span className="text-danger">*</span></label>
+                                                                <input type="text" id="email" className={`form-control ${ error && error.data.errors.email && 'is-invalid' }`} onChange={this.handleChange} placeholder="eg: johndoe@example.com" />
+                                                                { 
+                                                                    error && error.data.errors.email && <div class="invalid-feedback">{ error.data.errors.email[0] }</div>
+                                                                }
+                                                            </div>
+                                                        </div>
+                                                        <div className="col-md-6">
+                                                            <div className="form-group">
+                                                                <label className="control-label">Phone number</label>
+                                                                <input type="text" id="phone_number" className="form-control" onChange={this.handleChange} placeholder="eg: 08123456789" />
+                                                            </div>
+                                                        </div>
                                                     </div>
-
+                                                    
                                                     <div className="form-group">
-                                                        <label className="control-label">Phone number</label>
-                                                        <input type="text" id="phone_number" className="form-control" onChange={this.handleChange} placeholder="eg: 08123456789" />
+                                                        <label className="control-label">Customer type <span className="text-danger">*</span></label>
+                                                        <select id="type" className={`form-control custom-select ${ error && error.data.errors.type && 'is-invalid' }`} onChange={this.handleChange}>
+                                                                <option value="retailer">Retailer</option>
+                                                                <option value="wholesaler">Wholesaler</option>
+                                                        </select>
+                                                        { 
+                                                            error && error.data.errors.type && <div class="invalid-feedback">{ error.data.errors.type[0] }</div>
+                                                        }
                                                     </div>
 
                                                     <div className="form-group">

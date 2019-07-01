@@ -12,6 +12,7 @@ import storeReducer from "./storeReducer";
 import settingReducer from "./settingReducer";
 import passwordReducer from "./passwordReducer";
 import discountReducer from "./discountReducer";
+import productReducer from "./productReducer";
 
 
 const rootReducer = combineReducers({
@@ -27,7 +28,8 @@ const rootReducer = combineReducers({
     store: storeReducer,
     setting: settingReducer,
     password: passwordReducer,
-    discount: discountReducer
+    discount: discountReducer,
+    product: productReducer
 });
 
 export default rootReducer;

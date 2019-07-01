@@ -40,6 +40,10 @@ import ResetPassword from "./views/ResetPassword";
 import Discount from "./views/Discount";
 import AddDiscount from "./views/AddDiscount";
 import EditDiscount from "./views/EditDiscount";
+import Product from "./views/Product";
+import AddProduct from "./views/AddProduct";
+import ViewProduct from "./views/ViewProduct";
+import EditProduct from "./views/EditProduct";
 
 export default [
   {
@@ -239,4 +243,25 @@ export default [
     layout: DefaultLayout,
     component: EditDiscount    
   },
+  {
+    path: "/product",
+    layout: DefaultLayout,
+    component: Product,
+    exact: true
+  },
+  {
+    path: "/product/create",
+    layout: DefaultLayout,
+    component: AddProduct,
+  },
+  {
+    path: "/product/view/:id",
+    layout: DefaultLayout,
+    component: ViewProduct,
+  },
+  {
+    path: "/product/edit/:id",
+    layout: DefaultLayout,
+    component: EditProduct,
+  }
 ];

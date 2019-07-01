@@ -2,11 +2,11 @@ import Axios from "axios";
 import moment from "moment";
 import { url } from "../../global";
 
-const fetchCustomer = (filter) => {
+const fetchProduct = (filter) => {
     return (dispatch, getState) => {
         dispatch({
-            type: 'CUSTOMER',
-            payload: Axios.get(`${url}/customer`, {
+            type: 'PRODUCT',
+            payload: Axios.get(`${url}/products`, {
                 params: {
                     page: filter.page,
                     perpage: filter.perpage,
@@ -21,19 +21,21 @@ const fetchCustomer = (filter) => {
     }
 }
 
-const saveCustomer = (data) => {
+const saveProduct = (data) => {
     return (dispatch, getState) => {
         dispatch({
-            type: 'SAVE_CUSTOMER',
-            payload: Axios.post(`${url}/customer`, {
+            type: 'SAVE_PRODUCT',
+            payload: Axios.post(`${url}/products`, {
+                code: data.code,
                 name: data.name,
-                place_of_birth: data.place_of_birth,
-                date_of_birth: moment(data.date_of_birth).format('YYYY-MM-DD'),
-                email: data.email,
-                phone_number: data.phone_number,
-                address: data.address,
-                type: data.type,
-                info: data.info
+                price: data.price,
+                cost: data.cost,
+                wholesale: data.wholesale,
+                stock: data.stock,
+                picture: data.picture,
+                file: data.file,
+                description: data.description,
+                category_id: data.category_id,
 
             }, {
                 headers: {
@@ -44,11 +46,11 @@ const saveCustomer = (data) => {
     }
 }
 
-const getCustomer = (id) => {
+const getProduct = (id) => {
     return (dispatch, getState) => {
         dispatch({
-            type: 'GET_CUSTOMER',
-            payload: Axios.get(`${url}/customer/${id}`, {
+            type: 'GET_PRODUCT',
+            payload: Axios.get(`${url}/products/${id}`, {
                 headers: {
                     Authorization: `Bearer ${sessionStorage.getItem('token')}`
                 }
@@ -57,19 +59,21 @@ const getCustomer = (id) => {
     }
 }
 
-const updateCustomer = (id, data) => {
+const updateProduct = (id, data) => {
     return (dispatch, getState) => {
         dispatch({
-            type: 'SAVE_CUSTOMER',
-            payload: Axios.put(`${url}/customer/${id}`, {
+            type: 'UPDATE_PRODUCT',
+            payload: Axios.put(`${url}/products/${id}`, {
+                code: data.code,
                 name: data.name,
-                place_of_birth: data.place_of_birth,
-                date_of_birth: moment(data.date_of_birth).format('YYYY-MM-DD'),
-                email: data.email,
-                phone_number: data.phone_number,
-                address: data.address,
-                type: data.type,
-                info: data.info
+                price: data.price,
+                wholesale: data.wholesale,
+                cost: data.cost,
+                stock: data.stock,
+                picture: data.picture,
+                file: data.file,
+                description: data.description,
+                category_id: data.category_id,
             }, {
                 headers: {
                     Authorization: `Bearer ${sessionStorage.getItem('token')}`
@@ -80,11 +84,11 @@ const updateCustomer = (id, data) => {
 }
 
 
-const deleteCustomer = (id) => {
+const deleteProduct = (id) => {
     return (dispatch, getState) => {
         dispatch({
-            type: 'DELETE_CUSTOMER',
-            payload: Axios.delete(`${url}/customer/${id}`, {
+            type: 'DELETE_PRODUCT',
+            payload: Axios.delete(`${url}/products/${id}`, {
                 headers: {
                     Authorization: `Bearer ${sessionStorage.getItem('token')}`
                 }
@@ -93,4 +97,4 @@ const deleteCustomer = (id) => {
     }
 }
 
-export { fetchCustomer, saveCustomer, getCustomer, updateCustomer, deleteCustomer };
+export { fetchProduct, saveProduct, getProduct, updateProduct, deleteProduct };

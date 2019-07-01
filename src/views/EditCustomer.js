@@ -19,7 +19,9 @@ class EditCustomer extends React.Component {
         email: '',
         phone_number: '',
         address: '',
-        place_of_birth: ''
+        place_of_birth: '',
+        type: '',
+        info: '',
     };
     
     handleDateOfBirthChange = (value) => {
@@ -76,7 +78,9 @@ class EditCustomer extends React.Component {
                     email: nextProps.data.email ? nextProps.data.email : '',
                     phone_number: nextProps.data.phone_number ? nextProps.data.phone_number : '',
                     address: nextProps.data.address ? nextProps.data.address : '',
-                    place_of_birth: nextProps.data.place_of_birth ? nextProps.data.place_of_birth : ''
+                    place_of_birth: nextProps.data.place_of_birth ? nextProps.data.place_of_birth : '',
+                    type: nextProps.data.type ? nextProps.data.type : '',
+                    info: nextProps.data.info ? nextProps.data.info : '',
                 })
             }
         }
@@ -146,26 +150,47 @@ class EditCustomer extends React.Component {
                                                         </div>
                                                     </div>
 
+                                                    <div className="form-group">
+                                                        <label className="control-label">Info</label>
+                                                        <textarea value={this.state.info} id="info" rows="5" className="form-control" onChange={this.handleChange} placeholder="Street name, Building Number, Residence, Region, State"></textarea>
+                                                    </div>
+
                                                 </div>
 
 
                                                 <div className="col-md-6">
+                                                    <div className="row">
+                                                        <div className="col-md-6">
+                                                            <div className="form-group">
+                                                                <label className="control-label">Email <span className="text-danger">*</span></label>
+                                                                <input value={this.state.email} type="text" id="email" className={`form-control ${ error && error.data.errors.email && 'is-invalid' }`} onChange={this.handleChange} placeholder="eg: johndoe@example.com" />
+                                                                { 
+                                                                    error && error.data.errors.email && <div class="invalid-feedback">{ error.data.errors.email[0] }</div>
+                                                                }
+                                                            </div>
+                                                        </div>
+                                                        <div className="col-md-6">
+                                                            <div className="form-group">
+                                                                <label className="control-label">Phone number</label>
+                                                                <input value={ this.state.phone_number } type="text" id="phone_number" className="form-control" onChange={this.handleChange} placeholder="eg: 08123456789" />
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
                                                     <div className="form-group">
-                                                        <label className="control-label">Email <span className="text-danger">*</span></label>
-                                                        <input value={this.state.email} type="text" id="email" className={`form-control ${ error && error.data.errors.email && 'is-invalid' }`} onChange={this.handleChange} placeholder="eg: johndoe@example.com" />
+                                                        <label className="control-label">Customer type <span className="text-danger">*</span></label>
+                                                        <select value={this.state.type} id="type" className={`form-control custom-select ${ error && error.data.errors.type && 'is-invalid' }`} onChange={this.handleChange}>
+                                                                <option value="retailer">Retailer</option>
+                                                                <option value="wholesaler">Wholesaler</option>
+                                                        </select>
                                                         { 
-                                                            error && error.data.errors.email && <div class="invalid-feedback">{ error.data.errors.email[0] }</div>
+                                                            error && error.data.errors.type && <div class="invalid-feedback">{ error.data.errors.type[0] }</div>
                                                         }
                                                     </div>
 
                                                     <div className="form-group">
-                                                        <label className="control-label">Phone number</label>
-                                                        <input value={ this.state.phone_number } type="text" id="phone_number" className="form-control" onChange={this.handleChange} placeholder="eg: 08123456789" />
-                                                    </div>
-
-                                                    <div className="form-group">
                                                         <label className="control-label">Address</label>
-                                                        <textarea value={this.state.address} id="Address" rows="5" className="form-control" onChange={this.handleChange} placeholder="Street name, Building Number, Residence, Region, State"></textarea>
+                                                        <textarea value={this.state.address} id="address" rows="5" className="form-control" onChange={this.handleChange} placeholder="Street name, Building Number, Residence, Region, State"></textarea>
                                                     </div>
 
                                                 </div>
