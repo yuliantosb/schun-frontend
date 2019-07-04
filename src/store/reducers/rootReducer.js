@@ -13,6 +13,7 @@ import settingReducer from "./settingReducer";
 import passwordReducer from "./passwordReducer";
 import discountReducer from "./discountReducer";
 import productReducer from "./productReducer";
+import salesReducer from "./salesReducer";
 
 
 const rootReducer = combineReducers({
@@ -29,7 +30,8 @@ const rootReducer = combineReducers({
     setting: settingReducer,
     password: passwordReducer,
     discount: discountReducer,
-    product: productReducer
+    product: productReducer,
+    sales: salesReducer
 });
 
 export default rootReducer;

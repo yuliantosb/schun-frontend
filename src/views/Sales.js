@@ -1,5 +1,5 @@
 import React from 'react';
-import { Container, Row, Col, Card, CardHeader, CardBody, FormCheckbox } from 'shards-react';
+import { Container, Row, Col, Card, CardBody } from 'shards-react';
 import PageTitle from '../components/common/PageTitle';
 import '../assets/range-date-picker.css';
 import { Link, Redirect } from 'react-router-dom';
@@ -7,14 +7,13 @@ import { appName } from '../global';
 import { Helmet } from 'react-helmet';
 import ScrollToTop from '../components/layout/ScrollToTop';
 import { withToastManager } from 'react-toast-notifications';
-import { fetchProduct, deleteProduct } from '../store/actions/productAction';
-import moment from 'moment';
+import { fetchSales, deleteSales } from '../store/actions/salesAction';
 import {connect} from 'react-redux';
 import Loading from 'react-loading-bar';
 import Error500 from './Error500';
 import Table from '../components/table/Table';
 
-class Product extends React.Component {
+class Sales extends React.Component {
 	state = {
         search: null,
         page: 1,
@@ -22,11 +21,11 @@ class Product extends React.Component {
 		keyword: null,
 		alert: true,
 		alertMsgBox: false,
-		deleteIdProduct: null,
+		deleteIdSales: null,
 		showMsgBox: false,
 		isDeleted: false,
 		ordering: {
-            type: 'name',
+            type: 'customer_name',
             sort: 'asc'
         }
 	}
@@ -52,7 +51,7 @@ class Product extends React.Component {
 
 	handleSubmitKeyword = (e) => {
 		e.preventDefault();
-		this.props.fetchProduct(this.state);
+		this.props.fetchSales(this.state);
 	}
 
 	handleClickPage = (e) => {
@@ -72,7 +71,7 @@ class Product extends React.Component {
     handleClickDelete = (id) => {
 		this.setState({
 			...this.state,
-			deleteIdProduct: id,
+			deleteIdSales: id,
 			showMsgBox: true
 		});
 	}
@@ -86,28 +85,28 @@ class Product extends React.Component {
 			isDeleted: true
 		});
 
-		this.props.deleteProduct(this.state.deleteIdProduct);
+		this.props.deleteSales(this.state.deleteIdSales);
 	}
 
 	handleClickNo = () => {
 		this.setState({
 			...this.state,
 			showMsgBox: false,
-			deleteIdProduct: null
+			deleteIdSales: null
 		});
 	}
 
     componentWillUpdate(nextProps, nextState) {
         if (this.state.page !== nextState.page) {
-            this.props.fetchProduct(nextState);
+            this.props.fetchSales(nextState);
         }
 
         if (this.state.perpage !== nextState.perpage) {
-            this.props.fetchProduct(nextState);
+            this.props.fetchSales(nextState);
 		}
 		
 		if (this.state.ordering !== nextState.ordering) {
-			this.props.fetchProduct(nextState);
+			this.props.fetchSales(nextState);
 		}
     }
     
@@ -132,13 +131,13 @@ class Product extends React.Component {
 					appearance: 'success',
 					autoDismiss: true
 				});
-				this.props.fetchProduct(this.state);
+				this.props.fetchSales(this.state);
 			}
 		}
     }
 
     componentDidMount = () => {
-        this.props.fetchProduct(this.state)
+        this.props.fetchSales(this.state)
 	}	
 	
 	render() {
@@ -149,28 +148,39 @@ class Product extends React.Component {
 
 		const {ordering} = this.state;
         const theads = [
-            {name:'name', 'value': 'Name', sortable: true},
-            {name:'price', 'value': 'Retail price', sortable: true},
-            {name:'wholesale', 'value': 'Wholesale price', sortable: true},
-            {name:'category', 'value': 'Category', sortable: true},
-            {name:'stock', 'value': 'Stock', sortable: true},
+            {name:'customer_name', 'value': 'Customer Name', sortable: true},
+            {name:'subtotal', 'value': 'Subtotal', sortable: true},
+            {name:'tax', 'value': 'Tax', sortable: true},
+            {name:'discount', 'value': 'Discount', sortable: true},
+            {name:'total', 'value': 'Total', sortable: true},
+            {name:'payment_type', 'value': 'Payment Type', sortable: true},
+            {name:'is_hold', 'value': 'Status', sortable: true},
             {name:'option', 'value': 'Options', sortable: false}
         ];
 
-		const products = payload.data && payload.data.data.map(product => {
+		const saless = payload.data && payload.data.data.map(sales => {
             return (
-            <tr key={product._id}>
+            <tr key={sales._id}>
                 <td>
-                    <strong>{ product.name }</strong>
+                    <strong>{ sales.customer && sales.customer.name }</strong>
                 </td>
-				<td className="text-right">{ product.price_formatted }</td>
-				<td className="text-right">{ product.wholesale_formatted }</td>				
-				<td>{ product.category && product.category.name }</td>
-                <td>{ product.stock ? product.stock.amount : 0 }</td>
+				<td className="text-right">{ sales.subtotal_formatted }</td>
+				<td className="text-right">{ sales.tax_formatted }</td>				
+				<td className="text-right">{ sales.discount_formatted }</td>
+				<td className="text-right">{ sales.total_formatted }</td>
+				<td>{ sales.payment_type === 'cash' ? 'Cash' : 'Credit or Debit' }</td>
+                <td>{ sales.is_hold ? (<span className="badge badge-warning">Hold</span>) : (<span className="badge badge-success">Finish</span>) }</td>
 				<td className="text-center">
-					<Link to={`/product/edit/${product._id}`} className="btn btn-link text-success btn-sm  py-0 px-0 pr-4"><i className="mdi mdi-pencil"></i></Link>
-					<Link to={`/product/view/${product._id}`} className="btn btn-link text-info btn-sm  py-0 px-0 pr-4"><i className="mdi mdi-eye"></i></Link>
-                    <button onClick={() => this.handleClickDelete(product._id)} className="btn btn-link text-danger btn-sm  py-0 px-0"><i className="mdi mdi-delete"></i></button>
+                    {
+                        sales.is_hold ? (
+                            <span>
+                                <Link to={`/pos/${sales._id}`} className="btn btn-link text-info btn-sm  py-0 px-0 pr-4">Finish Transaction</Link>
+                                <button onClick={() => this.handleClickDelete(sales._id)} className="btn btn-link text-danger btn-sm  py-0 px-0">Delete</button>
+                            </span>
+                        ) : (
+					        <Link to={`/sales/edit/${sales._id}`} className="btn btn-link text-success btn-sm  py-0 px-0 pr-4">View transaction</Link>
+                        )
+                    }
 				</td>
             </tr>
             );
@@ -185,10 +195,10 @@ class Product extends React.Component {
 					showSpinner={false}
 					/>
 				<Helmet>
-					<title>Product | {appName} </title>
+					<title>Sales | {appName} </title>
 				</Helmet>
 				<Row noGutters className="page-header py-4">
-					<PageTitle sm="4" title="Product"  className="text-sm-left" />
+					<PageTitle sm="4" title="Sales"  className="text-sm-left" />
 				</Row>
 				<Row>
 					{
@@ -210,7 +220,7 @@ class Product extends React.Component {
 								<div className="col-md-12 mt-4">
 									<div className="row">
                                         <div className="col-md-8">
-                                            <Link to="/product/create" className="btn btn-secondary mr-2">
+                                            <Link to="/pos" className="btn btn-secondary mr-2">
                                                 <i className="mdi mdi-plus" /> Add
                                             </Link>
                                         </div>
@@ -247,13 +257,13 @@ class Product extends React.Component {
 											fetching ? 
 											(
 												<tr>
-													<td className="text-center" colSpan="6">Loading...</td>
+													<td className="text-center" colSpan="8">Loading...</td>
 												</tr>
 											)
 											:
-											payload.data && payload.data.data.length > 0 ? products : (
+											payload.data && payload.data.data.length > 0 ? saless : (
 												<tr>
-													<td className="text-center" colSpan="6">Data not found</td>
+													<td className="text-center" colSpan="8">Data not found</td>
 												</tr>
 										) }
 									</Table>
@@ -325,20 +335,20 @@ class Product extends React.Component {
 const mapStateToProps = (state) => {
     return {
         ...state,
-        payload: state.product.payload,
-        error: state.product.error,
-		fetching: state.product.fetching,
-		message: state.product.message,
-		saved: state.product.saved,
-		isDeleted: state.product.isDeleted
+        payload: state.sales.payload,
+        error: state.sales.error,
+		fetching: state.sales.fetching,
+		message: state.sales.message,
+		saved: state.sales.saved,
+		isDeleted: state.sales.isDeleted
     }
 }
 
 const mapDispatchToProps = (dispatch) => {
 	return {
-		fetchProduct: (filter) => dispatch(fetchProduct(filter)),
-		deleteProduct: (id) => dispatch(deleteProduct(id))
+		fetchSales: (filter) => dispatch(fetchSales(filter)),
+		deleteSales: (id) => dispatch(deleteSales(id))
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(withToastManager(Product));
+export default connect(mapStateToProps, mapDispatchToProps)(withToastManager(Sales));

@@ -245,3 +245,86 @@ button:focus {
     margin-right: 5px;
   }
   
+  .table-scrollable tbody{
+    display:block;
+    overflow:auto;
+    height:200px;
+    width:100%;
+  }
+
+  .table-scrollable thead tr, .table-scrollable tfoot tr {
+    display:block;
+  }
+
+  .table-scrollable tr > th, .table-scrollable tr > td {
+    width: 33.3%;
+  }
+
+  .table-scrollable tr > td {
+      font-weight: normal;
+      position: relative;
+  }
+
+  .table-scrollable tr > td:last-child {
+      padding-right: 35px;
+  }
+
+  .table-scrollable tr > td > button.btn-remove {
+      position: absolute;
+      right: 0px;
+      top: 5px;
+  }
+
+
+  .img-small {
+      height: 100px;
+      object-fit: cover;
+  }
+
+  .card-clickable {
+      cursor: pointer;
+  }
+
+  .card-clickable .card-title {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .card-clickable:hover .card {
+    box-shadow: 0 0.46875rem 2.1875rem rgba(0, 123, 255, .1),
+    0 0.9375rem 1.40625rem rgba(0, 123, 255,.1),
+    0 0.25rem 0.53125rem rgba(0, 123, 255,.12),
+    0 0.125rem 0.1875rem rgba(0, 123, 255,.1);
+    color: #007bff !important
+  }
+
+.autocomplete {
+    position: absolute;
+    width: 94%;
+    z-index: 99;
+    background: #fff;
+    cursor: pointer;
+    font-weight: normal;
+}
+
+.autocomplete span {
+    display: inline-block;
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #e1e1e1;
+}
+
+.autocomplete span:hover {
+    background-color: #007afd;
+    color: #fff;
+    border: #007afd;
+}
+
+.modal-dialog {
+    margin-top: 30px !important;
+}
+
+.table-scrollable thead > tr > th {
+    border-top: none;
+}

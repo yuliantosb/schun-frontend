@@ -44,6 +44,8 @@ import Product from "./views/Product";
 import AddProduct from "./views/AddProduct";
 import ViewProduct from "./views/ViewProduct";
 import EditProduct from "./views/EditProduct";
+import Pos from "./views/Pos";
+import Sales from "./views/Sales";
 
 export default [
   {
@@ -263,5 +265,15 @@ export default [
     path: "/product/edit/:id",
     layout: DefaultLayout,
     component: EditProduct,
+  },
+  {
+    path: "/pos",
+    layout: BlankLayout,
+    component: Pos
+  },
+  {
+    path: "/sales",
+    layout: DefaultLayout,
+    component: Sales
   }
 ];
