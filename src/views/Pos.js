@@ -18,7 +18,7 @@ import NumberFormat from 'react-number-format';
 import Modal from 'react-bootstrap4-modal';
 import Datetime from 'react-datetime';
 import '../../node_modules/react-datetime/css/react-datetime.css';
-import { saveSales } from '../store/actions/salesAction';
+import { saveSales, getCart } from '../store/actions/salesAction';
 import moment from 'moment';
 
 class Pos extends React.Component {
@@ -133,14 +133,25 @@ class Pos extends React.Component {
         });
     }
 
-    componentWillUpdate(nextProps, nextState) {
+    componentWillUpdate = (nextProps, nextState) => {
         if (this.state.page !== nextState.page) {
             this.props.fetchProduct(nextState);
         }
 
         if (this.state.keyword !== nextState.keyword) {
             this.props.fetchProduct(nextState);
-        }
+		}
+		
+		if (nextProps.data !== this.props.data) {
+			if (nextProps.data) {
+					
+				this.setState({
+					...this.state,
+					carts: nextProps.data
+				});
+			}
+		}
+
 	}
 
 	modalBackdropClicked = () => {
@@ -205,7 +216,7 @@ class Pos extends React.Component {
 	}
 
 	handlePayAndPrint = () => {
-		this.props.saveSales(this.state, {is_hold: false});
+		this.props.saveSales(this.state, {is_hold: false, id: this.props.match.params.id});
 	}
 
 	handleHold = () => {
@@ -252,6 +263,10 @@ class Pos extends React.Component {
 				});
 			}
 
+			if (this.props.match.params.id) {
+				this.props.history.push('/pos');
+			}
+
         }
 
         if (prevProps.errorsales !== this.props.errorsales) {
@@ -266,6 +281,7 @@ class Pos extends React.Component {
             }
         }
 	}
+
 	
 	handleChangeCustomer = (value) => {
 		this.setState({
@@ -277,12 +293,15 @@ class Pos extends React.Component {
     
 
 	componentDidMount = () => {
+		if (this.props.match.params.id) {
+			this.props.getCart(this.props.match.params.id);
+        }
 		this.props.fetchProduct(this.state);
     };   
 
 
 	render() {
-
+		console.log(this.state);
 		const setting = this.props.setting.setting.data;
 		const { carts } = this.state;
 		const { fetching, error, payload } = this.props;
@@ -297,8 +316,8 @@ class Pos extends React.Component {
 				<tr key={ carts[obj].id } >
 					<td>{ carts[obj].name }</td>
 					<td>{ carts[obj].qty }</td>
-					<td><NumberFormat value={ carts[obj].price } displayType={'text'} thousandSeparator={setting.thousand_separator} prefix={setting.currency} decimalSeparator={setting.decimal_separator} /></td>
-					<td><NumberFormat value={ carts[obj].subtotal } displayType={'text'} thousandSeparator={setting.thousand_separator} prefix={setting.currency} decimalSeparator={setting.decimal_separator} /> <button onClick={ () => this.onDeleteCart(carts[obj].id)  } className="btn btn-link text-danger btn-remove">&times;</button> </td>
+					<td><NumberFormat value={ carts[obj].price } displayType={'text'} thousandSeparator={setting && setting.thousand_separator} prefix={setting && setting.currency} decimalSeparator={setting && setting.decimal_separator} /></td>
+					<td><NumberFormat value={ carts[obj].subtotal } displayType={'text'} thousandSeparator={setting && setting.thousand_separator} prefix={setting && setting.currency} decimalSeparator={setting && setting.decimal_separator} /> <button onClick={ () => this.onDeleteCart(carts[obj].id)  } className="btn btn-link text-danger btn-remove">&times;</button> </td>
 				</tr>
 			)
 
@@ -612,14 +631,16 @@ const mapStateToProps = (state) => {
 		fetching: state.product.fetching,
 		errorsales: state.sales.error,
 		saved: state.sales.saved,
-		message: state.sales.message
+		message: state.sales.message,
+		data: state.sales.sales.data
 	};
 };
 
 const mapDispatchToProps = (dispatch) => {
 	return {
 		fetchProduct: (filter) => dispatch(fetchProduct(filter)),
-		saveSales: (carts, is_hold) => dispatch(saveSales(carts, is_hold))
+		saveSales: (carts, is_hold, id) => dispatch(saveSales(carts, is_hold, id)),
+		getCart: (id) => dispatch(getCart(id))
 	};
 };
 

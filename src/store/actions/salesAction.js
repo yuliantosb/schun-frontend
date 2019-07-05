@@ -20,7 +20,7 @@ const fetchSales = (filter) => {
     }
 }
 
-const saveSales = (data, {is_hold}) => {
+const saveSales = (data, {is_hold, id}) => {
     return (dispatch, getState) => {
         dispatch({
             type: 'SAVE_SALES',
@@ -34,7 +34,8 @@ const saveSales = (data, {is_hold}) => {
                 card_expired: data.card_expired,
                 amount: data.amount,
                 changes: data.changes,
-                is_hold
+                is_hold,
+                id
             }, {
                 headers: {
                     Authorization: `Bearer ${sessionStorage.getItem('token')}`
@@ -49,6 +50,19 @@ const getSales = (id) => {
         dispatch({
             type: 'GET_SALES',
             payload: Axios.get(`${url}/sales/${id}`, {
+                headers: {
+                    Authorization: `Bearer ${sessionStorage.getItem('token')}`
+                }
+            })
+        })
+    }
+}
+
+const getCart = (id) => {
+    return (dispatch, getState) => {
+        dispatch({
+            type: 'GET_SALES',
+            payload: Axios.get(`${url}/sales/cart/${id}`, {
                 headers: {
                     Authorization: `Bearer ${sessionStorage.getItem('token')}`
                 }
@@ -95,4 +109,4 @@ const deleteSales = (id) => {
     }
 }
 
-export { fetchSales, saveSales, getSales, updateSales, deleteSales };
+export { fetchSales, saveSales, getSales, updateSales, deleteSales, getCart };

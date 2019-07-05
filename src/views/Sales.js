@@ -174,11 +174,11 @@ class Sales extends React.Component {
                     {
                         sales.is_hold ? (
                             <span>
-                                <Link to={`/pos/${sales._id}`} className="btn btn-link text-info btn-sm  py-0 px-0 pr-4">Finish Transaction</Link>
-                                <button onClick={() => this.handleClickDelete(sales._id)} className="btn btn-link text-danger btn-sm  py-0 px-0">Delete</button>
+                                <Link to={`/pos/${sales._id}`} className="btn btn-link text-info btn-sm  py-0 px-0 pr-4"><i className="mdi mdi-check"></i></Link>
+                                <button onClick={() => this.handleClickDelete(sales._id)} className="btn btn-link text-danger btn-sm  py-0 px-0"><i className="mdi mdi-delete"></i></button>
                             </span>
                         ) : (
-					        <Link to={`/sales/edit/${sales._id}`} className="btn btn-link text-success btn-sm  py-0 px-0 pr-4">View transaction</Link>
+					        <Link to={`/sales/view/${sales._id}`} className="btn btn-link text-success btn-sm  py-0 px-0 pr-4"><i className="mdi mdi-eye"></i></Link>
                         )
                     }
 				</td>
@@ -220,9 +220,7 @@ class Sales extends React.Component {
 								<div className="col-md-12 mt-4">
 									<div className="row">
                                         <div className="col-md-8">
-                                            <Link to="/pos" className="btn btn-secondary mr-2">
-                                                <i className="mdi mdi-plus" /> Add
-                                            </Link>
+                                            
                                         </div>
 										<div className="col-md-4 text-right">
 											<form onSubmit={this.handleSubmitKeyword}>
