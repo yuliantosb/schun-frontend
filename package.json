@@ -32,6 +32,7 @@
     "react-scripts": "2.1.1",
     "react-select": "^3.0.4",
     "react-toast-notifications": "^1.4.0",
+    "react-tooltip": "^3.10.0",
     "redux": "^4.0.1",
     "redux-logger": "^3.0.6",
     "redux-promise-middleware": "^6.1.0",

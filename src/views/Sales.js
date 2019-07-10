@@ -12,6 +12,8 @@ import {connect} from 'react-redux';
 import Loading from 'react-loading-bar';
 import Error500 from './Error500';
 import Table from '../components/table/Table';
+import ReactTooltip from 'react-tooltip';
+import Modal from 'react-bootstrap4-modal';
 
 class Sales extends React.Component {
 	state = {
@@ -27,7 +29,8 @@ class Sales extends React.Component {
 		ordering: {
             type: 'customer_name',
             sort: 'asc'
-        }
+        },
+        modal: false
 	}
 	
     handleSorting = (e) => {
@@ -136,6 +139,20 @@ class Sales extends React.Component {
 		}
     }
 
+    modalBackdropClicked = () => {
+        this.setState({
+            ...this.state,
+            modal: false
+        })
+    }
+
+    handleReturn = () => {
+        this.setState({
+            ...this.state,
+            modal: true
+        });
+    }
+
     componentDidMount = () => {
         this.props.fetchSales(this.state)
 	}	
@@ -174,11 +191,17 @@ class Sales extends React.Component {
                     {
                         sales.is_hold ? (
                             <span>
-                                <Link to={`/pos/${sales._id}`} className="btn btn-link text-info btn-sm  py-0 px-0 pr-4"><i className="mdi mdi-check"></i></Link>
-                                <button onClick={() => this.handleClickDelete(sales._id)} className="btn btn-link text-danger btn-sm  py-0 px-0"><i className="mdi mdi-delete"></i></button>
+                                <Link data-tip="Complete sales" to={`/pos/${sales._id}`} className="btn btn-link text-info btn-sm  py-0 px-0 pr-4"><i className="mdi mdi-check"></i></Link>
+                                <button data-tip="Delete" onClick={() => this.handleClickDelete(sales._id)} className="btn btn-link text-danger btn-sm  py-0 px-0"><i className="mdi mdi-delete"></i></button>
+                                <ReactTooltip/>
                             </span>
                         ) : (
-					        <Link to={`/sales/view/${sales._id}`} className="btn btn-link text-success btn-sm  py-0 px-0 pr-4"><i className="mdi mdi-eye"></i></Link>
+					        <span>
+                                <Link data-tip="View" to={`/sales/view/${sales._id}`} className="btn btn-link text-success btn-sm  py-0 px-0 pr-4"><i className="mdi mdi-eye"></i></Link>
+                                <button data-tip="Return" title="Return" onClick={() => this.handleReturn(sales._id)} className="btn btn-link text-warning btn-sm  py-0 px-0"><i className="mdi mdi-undo"></i></button>
+                                <ReactTooltip/>
+                            </span>
+
                         )
                     }
 				</td>
@@ -197,6 +220,31 @@ class Sales extends React.Component {
 				<Helmet>
 					<title>Sales | {appName} </title>
 				</Helmet>
+
+                <Modal visible={this.state.modal} onClickBackdrop={this.modalBackdropClicked}>
+                    <div className="modal-header">
+                        <h5 className="modal-title">Return sales</h5>
+                    </div>
+                    <div className="modal-body py-0 pt-2 px-4">
+                        <div className="row">
+                            <div className="col-sm-12">
+                                <div className="form-group">
+                                    <label className="control-label">Why?</label>
+                                    <textarea id="reason" className="form-control"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="modal-footer px-0">
+                            <button type="button" className="btn btn-default" onClick={this.modalBackdropClicked}>
+                                Close
+                            </button>
+                            <button type="button" className="btn btn-secondary" onClick={this.handlePayAndPrint}>
+                                Reutrn Sales
+                            </button>
+                        </div>
+                    </div>
+                </Modal>
+
 				<Row noGutters className="page-header py-4">
 					<PageTitle sm="4" title="Sales"  className="text-sm-left" />
 				</Row>

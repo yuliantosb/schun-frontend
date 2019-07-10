@@ -1,5 +1,5 @@
 import React from 'react';
-import { Container, Row, Col, Card, CardHeader, CardBody, FormCheckbox } from 'shards-react';
+import { Container, Row, Col, Card, CardBody } from 'shards-react';
 import PageTitle from '../components/common/PageTitle';
 import '../assets/range-date-picker.css';
 import { Link, Redirect } from 'react-router-dom';
@@ -8,11 +8,11 @@ import { Helmet } from 'react-helmet';
 import ScrollToTop from '../components/layout/ScrollToTop';
 import { withToastManager } from 'react-toast-notifications';
 import { fetchProduct, deleteProduct } from '../store/actions/productAction';
-import moment from 'moment';
 import {connect} from 'react-redux';
 import Loading from 'react-loading-bar';
 import Error500 from './Error500';
 import Table from '../components/table/Table';
+import ReactTooltip from 'react-tooltip';
 
 class Product extends React.Component {
 	state = {
@@ -168,9 +168,10 @@ class Product extends React.Component {
 				<td>{ product.category && product.category.name }</td>
                 <td>{ product.stock ? product.stock.amount : 0 }</td>
 				<td className="text-center">
-					<Link to={`/product/edit/${product._id}`} className="btn btn-link text-success btn-sm  py-0 px-0 pr-4"><i className="mdi mdi-pencil"></i></Link>
-					<Link to={`/product/view/${product._id}`} className="btn btn-link text-info btn-sm  py-0 px-0 pr-4"><i className="mdi mdi-eye"></i></Link>
-                    <button onClick={() => this.handleClickDelete(product._id)} className="btn btn-link text-danger btn-sm  py-0 px-0"><i className="mdi mdi-delete"></i></button>
+					<Link data-tip="Edit" to={`/product/edit/${product._id}`} className="btn btn-link text-success btn-sm  py-0 px-0 pr-4"><i className="mdi mdi-pencil"></i></Link>
+					<Link data-tip="View" to={`/product/view/${product._id}`} className="btn btn-link text-info btn-sm  py-0 px-0 pr-4"><i className="mdi mdi-eye"></i></Link>
+                    <button data-tip="Delete" onClick={() => this.handleClickDelete(product._id)} className="btn btn-link text-danger btn-sm  py-0 px-0"><i className="mdi mdi-delete"></i></button>
+					<ReactTooltip/>
 				</td>
             </tr>
             );
