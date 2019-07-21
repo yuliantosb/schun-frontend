@@ -264,9 +264,7 @@ class StockOpname extends React.Component {
 								<div className="col-md-12 mt-4">
                                     <div className="row">
                                         <div className="col-md-6">
-                                            <Link to="/stock/create" className="btn btn-secondary mr-2">
-                                                <i className="mdi mdi-plus" /> Add
-                                            </Link>
+                                            
                                         </div>
 										<div className="col-md-4 offset-md-2 text-right">
 											<div className="input-group mb-3">
