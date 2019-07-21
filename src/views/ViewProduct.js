@@ -12,6 +12,7 @@ import Loading from 'react-loading-bar';
 import Error500 from './Error500';
 import Barcode from 'react-barcode';
 import PhotoDefault from '../images/sales-overview/no-product-image.jpg';
+import Axios from 'axios';
 
 class ViewProduct extends React.Component {
 
@@ -27,6 +28,14 @@ class ViewProduct extends React.Component {
         description: '',
         category_id: '',
     };
+
+    handleOnClick = () => {
+        Axios.post('http://localhost:3002/label', {
+            name: this.props.data && this.props.data.name,
+            price: this.props.data && this.props.data.price,
+            barcode: this.props.data && this.props.data.code
+        });
+    }
 
     componentWillUpdate = (nextProps) => {
         if (nextProps != this.props) {
@@ -108,7 +117,7 @@ class ViewProduct extends React.Component {
                                     <h6 className="m-0">Details Info</h6>
                                 </div>
                                 <div className="float-right">
-                                    <button className="btn btn-secondary"><i className="mdi mdi-printer"></i> Print Label</button>
+                                    <button onClick={this.handleOnClick} className="btn btn-secondary"><i className="mdi mdi-printer"></i> Print Label</button>
                                 </div>
                             </CardHeader>
                             <ListGroup flush>

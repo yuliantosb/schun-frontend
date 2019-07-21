@@ -7,12 +7,11 @@ import { createStore, applyMiddleware } from 'redux';
 import rootReducer from './store/reducers/rootReducer';
 import thunk from 'redux-thunk';
 import promise from 'redux-promise-middleware';
-import logger from 'redux-logger';
 import { Provider } from 'react-redux';
 
 const store = createStore(
     rootReducer,
-    applyMiddleware(thunk, promise, logger)
+    applyMiddleware(thunk, promise)
 );
 
 ReactDOM.render(<Provider store={store}> <App /></Provider>, document.getElementById('root'));

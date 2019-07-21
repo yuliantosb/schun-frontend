@@ -45,7 +45,7 @@ class Login extends React.Component {
                         <div className="col-lg-3 col-md-5 auth-form mx-auto my-auto">
                             <div className="card">
                                 <div className="card-body">
-                                    <img className="auth-form__logo_custom d-table mx-auto mb-3" src={ setting && setting.file } alt="Shards Dashboards - Register Template" />
+                                    <img className="auth-form__logo_custom d-table mx-auto mb-3" src={ setting ? setting.file : Logo } alt="Shards Dashboards - Register Template" />
                                     <h5 className="auth-form__title text-center mb-4">Login </h5>
                                     { error && !this.state.dismisAlert && (
                                     <div className="alert alert-danger fade show" role="alert">

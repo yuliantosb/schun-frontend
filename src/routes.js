@@ -47,6 +47,12 @@ import EditProduct from "./views/EditProduct";
 import Pos from "./views/Pos";
 import Sales from "./views/Sales";
 import ViewSales from "./views/ViewSales";
+import Purchase from "./views/Purchase";
+import AddPurchase from "./views/AddPurchase";
+import ViewPurchase from "./views/ViewPurchase";
+import EditPurchase from "./views/EditPurchase";
+import StockOpname from "./views/StockOpname";
+import ViewStock from "./views/ViewStock";
 
 export default [
   {
@@ -289,5 +295,37 @@ export default [
     layout: DefaultLayout,
     component: ViewSales,
     exact: true
+  },
+  {
+    path: "/purchase",
+    layout: DefaultLayout,
+    component: Purchase,
+    exact: true
+  },
+  {
+    path: "/purchase/create",
+    layout: DefaultLayout,
+    component: AddPurchase,
+  },
+  {
+    path: "/purchase/view/:id",
+    layout: DefaultLayout,
+    component: ViewPurchase,
+  },
+  {
+    path: "/purchase/edit/:id",
+    layout: DefaultLayout,
+    component: EditPurchase,
+  },
+  {
+    path: "/stock-opname",
+    layout: DefaultLayout,
+    component: StockOpname,
+    exact: true
+  },
+  {
+    path: "/stock-opname/view/:id",
+    layout: DefaultLayout,
+    component: ViewStock
   }
 ];

@@ -13,6 +13,7 @@ const fetchExpense = (filter) => {
                     keyword: filter.keyword,
                     start_date: moment(filter.startDate).format('YYYY-MM-DD'),
                     end_date: moment(filter.endDate).format('YYYY-MM-DD'),
+                    ordering: filter.ordering
                 },
                 headers: {
                     Authorization: `Bearer ${sessionStorage.getItem('token')}`

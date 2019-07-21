@@ -6,16 +6,16 @@ import { appName } from '../global';
 import { Helmet } from 'react-helmet';
 import { Link, Redirect } from 'react-router-dom';
 import { withToastManager } from 'react-toast-notifications';
-import { getSales } from '../store/actions/salesAction';
+import { getPurchase } from '../store/actions/purchaseActions';
 import {connect} from 'react-redux';
 import Loading from 'react-loading-bar';
 import Error500 from './Error500';
 import moment from 'moment';
 
-class ViewSales extends React.Component {
+class ViewPurchase extends React.Component {
 
     componentDidMount = () => {
-        this.props.getSales(this.props.match.params.id);
+        this.props.getPurchase(this.props.match.params.id);
     }
     
 	render() {  
@@ -32,14 +32,14 @@ class ViewSales extends React.Component {
 						showSpinner={false}
 						/>
 				<Helmet>
-					<title>View Sales | {appName} </title>
+					<title>View Purchase | {appName} </title>
 				</Helmet>
 				<Row noGutters className="page-header py-4">
-                    <div className="col-md-8">
-					    <PageTitle sm="4" title="View Sales" className="text-sm-left" />
+                <div className="col-md-8">
+					    <PageTitle sm="4" title="View Purchase" className="text-sm-left" />
                     </div>
                     <div className="col-md-4 text-right">
-                         <Link className="btn btn-secondary" to="/sales">Back</Link>
+                         <Link className="btn btn-secondary" to="/purchase">Back</Link>
                     </div>
 				</Row>
 				<Row>
@@ -51,7 +51,7 @@ class ViewSales extends React.Component {
                                         <tr>
                                             <th>#</th>
                                             <th>Customer Name</th>
-                                            <th>Sales Date</th>
+                                            <th>Purchase Date</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -69,7 +69,7 @@ class ViewSales extends React.Component {
                         <Card small className="mb-4">
                             <CardHeader className="border-bottom">
                                 <div className="float-left">
-                                    <h6 className="m-0">Sales Details</h6>
+                                    <h6 className="m-0">Purchase Details</h6>
                                 </div>
                             </CardHeader>
 							<CardBody className="p-3">
@@ -129,19 +129,19 @@ class ViewSales extends React.Component {
 const mapStateToProps = (state) => {
     return {
         ...state,
-        saved: state.sales.saved,
-        fetching: state.sales.fetching,
-        message: state.sales.message,
-        data: state.sales.sales.data,
-        error: state.sales.error
+        saved: state.purchase.saved,
+        fetching: state.purchase.fetching,
+        message: state.purchase.message,
+        data: state.purchase.purchase.data,
+        error: state.purchase.error
     }
 }
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        getSales: (id) => dispatch(getSales(id)),
+        getPurchase: (id) => dispatch(getPurchase(id)),
 
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(withToastManager(ViewSales));
+export default connect(mapStateToProps, mapDispatchToProps)(withToastManager(ViewPurchase));

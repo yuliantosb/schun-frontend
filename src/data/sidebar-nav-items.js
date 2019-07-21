@@ -19,22 +19,22 @@ export default function() {
           title: "Product",
           to: "/product"
         },
-        {
-          title: "Service",
-          to: "/service"
-        },
+        // {
+        //   title: "Service",
+        //   to: "/service"
+        // },
         {
           title: "Category",
           to: "/category"
         },
-        {
-          title: "Product Packet",
-          to: "/product-packet"
-        },
-        {
-          title: "Shipping Fee",
-          to: "/shipping-fee"
-        },
+        // {
+        //   title: "Product Packet",
+        //   to: "/product-packet"
+        // },
+        // {
+        //   title: "Shipping Fee",
+        //   to: "/shipping-fee"
+        // },
       ]
     },
     {
@@ -42,11 +42,11 @@ export default function() {
       to: "/stores",
       htmlBefore: '<i class="mdi mdi-domain"></i>'
     },
-    {
-      title: "Giftcard",
-      to: "/giftcard",
-      htmlBefore: '<i class="mdi mdi-credit-card"></i>'
-    },
+    // {
+    //   title: "Giftcard",
+    //   to: "/giftcard",
+    //   htmlBefore: '<i class="mdi mdi-credit-card"></i>'
+    // },
     {
       title: "Sales",
       to: "/sales",
@@ -69,24 +69,25 @@ export default function() {
     {
       title: "Stock",
       htmlBefore: '<i class="mdi mdi-animation"></i>',
-      children: [
-        {
-          title: "Stock Card",
-          to: "/stock-card",
-        },
-        {
-          title: "Stock Opname",
-          to: "/stock-opname",
-        },
-        {
-          title: "Return",
-          to: "/return",
-        },
-        {
-          title: "Broken Goods",
-          to: "/broken-goods",
-        },
-      ]
+      to: "/stock-opname"
+      // children: [
+      //   // {
+      //   //   title: "Stock Card",
+      //   //   to: "/stock-card",
+      //   // },
+      //   // {
+      //   //   title: "Stock Opname",
+      //   //   to: "/stock-opname",
+      //   // },
+      //   // {
+      //   //   title: "Return",
+      //   //   to: "/return",
+      //   // },
+      //   // {
+      //   //   title: "Broken Goods",
+      //   //   to: "/broken-goods",
+      //   // },
+      // ]
     },
     {
       title: "Users",
@@ -132,14 +133,14 @@ export default function() {
           title: "Settings",
           to: "/settings",
         },
-        {
-          title: "Discount",
-          to: "/discount",
-        },
-        {
-          title: "Menu",
-          to: "/menu",
-        },
+        // {
+        //   title: "Discount",
+        //   to: "/discount",
+        // },
+        // {
+        //   title: "Menu",
+        //   to: "/menu",
+        // },
         {
           title: "Role",
           to: "/role",

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Container, Row, Col, Card, CardBody } from 'shards-react';
+import { Container, Row, Col, Card, CardBody, DatePicker } from 'shards-react';
 import PageTitle from '../components/common/PageTitle';
 import '../assets/range-date-picker.css';
 import { Link, Redirect } from 'react-router-dom';
@@ -14,9 +14,12 @@ import Error500 from './Error500';
 import Table from '../components/table/Table';
 import ReactTooltip from 'react-tooltip';
 import Modal from 'react-bootstrap4-modal';
+import moment from 'moment';
 
 class Sales extends React.Component {
 	state = {
+		startDate: new Date(),
+		endDate: new Date(),
         search: null,
         page: 1,
         perpage: 10,
@@ -27,10 +30,24 @@ class Sales extends React.Component {
 		showMsgBox: false,
 		isDeleted: false,
 		ordering: {
-            type: 'customer_name',
+            type: 'created_at',
             sort: 'asc'
         },
         modal: false
+	}
+
+	handleStartDateChange = (value) => {
+        this.setState({
+            ...this.state,
+            startDate: new Date(value)
+        });
+    }
+
+    handleEndDateChange = (value) => {
+        this.setState({
+            ...this.state,
+            endDate: new Date(value)
+        });
 	}
 	
     handleSorting = (e) => {
@@ -111,6 +128,14 @@ class Sales extends React.Component {
 		if (this.state.ordering !== nextState.ordering) {
 			this.props.fetchSales(nextState);
 		}
+
+		if (this.state.startDate !== nextState.startDate) {
+			this.props.fetchSales(nextState);
+		}
+
+		if (this.state.endDate !== nextState.endDate) {
+			this.props.fetchSales(nextState);
+		}
     }
     
     componentDidUpdate = (prevProps, prevState) => {
@@ -165,7 +190,7 @@ class Sales extends React.Component {
 
 		const {ordering} = this.state;
         const theads = [
-            {name:'customer_name', 'value': 'Customer Name', sortable: true},
+            {name:'created_at', 'value': 'Date', sortable: true},
             {name:'subtotal', 'value': 'Subtotal', sortable: true},
             {name:'tax', 'value': 'Tax', sortable: true},
             {name:'discount', 'value': 'Discount', sortable: true},
@@ -178,9 +203,7 @@ class Sales extends React.Component {
 		const saless = payload.data && payload.data.data.map(sales => {
             return (
             <tr key={sales._id}>
-                <td>
-                    <strong>{ sales.customer && sales.customer.name }</strong>
-                </td>
+				<td>{ moment(sales.created_at).format('ll') }</td>
 				<td className="text-right">{ sales.subtotal_formatted }</td>
 				<td className="text-right">{ sales.tax_formatted }</td>				
 				<td className="text-right">{ sales.discount_formatted }</td>
@@ -198,7 +221,7 @@ class Sales extends React.Component {
                         ) : (
 					        <span>
                                 <Link data-tip="View" to={`/sales/view/${sales._id}`} className="btn btn-link text-success btn-sm  py-0 px-0 pr-4"><i className="mdi mdi-eye"></i></Link>
-                                <button data-tip="Return" title="Return" onClick={() => this.handleReturn(sales._id)} className="btn btn-link text-warning btn-sm  py-0 px-0"><i className="mdi mdi-undo"></i></button>
+                                {/* <button data-tip="Return" title="Return" onClick={() => this.handleReturn(sales._id)} className="btn btn-link text-warning btn-sm  py-0 px-0"><i className="mdi mdi-undo"></i></button> */}
                                 <ReactTooltip/>
                             </span>
 
@@ -266,33 +289,60 @@ class Sales extends React.Component {
 						<Card small className="mb-4">
 							<CardBody className="p-0 pb-3">
 								<div className="col-md-12 mt-4">
-									<div className="row">
-                                        <div className="col-md-8">
-                                            
+								<div className="row">
+                                        <div className="col-md-6">
+                                            <div className="row">
+                                                <div className="col-md-6">
+                                                    <div className="form-group">
+                                                        <label className="control-l">Date From</label>
+                                                        <DatePicker
+                                                            size="md"
+                                                            selected={this.state.startDate}
+                                                            onChange={this.handleStartDateChange}
+                                                            placeholderText="Date From"
+                                                            dropdownMode="select"
+                                                        />
+                                                    </div>
+                                                </div>
+                                                <div className="col-md-6">
+                                                    <div className="form-group">
+                                                        <label className="control-l">Date To</label>
+                                                        <DatePicker
+                                                            size="md"
+                                                            selected={this.state.endDate}
+                                                            onChange={this.handleEndDateChange}
+                                                            placeholderText="Date To"
+                                                            dropdownMode="select"
+                                                        />
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
-										<div className="col-md-4 text-right">
+										<div className="col-md-4 offset-md-2 text-right">
+											<div className="input-group mb-3">
 											<form onSubmit={this.handleSubmitKeyword}>
-												<div className="input-group mb-3">
-													<input
-														id="keyword"
-														type="text"
-														className="form-control"
-														placeholder=""
-														aria-label="Example text with button addon"
-														aria-describedby="button-addon1"
-														onChange={this.handleChangeKeyword}
-													/>
-													<div className="input-group-prepend">
-														<button
-															className="btn btn-secondary"
-															type="submit"
-															id="button-addon1"
-														>
-															<i className="mdi mdi-magnify" /> Search{' '}
-														</button>
+													<div className="input-group mb-3">
+														<input
+															id="keyword"
+															type="text"
+															className="form-control"
+															placeholder=""
+															aria-label="Example text with button addon"
+															aria-describedby="button-addon1"
+															onChange={this.handleChangeKeyword}
+														/>
+														<div className="input-group-prepend">
+															<button
+																className="btn btn-secondary"
+																type="submit"
+																id="button-addon1"
+															>
+																<i className="mdi mdi-magnify" /> Search{' '}
+															</button>
+														</div>
 													</div>
-												</div>
-											</form>
+												</form>
+											</div>
 										</div>
 									</div>
 								</div>

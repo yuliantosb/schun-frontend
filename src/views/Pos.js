@@ -239,7 +239,6 @@ class Pos extends React.Component {
         if (prevProps.saved !== this.props.saved) {
 
 			if (this.props.saved) {
-
 				const { toastManager } = this.props;
 				toastManager.add(this.props.message, {
 					appearance: 'success',
@@ -301,7 +300,7 @@ class Pos extends React.Component {
 
 
 	render() {
-		console.log(this.state);
+		
 		const setting = this.props.setting.setting.data;
 		const { carts } = this.state;
 		const { fetching, error, payload } = this.props;

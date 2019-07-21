@@ -1,37 +1,39 @@
 import React from 'react';
-import { Container, Row, Col, Card, CardHeader, CardBody, DatePicker } from 'shards-react';
+import { Container, Row, Col, Card, CardBody, DatePicker } from 'shards-react';
 import PageTitle from '../components/common/PageTitle';
 import '../assets/range-date-picker.css';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import { appName } from '../global';
 import { Helmet } from 'react-helmet';
-import moment from 'moment';
-import { fetchExpense, deleteExpense } from '../store/actions/expenseAction';
 import ScrollToTop from '../components/layout/ScrollToTop';
-import Loading from 'react-loading-bar';
 import { withToastManager } from 'react-toast-notifications';
-import { connect } from 'react-redux';
-import ReactTooltip from 'react-tooltip';
+import { fetchPurchase, deletePurchase } from '../store/actions/purchaseActions';
+import {connect} from 'react-redux';
+import Loading from 'react-loading-bar';
+import Error500 from './Error500';
 import Table from '../components/table/Table';
+import ReactTooltip from 'react-tooltip';
+import moment from 'moment';
 
-class Expense extends React.Component {
-    state = {
+class Purchase extends React.Component {
+	state = {
         startDate: new Date(),
-		endDate: new Date(),
-		search: null,
+        endDate: new Date(),
+        search: null,
         page: 1,
         perpage: 10,
 		keyword: null,
 		alert: true,
 		alertMsgBox: false,
-		deleteId: null,
+		deleteIdPurchase: null,
 		showMsgBox: false,
+		isDeleted: false,
 		ordering: {
             type: 'reference',
             sort: 'asc'
         }
     }
-
+    
     handleStartDateChange = (value) => {
         this.setState({
             ...this.state,
@@ -45,8 +47,8 @@ class Expense extends React.Component {
             endDate: new Date(value)
         });
 	}
-
-	handleSorting = (e) => {
+	
+    handleSorting = (e) => {
         const type = e.target.id;
         const sort = this.state.ordering.sort;
         this.setState({
@@ -57,17 +59,17 @@ class Expense extends React.Component {
             }
         });
     }
-	
-	handleChangeKeyword = (e) => {
+
+    handleChangeKeyword = (e) => {
 		this.setState({
 			...this.state,
-			keyword: e.target.value
+			[e.target.id]: e.target.value
 		});
 	}
 
 	handleSubmitKeyword = (e) => {
 		e.preventDefault();
-		this.props.fetchExpense(this.state);
+		this.props.fetchPurchase(this.state);
 	}
 
 	handleClickPage = (e) => {
@@ -87,7 +89,7 @@ class Expense extends React.Component {
     handleClickDelete = (id) => {
 		this.setState({
 			...this.state,
-			deleteId: id,
+			deleteIdPurchase: id,
 			showMsgBox: true
 		});
 	}
@@ -97,42 +99,46 @@ class Expense extends React.Component {
 		this.setState({
 			...this.state,
 			alertMsgBox: true,
-			showMsgBox: false
+			showMsgBox: false,
+			isDeleted: true
 		});
 
-		this.props.deleteExpense(this.state.deleteId);
+		this.props.deletePurchase(this.state.deleteIdPurchase);
 	}
 
 	handleClickNo = () => {
 		this.setState({
 			...this.state,
 			showMsgBox: false,
-			deleteId: null
+			deleteIdPurchase: null
 		});
 	}
 
     componentWillUpdate(nextProps, nextState) {
         if (this.state.page !== nextState.page) {
-            this.props.fetchExpense(nextState);
+            this.props.fetchPurchase(nextState);
         }
 
         if (this.state.perpage !== nextState.perpage) {
-            this.props.fetchExpense(nextState);
-        }
+            this.props.fetchPurchase(nextState);
+		}
+		
+		if (this.state.ordering !== nextState.ordering) {
+			this.props.fetchPurchase(nextState);
+		}
 
-        if (this.state.startDate !== nextState.startDate) {
-            this.props.fetchExpense(nextState);
+		if (this.state.startDate !== nextState.startDate) {
+            this.props.fetchPurchase(nextState);
         }
 
         if (this.state.endDate !== nextState.endDate) {
-            this.props.fetchExpense(nextState);
+            this.props.fetchPurchase(nextState);
 		}
-	}
-	
+    }
     
     componentDidUpdate = (prevProps, prevState) => {
 
-		if (prevProps.error !== this.props.error) {
+        if (prevProps.error !== this.props.error) {
             if (!this.props.fetched) {
                 if (this.props.error) {
                     const { toastManager } = this.props;
@@ -151,83 +157,86 @@ class Expense extends React.Component {
 					appearance: 'success',
 					autoDismiss: true
 				});
-				this.props.fetchExpense(this.state);
+				this.props.fetchPurchase(this.state);
 			}
 		}
     }
 
     componentDidMount = () => {
-        this.props.fetchExpense(this.state)
-    }
-
+        this.props.fetchPurchase(this.state)
+	}	
+	
 	render() {
-		const {payload, fetching} = this.props;
+		const {payload, error, fetching} = this.props;
+		
+		if (!sessionStorage.getItem('token')) return <Redirect to="/login" />
+		if (error && error.status === 500) return <Error500 message={error.data.message} />
+
 		const {ordering} = this.state;
-		const theads = [
-			{name: 'reference', value: 'Reference', sortable: true},
-			{name:'created_at', value: 'Date', sortable: true},
-			{ name: 'amount', value: 'Amount', sortable: true },
-			{ name: 'note', value: 'Note', sortable: true },
-			{ name: 'in_charge', value: 'In Charge', sortable: true },
-			{ name: 'evidence', value: 'Evidence', sortable: true },
-			{ name: 'options', value: 'Options', sortable: false },
-		]
-		const expenses = payload.data && payload.data.data.map(expense => {
-			return (
-				<tr key={expense._id}>
-					<td>
-						<strong>{ expense.reference }</strong>
-					</td>
-					<td>{ moment(expense.created_at).format('ll') }</td>
-					<td>{ expense.amount_formatted }</td>
-					<td>{ expense.notes }</td>
-					<td>{ expense.user && expense.user.name }</td>
-					<td><a download={expense.evidence} href={ expense.file }>{ expense.evidence }</a></td>
-					<td className="text-center">
-						<Link data-tip="Edit" className="btn btn-link text-success btn-sm  py-0 px-0 pr-4" to={`expense/edit/${expense._id}`}>
-							<i className="mdi mdi-pencil"></i>
-						</Link>
-						<button data-tip="Delete" onClick={ () => this.handleClickDelete(expense._id) } className="btn btn-link text-danger btn-sm  py-0 px-0 pr-4">
-							<i className="mdi mdi-delete"></i>
-						</button>
-						<ReactTooltip/>
-					</td>
-				</tr>
-			)
-		}) 		
+        const theads = [
+            {name:'reference', 'value': 'Reference', sortable: true},
+            {name:'created_at', value: 'Date', sortable: true},
+            {name:'supplier_name', 'value': 'Supplier', sortable: true},
+            {name:'user_name', 'value': 'In Charge', sortable: true},
+            {name:'evidence', 'value': 'Evidence', sortable: true},
+            {name:'total', 'value': 'Total', sortable: true},
+            {name:'option', 'value': 'Options', sortable: false}
+        ];
+
+		const purchases = payload.data && payload.data.data.map(purchase => {
+            return (
+            <tr key={purchase._id}>
+                <td>
+                    <strong>{ purchase.reference }</strong>
+                </td>
+                <td>{ moment(purchase.created_at).format('ll') }</td>
+				<td>{ purchase.supplier && purchase.supplier.name }</td>				
+				<td>{ purchase.user && purchase.user.name }</td>
+                <td><a download={purchase.evidence} href={ purchase.file }>{ purchase.evidence }</a></td>
+                <td className="text-right">{ purchase.total_formatted }</td>
+				<td className="text-center">
+					<Link data-tip="Edit" to={`/purchase/edit/${purchase._id}`} className="btn btn-link text-success btn-sm  py-0 px-0 pr-4"><i className="mdi mdi-pencil"></i></Link>
+					<Link data-tip="View" to={`/purchase/view/${purchase._id}`} className="btn btn-link text-info btn-sm  py-0 px-0 pr-4"><i className="mdi mdi-eye"></i></Link>
+                    <button data-tip="Delete" onClick={() => this.handleClickDelete(purchase._id)} className="btn btn-link text-danger btn-sm  py-0 px-0"><i className="mdi mdi-delete"></i></button>
+					<ReactTooltip/>
+				</td>
+            </tr>
+            );
+		});
+
 
 		return (
 			<Container fluid className="main-content-container px-4">
 				<Loading
-						show={fetching}
-						color="blue"
-						showSpinner={false}
-						/>
+					show={fetching}
+					color="blue"
+					showSpinner={false}
+					/>
 				<Helmet>
-					<title>Expense | {appName} </title>
+					<title>Purchase | {appName} </title>
 				</Helmet>
 				<Row noGutters className="page-header py-4">
-					<PageTitle sm="4" title="Expense" className="text-sm-left" />
+					<PageTitle sm="4" title="Purchase"  className="text-sm-left" />
 				</Row>
 				<Row>
 					{
-							this.state.showMsgBox &&
-							(
-								<ScrollToTop>
-									<div className="messagebox">
-										<p className="mb-5">Are you sure want to delete this data?</p>
-										<button className="btn btn-secondary mr-4" onClick={this.handleClickYes}>Yes</button>
-										<button className="btn btn-white" onClick={this.handleClickNo}>No Cancel</button>
-									</div>
-									<div className="backdrop"></div>
-								</ScrollToTop>
-							)
-						}
+						this.state.showMsgBox &&
+						(
+							<ScrollToTop>
+								<div className="messagebox">
+									<p className="mb-5">Are you sure want to delete this data?</p>
+									<button className="btn btn-secondary mr-4" onClick={this.handleClickYes}>Yes</button>
+									<button className="btn btn-white" onClick={this.handleClickNo}>No Cancel</button>
+								</div>
+								<div className="backdrop"></div>
+							</ScrollToTop>
+						)
+					}
 					<Col>
 						<Card small className="mb-4">
 							<CardBody className="p-0 pb-3">
 								<div className="col-md-12 mt-4">
-									<div className="row">
+                                    <div className="row">
                                         <div className="col-md-6">
                                             <div className="row">
                                                 <div className="col-md-6">
@@ -281,14 +290,15 @@ class Expense extends React.Component {
 													</div>
 												</form>
 											</div>
-                                            <Link to="/expense/create" className="btn btn-secondary mr-2">
+                                            <Link to="/purchase/create" className="btn btn-secondary mr-2">
                                                 <i className="mdi mdi-plus" /> Add
                                             </Link>
 										</div>
 									</div>
 								</div>
 								<div className="col-md-12 mt-3">
-								<Table theads={theads} ordering={ordering} handleSorting={this.handleSorting}>
+
+									<Table theads={theads} ordering={ordering} handleSorting={this.handleSorting}>
 										{ 
 											fetching ? 
 											(
@@ -297,18 +307,19 @@ class Expense extends React.Component {
 												</tr>
 											)
 											:
-											payload.data && payload.data.data.length > 0 ? expenses : (
+											payload.data && payload.data.data.length > 0 ? purchases : (
 												<tr>
 													<td className="text-center" colSpan="7">Data not found</td>
 												</tr>
 										) }
 									</Table>
+
 								</div>
 
 								<div className="col-md-12 py-3">
 									<div className="row">
 										<div className="col-md-10">
-										{ payload.data && payload.data.total > 1 && (
+											{ payload.data && payload.data.total > 1 && (
 												<p>Showing { payload.data && payload.data.from.toLocaleString() } to { payload.data && payload.data.to.toLocaleString() } of { payload.data && payload.data.total.toLocaleString() } record(s)</p>
 
 											)}
@@ -370,19 +381,20 @@ class Expense extends React.Component {
 const mapStateToProps = (state) => {
     return {
         ...state,
-        payload: state.expense.payload,
-        error: state.expense.error,
-		fetching: state.expense.fetching,
-		message: state.expense.message,
-		isDeleted: state.expense.isDeleted
+        payload: state.purchase.payload,
+        error: state.purchase.error,
+		fetching: state.purchase.fetching,
+		message: state.purchase.message,
+		saved: state.purchase.saved,
+		isDeleted: state.purchase.isDeleted
     }
 }
 
 const mapDispatchToProps = (dispatch) => {
 	return {
-		fetchExpense: (filter) => dispatch(fetchExpense(filter)),
-		deleteExpense: (id) => dispatch(deleteExpense(id))
+		fetchPurchase: (filter) => dispatch(fetchPurchase(filter)),
+		deletePurchase: (id) => dispatch(deletePurchase(id))
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(withToastManager(Expense));
+export default connect(mapStateToProps, mapDispatchToProps)(withToastManager(Purchase));

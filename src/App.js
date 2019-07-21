@@ -8,6 +8,7 @@ import Error404 from './views/Error404';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './shards-dashboard/styles/shards-dashboards.1.3.1.min.css';
+// import './shards-dashboard/styles/accents/warning.1.1.0.css';
 import './assets/custom.css';
 import ScrollToTop from './components/layout/ScrollToTop';
 import { ToastProvider } from 'react-toast-notifications';

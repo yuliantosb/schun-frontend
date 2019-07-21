@@ -14,6 +14,9 @@ import passwordReducer from "./passwordReducer";
 import discountReducer from "./discountReducer";
 import productReducer from "./productReducer";
 import salesReducer from "./salesReducer";
+import dashboardReducer from "./dashboardReducer";
+import purchaseReducer from "./purchaseReducer";
+import stockOpnameReducer from "./stockOpnameReducer";
 
 
 const rootReducer = combineReducers({
@@ -31,7 +34,10 @@ const rootReducer = combineReducers({
     password: passwordReducer,
     discount: discountReducer,
     product: productReducer,
-    sales: salesReducer
+    sales: salesReducer,
+    dashboard: dashboardReducer,
+    purchase: purchaseReducer,
+    stock: stockOpnameReducer
 });
 
 export default rootReducer;

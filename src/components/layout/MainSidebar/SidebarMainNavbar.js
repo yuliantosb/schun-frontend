@@ -26,11 +26,11 @@ class SidebarMainNavbar extends React.Component {
           type="light"
         >
           <NavbarBrand
-            className="w-100 mr-0"
+            className="w-100 mr-0 p-0"
             href="#"
             style={{ lineHeight: "25px" }}
           >
-            <div className="d-table m-auto">
+            <div className="d-table m-auto p-0">
               <img
                 id="main-logo"
                 className="main-logo-custom"

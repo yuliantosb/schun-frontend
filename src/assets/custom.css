@@ -202,7 +202,7 @@ button:focus {
     width: 5rem !important;
 }
 .main-logo-custom {
-    width: 40px !important;
+    width: 90px !important;
 }
 
 .main-navbar__search .brand {
@@ -327,4 +327,8 @@ button:focus {
 
 .table-scrollable thead > tr > th {
     border-top: none;
+}
+
+.Select-menu-outer {
+    z-index: 999 !important;
 }
