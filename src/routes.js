@@ -53,6 +53,7 @@ import ViewPurchase from "./views/ViewPurchase";
 import EditPurchase from "./views/EditPurchase";
 import StockOpname from "./views/StockOpname";
 import ViewStock from "./views/ViewStock";
+import ReportSales from "./views/ReportSales";
 
 export default [
   {
@@ -327,5 +328,10 @@ export default [
     path: "/stock-opname/view/:id",
     layout: DefaultLayout,
     component: ViewStock
+  },
+  {
+    path: "/report-sales",
+    layout: BlankLayout,
+    component: ReportSales
   }
 ];
