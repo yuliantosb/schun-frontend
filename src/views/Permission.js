@@ -1,12 +1,11 @@
 import React from 'react';
-import { Container, Row, Col, Card, CardHeader, CardBody, Alert } from 'shards-react';
+import { Container, Row, Col, Card, CardBody, Alert } from 'shards-react';
 import PageTitle from '../components/common/PageTitle';
 import '../assets/range-date-picker.css';
 import { Link, Redirect } from 'react-router-dom';
 import { appName } from '../global';
 import { Helmet } from 'react-helmet';
 import Error500 from './Error500';
-import moment from 'moment';
 import { fetchPermission, deletePermission } from '../store/actions/permissionAction';
 import {connect} from 'react-redux';
 import Loading from 'react-loading-bar';

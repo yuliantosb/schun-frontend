@@ -1,5 +1,4 @@
 import React from 'react';
-import Logo from '../images/shards-dashboards-logo.svg';
 import { Link } from 'react-router-dom';
 import { appName } from '../global';
 import { Helmet } from 'react-helmet';
@@ -48,7 +47,7 @@ class ForgotPassword extends React.Component {
         }
     }
     render() {
-        const { fetching, saved, error } = this.props;
+        const { fetching, error } = this.props;
         const setting = this.props.setting.setting.data;
         if (error && error.status === 500) return <Error500 message={error.data.message} />
         return (

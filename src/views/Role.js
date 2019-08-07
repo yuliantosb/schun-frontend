@@ -1,5 +1,5 @@
 import React from 'react';
-import { Container, Row, Col, Card, CardHeader, CardBody, Alert } from 'shards-react';
+import { Container, Row, Col, Card, CardBody, Alert } from 'shards-react';
 import PageTitle from '../components/common/PageTitle';
 import '../assets/range-date-picker.css';
 import { Link, Redirect } from 'react-router-dom';
@@ -7,7 +7,6 @@ import { appName } from '../global';
 import { Helmet } from 'react-helmet';
 import {connect} from 'react-redux';
 import { fetchRole, deleteRole } from '../store/actions/roleActions';
-import moment from 'moment';
 import Error500 from './Error500';
 import Loading from 'react-loading-bar';
 import ScrollToTop from '../components/layout/ScrollToTop';

@@ -112,15 +112,19 @@ export default function() {
       htmlBefore: '<i class="mdi mdi-content-paste"></i>',
       children: [
         {
-          title: "Report Sales",
+          title: "Sales Report",
           to: "/report-sales",
         },
         {
-          title: "Report Purchase / Expense",
+          title: "Purchase Report",
           to: "/report-purchase",
         },
         {
-          title: "Report Stock",
+          title: "Expense Report",
+          to: "/report-expense",
+        },
+        {
+          title: "Stock Report",
           to: "/report-stock",
         },
       ]

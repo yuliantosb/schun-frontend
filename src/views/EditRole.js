@@ -1,11 +1,11 @@
 import React from 'react';
-import { Container, Row, Col, Card, CardHeader, CardBody, FormCheckbox } from 'shards-react';
+import { Container, Row, Col, Card, CardBody, FormCheckbox } from 'shards-react';
 import PageTitle from '../components/common/PageTitle';
 import '../assets/range-date-picker.css';
 import { appName } from '../global';
 import { Helmet } from 'react-helmet';
 import { connect } from 'react-redux';
-import { getPermission, saveRole, getRole, updateRole } from '../store/actions/roleActions';
+import { getPermission, getRole, updateRole } from '../store/actions/roleActions';
 import Error500 from './Error500';
 import {Redirect} from 'react-router-dom';
 import Loading from 'react-loading-bar';
@@ -44,7 +44,7 @@ class EditRole extends React.Component {
 
     componentWillUpdate = (nextProps) => {
         
-        if (nextProps != this.props) {
+        if (nextProps !== this.props) {
             if (nextProps.data) {
                 this.setState({
                     ...this.state,

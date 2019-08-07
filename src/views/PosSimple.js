@@ -1,24 +1,20 @@
 import React from 'react';
 import { Container, Row, Col, Card, CardHeader } from 'shards-react';
-import { Redirect, Link } from 'react-router-dom';
+import { Redirect } from 'react-router-dom';
 import Error500 from './Error500';
 import Helmet from 'react-helmet';
 import Loading from 'react-loading-bar';
 import { appName, url } from '../global';
 import PageTitle from '../components/common/PageTitle';
-import AsyncSelect from 'react-select/async';
 import Axios from 'axios';
-import { customerStyles } from '../utils/selectStyle';
-import PhotoDefault from '../images/sales-overview/no-product-image.jpg';
 import { withToastManager } from 'react-toast-notifications';
-import { fetchProduct } from '../store/actions/productAction';
 import { connect } from 'react-redux';
 import AutoComplete from '../components/common/AutoComplete';
 import NumberFormat from 'react-number-format';
 import Modal from 'react-bootstrap4-modal';
 import Datetime from 'react-datetime';
 import '../../node_modules/react-datetime/css/react-datetime.css';
-import { saveSales, getCart } from '../store/actions/salesAction';
+import { saveSales } from '../store/actions/salesAction';
 import moment from 'moment';
 
 class PosSimple extends React.Component {
@@ -301,7 +297,7 @@ class PosSimple extends React.Component {
 		
 		const setting = this.props.setting.setting.data;
 		const { carts } = this.state;
-		const { fetching, error, payload } = this.props;
+		const { fetching, error } = this.props;
 		const subtotal = Object.keys(carts).reduce((total, key) => total + carts[key].subtotal, 0);
 		const total = subtotal + (this.state.taxes ? this.state.taxes : 0) - (this.state.discount ? this.state.discount : 0);
 		if (!sessionStorage.getItem('token')) return <Redirect to="/login" />;
@@ -520,27 +516,6 @@ class PosSimple extends React.Component {
 		);
 	}
 }
-
-const filterInCharge = (users) => {
-	const options = users.map((user) => {
-		return { label: user.name, value: user._id };
-	});
-
-	return options;
-};
-
-const promiseOptions = (inputValue, callback) => {
-	Axios.get(`${url}/sales/customer`, {
-		params: {
-			name: inputValue
-		},
-		headers: {
-			Authorization: `Bearer ${sessionStorage.getItem('token')}`
-		}
-	}).then((response) => {
-		callback(filterInCharge(response.data.data));
-	});
-};
 
 const mapStateToProps = (state) => {
 	return {

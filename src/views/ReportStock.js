@@ -1,60 +1,40 @@
 import React from 'react';
-import { Container, Row, Col, Card, CardBody } from 'shards-react';
+import { Container, Row, Col, Card, CardBody, DatePicker } from 'shards-react';
 import PageTitle from '../components/common/PageTitle';
 import '../assets/range-date-picker.css';
-import { Link, Redirect } from 'react-router-dom';
-import { appName } from '../global';
+import { Redirect } from 'react-router-dom';
+import { appName, url } from '../global';
 import { Helmet } from 'react-helmet';
 import { withToastManager } from 'react-toast-notifications';
-import { fetchStockOpname, updateStockOpname } from '../store/actions/stockOpnameActions';
+import { fetchStockItem } from '../store/actions/stockItemAction';
 import {connect} from 'react-redux';
 import Loading from 'react-loading-bar';
 import Error500 from './Error500';
 import Table from '../components/table/Table';
-import ReactTooltip from 'react-tooltip';
-import Modal from 'react-bootstrap4-modal';
+import moment from 'moment';
+import Axios from 'axios';
 
-class StockOpname extends React.Component {
+class ReportStock extends React.Component {
 	state = {
+		startDate: new Date(),
+		endDate: new Date(),
         search: null,
         page: 1,
         perpage: 10,
 		keyword: null,
 		alert: true,
 		alertMsgBox: false,
-		deleteIdStockOpname: null,
 		showMsgBox: false,
 		isDeleted: false,
 		ordering: {
-            type: 'name',
+            type: 'created_at',
             sort: 'asc'
-		},
+        },
 		modal: false,
-		currentStock: null,
-		id: null,
-		stock: null,
-		notes: ''
-	}
-	
-	modalBackdropClicked = () => {
-		this.setState({
-			...this.state,
-			modal: false,
-			id: '',
-			currentStock: ''
-		});
+		download: false
 	}
 
-	handleAdjust = (id, stock) => {
-		this.setState({
-			...this.state,
-			modal: true,
-			id: id,
-			currentStock: stock
-		});
-	}
-    
-    handleStartDateChange = (value) => {
+	handleStartDateChange = (value) => {
         this.setState({
             ...this.state,
             startDate: new Date(value)
@@ -89,7 +69,7 @@ class StockOpname extends React.Component {
 
 	handleSubmitKeyword = (e) => {
 		e.preventDefault();
-		this.props.fetchStockOpname(this.state);
+		this.props.fetchStockItem(this.state);
 	}
 
 	handleClickPage = (e) => {
@@ -104,39 +84,28 @@ class StockOpname extends React.Component {
             ...this.state,
             perpage: e.target.value
         });
-	}
-	
-	handleChangeStock = (e) => {
-		this.setState({
-			...this.state,
-			stock: e.target.value
-		});
-	}
-
-	handleChange = (e) => {
-		this.setState({
-			...this.state,
-			[e.target.id]: e.target.value
-		});
-	}
-
-	handleSubmit = (e) => {
-		e.preventDefault();
-		this.props.updateStockOpname(this.state.id, this.state);
-		this.modalBackdropClicked();
-	}
+    }
+    
     
     componentWillUpdate(nextProps, nextState) {
         if (this.state.page !== nextState.page) {
-            this.props.fetchStockOpname(nextState);
+            this.props.fetchStockItem(nextState);
         }
 
         if (this.state.perpage !== nextState.perpage) {
-            this.props.fetchStockOpname(nextState);
+            this.props.fetchStockItem(nextState);
 		}
 		
 		if (this.state.ordering !== nextState.ordering) {
-			this.props.fetchStockOpname(nextState);
+			this.props.fetchStockItem(nextState);
+		}
+
+		if (this.state.startDate !== nextState.startDate) {
+			this.props.fetchStockItem(nextState);
+		}
+
+		if (this.state.endDate !== nextState.endDate) {
+			this.props.fetchStockItem(nextState);
 		}
     }
     
@@ -154,51 +123,74 @@ class StockOpname extends React.Component {
             }
 		}
 		
-		if (prevProps.isUpdated !== this.props.isUpdated) {
-			if (this.props.isUpdated) {
+		if (prevProps.isDeleted !== this.props.isDeleted) {
+			if (this.props.isDeleted) {
 				const { toastManager } = this.props;
 				toastManager.add(this.props.message, {
 					appearance: 'success',
 					autoDismiss: true
 				});
-				this.props.fetchStockOpname(this.state);
+				this.props.fetchStockItem(this.state);
 			}
 		}
     }
+	
+	handleDownload = async () => {
+
+		this.setState({
+			...this.state,
+			download: true
+		});
+
+		await Axios.post(`${url}/report/stock`, {
+			start_date: moment(this.state.startDate).format('YYYY-MM-DD'),
+			end_date: moment(this.state.endDate).format('YYYY-MM-DD')
+		}, {
+			responseType: 'blob',
+			headers: {
+				Authorization: `Bearer ${sessionStorage.getItem('token')}`
+			}
+		}).then(response => {
+			
+			this.setState({
+				...this.state,
+				download: false
+			});
+
+			const file = new Blob(
+				[response.data], 
+				{type: 'application/pdf'});
+			const fileURL = URL.createObjectURL(file);
+			window.open(fileURL);
+		  
+		})
+	}
 
     componentDidMount = () => {
-        this.props.fetchStockOpname(this.state)
+        this.props.fetchStockItem(this.state)
 	}	
 	
 	render() {
-		const {payload, error, fetching} = this.props;
+        const {payload, error, fetching} = this.props;
 		
 		if (!sessionStorage.getItem('token')) return <Redirect to="/login" />
 		if (error && error.status === 500) return <Error500 message={error.data.message} />
 
 		const {ordering} = this.state;
         const theads = [
-            {name:'name', 'value': 'Product', sortable: true},
-            {name:'stock', value: 'Stock', sortable: true},
-            {name:'total_sales', 'value': 'Total Sales (Today)', sortable: false},
-            {name:'total_purchase', 'value': 'Total Purchase (Today)', sortable: false},
-            {name:'option', 'value': 'Options', sortable: false}
+            {name:'created_at', 'value': 'Date', sortable: false},
+            {name:'product_bane', 'value': 'Product', sortable: false},
+            {name:'description', 'value': 'Description', sortable: false},
+            {name:'amount', 'value': 'Amount', sortable: false}
         ];
 
-		const stocks = payload.data && payload.data.data.map(stock => {
+		const stockitems = payload.data && payload.data.data.map(stockitem => {
             return (
-            <tr key={stock._id}>
-                <td>
-                    <strong>{ stock.name }</strong>
-                </td>
-                <td className="text-center">{ stock.stock.amount }</td>
-				<td className="text-center">{ stock.total_sales }</td>				
-				<td className="text-center">{ stock.total_purchase }</td>
-				<td className="text-center">
-					<Link data-tip="View" to={`/stock-opname/view/${stock._id}`} className="btn btn-link text-info btn-sm  py-0 px-0 pr-4"><i className="mdi mdi-eye"></i></Link>
-                    <button data-tip="Adjust" onClick={() => this.handleAdjust(stock._id, stock.stock.amount) } className="btn btn-link text-success btn-sm  py-0 px-0"><i className="mdi mdi-tune"></i></button>
-					<ReactTooltip/>
-				</td>
+            <tr key={stockitem._id}>
+				<td>{ moment(stockitem.created_at).format('ll') }</td>
+				<td>{ stockitem.stock && stockitem.stock.product && stockitem.stock.product.name }</td>
+                <td>{ stockitem.description }</td>
+                <td className="text-right">{ stockitem.type === 'induction' ? <span className="text-success">+{stockitem.amount}</span> : <span className="text-danger">-{stockitem.amount}</span> }</td>
             </tr>
             );
 		});
@@ -212,58 +204,47 @@ class StockOpname extends React.Component {
 					showSpinner={false}
 					/>
 				<Helmet>
-					<title>Stock Opname | {appName} </title>
+					<title>Report Stock Item | {appName} </title>
 				</Helmet>
+
+
 				<Row noGutters className="page-header py-4">
-					<PageTitle sm="4" title="StockOpname"  className="text-sm-left" />
+					<PageTitle sm="4" title="Report Stock Item"  className="text-sm-left" />
 				</Row>
 				<Row>
-					<Modal visible={this.state.modal} onClickBackdrop={this.modalBackdropClicked}>
-						<form onSubmit={this.handleSubmit}>
-							<div className="modal-header">
-							<h5 className="modal-title">Adjust Stock</h5>
-							</div>
-							<div className="modal-body py-0 pt-2 px-4">
-								<div className="row">
-									<div className="col-md-12">
-										<div className="form-group">
-											<label className="control-label">Stock <span className="text-danger">*</span></label>
-											<input id="stock" onChange={this.handleChangeStock} type="text" className={`form-control ${ error && error.data.errors.stock && 'is-invalid' }`} placeholder="0" />
-											{ 
-												error && error.data.errors.stock && <div className="invalid-feedback">{ error.data.errors.stock[0] }</div>
-											}
-											<span className="help-block">
-												<small className="text-muted">Use (-) to deduct the stock</small>
-											</span>
-											<p className="text-primary">Current Stock : { !isNaN(parseInt(this.state.stock)) ? parseInt(this.state.stock) + this.state.currentStock : this.state.currentStock }</p>
-										</div>
-										<div className="form-group">
-											<label className="control-label">Notes <span className="text-danger">*</span></label>
-											<textarea id="notes" rows="5" className={`form-control ${ error && error.data.errors.notes && 'is-invalid' }`} onChange={this.handleChange}></textarea>
-											{ 
-												error && error.data.errors.notes && <div className="invalid-feedback">{ error.data.errors.notes[0] }</div>
-											}
-										</div>
-									</div>
-								</div>
-							</div>
-							<div className="modal-footer">
-							<button type="button" className="btn btn-default" onClick={this.modalBackdropClicked}>
-								Close
-							</button>
-							<button type="submit" className="btn btn-secondary" onClick={this.handleUpdateStock}>
-								Save Changes
-							</button>
-							</div>
-						</form>
-					</Modal>
+					
 					<Col>
 						<Card small className="mb-4">
 							<CardBody className="p-0 pb-3">
 								<div className="col-md-12 mt-4">
-                                    <div className="row">
+								<div className="row">
                                         <div className="col-md-6">
-                                            
+                                            <div className="row">
+                                                <div className="col-md-6">
+                                                    <div className="form-group">
+                                                        <label className="control-l">Date From</label>
+                                                        <DatePicker
+                                                            size="md"
+                                                            selected={this.state.startDate}
+                                                            onChange={this.handleStartDateChange}
+                                                            placeholderText="Date From"
+                                                            dropdownMode="select"
+                                                        />
+                                                    </div>
+                                                </div>
+                                                <div className="col-md-6">
+                                                    <div className="form-group">
+                                                        <label className="control-l">Date To</label>
+                                                        <DatePicker
+                                                            size="md"
+                                                            selected={this.state.endDate}
+                                                            onChange={this.handleEndDateChange}
+                                                            placeholderText="Date To"
+                                                            dropdownMode="select"
+                                                        />
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
 										<div className="col-md-4 offset-md-2 text-right">
 											<div className="input-group mb-3">
@@ -290,6 +271,18 @@ class StockOpname extends React.Component {
 													</div>
 												</form>
 											</div>
+											{
+												this.state.download ? (
+													<button className="btn btn-secondary btn-disabled" disabled>
+														<i className="mdi mdi-timer-sand"></i> Loading...
+													</button>
+												) : (
+													<button className="btn btn-secondary" onClick={this.handleDownload}>
+														<i className="mdi mdi-download"></i> Download
+													</button>
+												)
+											}
+                                            
 										</div>
 									</div>
 								</div>
@@ -300,13 +293,13 @@ class StockOpname extends React.Component {
 											fetching ? 
 											(
 												<tr>
-													<td className="text-center" colSpan="7">Loading...</td>
+													<td className="text-center" colSpan="8">Loading...</td>
 												</tr>
 											)
 											:
-											payload.data && payload.data.data.length > 0 ? stocks : (
+											payload.data && payload.data.data.length > 0 ? stockitems : (
 												<tr>
-													<td className="text-center" colSpan="7">Data not found</td>
+													<td className="text-center" colSpan="8">Data not found</td>
 												</tr>
 										) }
 									</Table>
@@ -378,20 +371,19 @@ class StockOpname extends React.Component {
 const mapStateToProps = (state) => {
     return {
         ...state,
-        payload: state.stock.payload,
-        error: state.stock.error,
-		fetching: state.stock.fetching,
-		message: state.stock.message,
-		saved: state.stock.saved,
-		isUpdated: state.stock.isUpdated
+        payload: state.stockitem.payload,
+        error: state.stockitem.error,
+		fetching: state.stockitem.fetching,
+		message: state.stockitem.message,
+		saved: state.stockitem.saved,
+		isDeleted: state.stockitem.isDeleted
     }
 }
 
 const mapDispatchToProps = (dispatch) => {
 	return {
-		fetchStockOpname: (filter) => dispatch(fetchStockOpname(filter)),
-		updateStockOpname: (id, data) => dispatch(updateStockOpname(id, data))
+		fetchStockItem: (filter) => dispatch(fetchStockItem(filter))		
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(withToastManager(StockOpname));
+export default connect(mapStateToProps, mapDispatchToProps)(withToastManager(ReportStock));

@@ -29,7 +29,6 @@ const savePurchase = (data) => {
             type: 'SAVE_PURCHASE',
             payload: Axios.post(`${url}/purchase`, {
                 subtotal: data.subtotal,
-                tax: data.tax,
                 discount: data.discount,
                 file: data.file,
                 evidence: data.evidence,
@@ -71,7 +70,6 @@ const updatePurchase = (id, data) => {
             type: 'UPDATE_PURCHASE',
             payload: Axios.put(`${url}/purchase/${id}`, {
                 subtotal: data.subtotal,
-                tax: data.tax,
                 discount: data.discount,
                 file: data.file,
                 evidence: data.evidence,

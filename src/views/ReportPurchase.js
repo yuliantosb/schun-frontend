@@ -7,7 +7,7 @@ import { appName, url } from '../global';
 import { Helmet } from 'react-helmet';
 import ScrollToTop from '../components/layout/ScrollToTop';
 import { withToastManager } from 'react-toast-notifications';
-import { fetchSales, deleteSales } from '../store/actions/salesAction';
+import { fetchPurchase, deletePurchase } from '../store/actions/purchaseActions';
 import {connect} from 'react-redux';
 import Loading from 'react-loading-bar';
 import Error500 from './Error500';
@@ -16,7 +16,7 @@ import Modal from 'react-bootstrap4-modal';
 import moment from 'moment';
 import Axios from 'axios';
 
-class ReportSales extends React.Component {
+class ReportPurchase extends React.Component {
 	state = {
 		startDate: new Date(),
 		endDate: new Date(),
@@ -71,7 +71,7 @@ class ReportSales extends React.Component {
 
 	handleSubmitKeyword = (e) => {
 		e.preventDefault();
-		this.props.fetchSales(this.state);
+		this.props.fetchPurchase(this.state);
 	}
 
 	handleClickPage = (e) => {
@@ -91,7 +91,7 @@ class ReportSales extends React.Component {
     handleClickDelete = (id) => {
 		this.setState({
 			...this.state,
-			deleteIdSales: id,
+			deleteIdPurchase: id,
 			showMsgBox: true
 		});
 	}
@@ -105,36 +105,36 @@ class ReportSales extends React.Component {
 			isDeleted: true
 		});
 
-		this.props.deleteSales(this.state.deleteIdSales);
+		this.props.deletePurchase(this.state.deleteIdPurchase);
 	}
 
 	handleClickNo = () => {
 		this.setState({
 			...this.state,
 			showMsgBox: false,
-			deleteIdSales: null
+			deleteIdPurchase: null
 		});
 	}
 
     componentWillUpdate(nextProps, nextState) {
         if (this.state.page !== nextState.page) {
-            this.props.fetchSales(nextState);
+            this.props.fetchPurchase(nextState);
         }
 
         if (this.state.perpage !== nextState.perpage) {
-            this.props.fetchSales(nextState);
+            this.props.fetchPurchase(nextState);
 		}
 		
 		if (this.state.ordering !== nextState.ordering) {
-			this.props.fetchSales(nextState);
+			this.props.fetchPurchase(nextState);
 		}
 
 		if (this.state.startDate !== nextState.startDate) {
-			this.props.fetchSales(nextState);
+			this.props.fetchPurchase(nextState);
 		}
 
 		if (this.state.endDate !== nextState.endDate) {
-			this.props.fetchSales(nextState);
+			this.props.fetchPurchase(nextState);
 		}
     }
     
@@ -159,7 +159,7 @@ class ReportSales extends React.Component {
 					appearance: 'success',
 					autoDismiss: true
 				});
-				this.props.fetchSales(this.state);
+				this.props.fetchPurchase(this.state);
 			}
 		}
     }
@@ -185,7 +185,7 @@ class ReportSales extends React.Component {
 			download: true
 		});
 
-		await Axios.post(`${url}/report/sales`, {
+		await Axios.post(`${url}/report/purchase`, {
 			start_date: moment(this.state.startDate).format('YYYY-MM-DD'),
 			end_date: moment(this.state.endDate).format('YYYY-MM-DD')
 		}, {
@@ -204,13 +204,13 @@ class ReportSales extends React.Component {
 				[response.data], 
 				{type: 'application/pdf'});
 			const fileURL = URL.createObjectURL(file);
-			window.open(fileURL);
+            window.open(fileURL);
 		  
 		})
 	}
 
     componentDidMount = () => {
-        this.props.fetchSales(this.state)
+        this.props.fetchPurchase(this.state)
 	}	
 	
 	render() {
@@ -222,24 +222,26 @@ class ReportSales extends React.Component {
 		const {ordering} = this.state;
         const theads = [
             {name:'created_at', 'value': 'Date', sortable: false},
+            {name:'reference', 'value': 'Reference', sortable: false},
+            {name:'user_name', 'value': 'In charge', sortable: false},
+            {name:'supplier_name', 'value': 'Supplier', sortable: false},
             {name:'subtotal', 'value': 'Subtotal', sortable: false},
             {name:'tax', 'value': 'Tax', sortable: false},
             {name:'discount', 'value': 'Discount', sortable: false},
             {name:'total', 'value': 'Total', sortable: false},
-            {name:'payment_type', 'value': 'Payment Type', sortable: false},
-            {name:'is_hold', 'value': 'Status', sortable: false}
         ];
 
-		const saleses = payload.data && payload.data.data.map(sales => {
+		const purchases = payload.data && payload.data.data.map(purchase => {
             return (
-            <tr key={sales._id}>
-				<td>{ moment(sales.created_at).format('ll') }</td>
-				<td className="text-right">{ sales.subtotal_formatted }</td>
-				<td className="text-right">{ sales.tax_formatted }</td>				
-				<td className="text-right">{ sales.discount_formatted }</td>
-				<td className="text-right">{ sales.total_formatted }</td>
-				<td>{ sales.payment_type === 'cash' ? 'Cash' : 'Credit or Debit' }</td>
-                <td>{ sales.is_hold ? (<span className="badge badge-warning">Hold</span>) : (<span className="badge badge-success">Finish</span>) }</td>
+            <tr key={purchase._id}>
+				<td>{ moment(purchase.created_at).format('ll') }</td>
+                <td>{ purchase.reference }</td>
+                <td>{ purchase.user && purchase.user.name }</td>
+                <td>{ purchase.supplier && purchase.supplier.name }</td>
+				<td className="text-right">{ purchase.subtotal_formatted }</td>
+				<td className="text-right">{ purchase.tax_formatted }</td>				
+				<td className="text-right">{ purchase.discount_formatted }</td>
+				<td className="text-right">{ purchase.total_formatted }</td>
             </tr>
             );
 		});
@@ -253,12 +255,12 @@ class ReportSales extends React.Component {
 					showSpinner={false}
 					/>
 				<Helmet>
-					<title>Report Sales | {appName} </title>
+					<title>Report Purchase | {appName} </title>
 				</Helmet>
 
                 <Modal visible={this.state.modal} onClickBackdrop={this.modalBackdropClicked}>
                     <div className="modal-header">
-                        <h5 className="modal-title">Return sales</h5>
+                        <h5 className="modal-title">Return purchase</h5>
                     </div>
                     <div className="modal-body py-0 pt-2 px-4">
                         <div className="row">
@@ -274,14 +276,14 @@ class ReportSales extends React.Component {
                                 Close
                             </button>
                             <button type="button" className="btn btn-secondary" onClick={this.handlePayAndPrint}>
-                                Reutrn Sales
+                                Reutrn Purchase
                             </button>
                         </div>
                     </div>
                 </Modal>
 
 				<Row noGutters className="page-header py-4">
-					<PageTitle sm="4" title="Report Sales"  className="text-sm-left" />
+					<PageTitle sm="4" title="Report Purchase"  className="text-sm-left" />
 				</Row>
 				<Row>
 					{
@@ -381,7 +383,7 @@ class ReportSales extends React.Component {
 												</tr>
 											)
 											:
-											payload.data && payload.data.data.length > 0 ? saleses : (
+											payload.data && payload.data.data.length > 0 ? purchases : (
 												<tr>
 													<td className="text-center" colSpan="8">Data not found</td>
 												</tr>
@@ -455,20 +457,20 @@ class ReportSales extends React.Component {
 const mapStateToProps = (state) => {
     return {
         ...state,
-        payload: state.sales.payload,
-        error: state.sales.error,
-		fetching: state.sales.fetching,
-		message: state.sales.message,
-		saved: state.sales.saved,
-		isDeleted: state.sales.isDeleted
+        payload: state.purchase.payload,
+        error: state.purchase.error,
+		fetching: state.purchase.fetching,
+		message: state.purchase.message,
+		saved: state.purchase.saved,
+		isDeleted: state.purchase.isDeleted
     }
 }
 
 const mapDispatchToProps = (dispatch) => {
 	return {
-		fetchSales: (filter) => dispatch(fetchSales(filter)),
-		deleteSales: (id) => dispatch(deleteSales(id))
+		fetchPurchase: (filter) => dispatch(fetchPurchase(filter)),
+		deletePurchase: (id) => dispatch(deletePurchase(id))
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(withToastManager(ReportSales));
+export default connect(mapStateToProps, mapDispatchToProps)(withToastManager(ReportPurchase));

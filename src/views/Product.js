@@ -164,28 +164,28 @@ class Product extends React.Component {
 		
 		if (e.target.files.length > 0) {
 
-			const toastManager = this.props.toastManager;
-			const file_size = e.target.files[0].size;
+			// const toastManager = this.props.toastManager;
+			// const file_size = e.target.files[0].size;
 			const file_name = e.target.files[0].name;
-			const file_type = e.target.files[0].type;
+			// const file_type = e.target.files[0].type;
 	
-			if (file_type !==  'application/wps-office.xls' && file_type !== 'application/wps-office.xlsx' && file_type !== 'text/csv') {
-				toastManager.add("file format is not supported", {
-					appearance: 'error',
-					autoDismiss: true
-				});
-				console.log(file_type);
-				e.preventDefault();
+			// if (file_type !==  'application/wps-office.xls' && file_type !== 'application/wps-office.xlsx' && file_type !== 'text/csv') {
+			// 	toastManager.add("file format is not supported", {
+			// 		appearance: 'error',
+			// 		autoDismiss: true
+			// 	});
+			// 	console.log(file_type);
+			// 	e.preventDefault();
 			
-			} else if (file_size >=  1000000) {
-				toastManager.add("file size too big", {
-					appearance: 'error',
-					autoDismiss: true
-				});
-				console.log(file_size);
-				e.preventDefault();
+			// } else if (file_size >=  1000000) {
+			// 	toastManager.add("file size too big", {
+			// 		appearance: 'error',
+			// 		autoDismiss: true
+			// 	});
+			// 	console.log(file_size);
+			// 	e.preventDefault();
 			
-			} else {
+			// } else {
 
 				const file = e.target.files[0];
 				const reader = new FileReader();
@@ -197,7 +197,7 @@ class Product extends React.Component {
 						import: file_name
 					})
 				}
-			}
+			// }
 	
 		}
 	}

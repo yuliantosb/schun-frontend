@@ -55,6 +55,9 @@ import StockOpname from "./views/StockOpname";
 import ViewStock from "./views/ViewStock";
 import PosSimple from "./views/PosSimple";
 import ReportSales from "./views/ReportSales";
+import ReportPurchase from "./views/ReportPurchase";
+import ReportExpense from "./views/ReportExpense";
+import ReportStock from "./views/ReportStock";
 
 export default [
   {
@@ -334,5 +337,20 @@ export default [
     path: "/report-sales",
     layout: DefaultLayout,
     component: ReportSales
+  },
+  {
+    path: "/report-purchase",
+    layout: DefaultLayout,
+    component: ReportPurchase
+  },
+  {
+    path: "/report-expense",
+    layout: DefaultLayout,
+    component: ReportExpense
+  },
+  {
+    path: "/report-stock",
+    layout: DefaultLayout,
+    component: ReportStock
   }
 ];

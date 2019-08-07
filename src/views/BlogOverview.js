@@ -4,15 +4,11 @@ import { Container, Row, Col } from "shards-react";
 import PageTitle from "./../components/common/PageTitle";
 import SmallStats from "./../components/common/SmallStats";
 import UsersOverview from "./../components/blog/UsersOverview";
-import UsersByDevice from "./../components/blog/UsersByDevice";
-import UsersByDick from "./../components/blog/UsersByDick";
-import TableDick from './../components/blog/TableDick';
 import {Redirect} from 'react-router-dom';
 import {Helmet} from 'react-helmet';
 import { appName } from "../global";
 import { daily } from "../store/actions/dashboardActions";
 import { connect } from "react-redux";
-import NumberFormat from "react-number-format";
 
 class BlogOverview extends React.Component {
   
@@ -25,7 +21,6 @@ class BlogOverview extends React.Component {
   }
 
   render() {
-    const setting = this.props.setting.setting.data;
     const sales = this.props.payload.data ? this.props.payload.data.sales : undefined;
     const expense_purchase = this.props.payload.data ? this.props.payload.data.expense_purchase : undefined;
     const net = this.props.payload.data ? this.props.payload.data.net : undefined;
@@ -33,7 +28,7 @@ class BlogOverview extends React.Component {
     const data = this.props.payload.sales ? this.props.payload.sales.data : [];
 
     if (!sessionStorage.getItem('token')) return (<Redirect to="/login" />)
-    const { smallStats } = this.props;
+  
     return (
       <Container fluid className="main-content-container px-4">
             <Helmet>
@@ -42,7 +37,6 @@ class BlogOverview extends React.Component {
         {/* Page Header */}
         <Row noGutters className="page-header py-4">
           <PageTitle title="Daily Report" subtitle="Dashboard" className="text-sm-left mb-3" />
-          <button className="btn btn-primary" onClick={this.handleClickMe}>Click me</button>
         </Row>
 
         {/* Small Stats Blocks */}

@@ -17,6 +17,7 @@ import salesReducer from "./salesReducer";
 import dashboardReducer from "./dashboardReducer";
 import purchaseReducer from "./purchaseReducer";
 import stockOpnameReducer from "./stockOpnameReducer";
+import stockItemReducer from "./stockItemReducer";
 
 
 const rootReducer = combineReducers({
@@ -37,7 +38,8 @@ const rootReducer = combineReducers({
     sales: salesReducer,
     dashboard: dashboardReducer,
     purchase: purchaseReducer,
-    stock: stockOpnameReducer
+    stock: stockOpnameReducer,
+    stockitem: stockItemReducer
 });
 
 export default rootReducer;

@@ -1,17 +1,14 @@
 import React from 'react';
-import { Container, Row, Col, Card, CardHeader, CardBody, FormCheckbox } from 'shards-react';
+import { Container, Row, Col, Card, CardBody } from 'shards-react';
 import PageTitle from '../components/common/PageTitle';
 import '../assets/range-date-picker.css';
 import { appName } from '../global';
 import { Helmet } from 'react-helmet';
-import { customerStyles } from '../utils/selectStyle';
 import Loading from 'react-loading-bar';
 import { fetchParent, getPermission, updatePermission } from '../store/actions/permissionAction';
 import { connect } from 'react-redux';
 import {Redirect, Link} from 'react-router-dom';
 import Error500 from './Error500';
-import Select from 'react-select';
-
 
 class EditPermission extends React.Component {
 
@@ -46,7 +43,7 @@ class EditPermission extends React.Component {
     }
 
     componentWillUpdate = (nextProps) => {
-        if (nextProps != this.props) {
+        if (nextProps !== this.props) {
             if (nextProps.data) {
                 this.setState({
                     ...this.state,
@@ -60,7 +57,7 @@ class EditPermission extends React.Component {
 
 	render() {
         
-        const {fetching, error, payload, saved, message, data} = this.props;
+        const {fetching, error, payload, saved, message} = this.props;
         const {name, parent_id, description} = this.state;
 
         if (!sessionStorage.getItem('token')) return <Redirect to="/login" />

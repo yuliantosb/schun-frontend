@@ -38,7 +38,7 @@ class ViewProduct extends React.Component {
     }
 
     componentWillUpdate = (nextProps) => {
-        if (nextProps != this.props) {
+        if (nextProps !== this.props) {
             if (nextProps.data) {
                 this.setState({
                     ...this.state,

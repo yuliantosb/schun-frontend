@@ -18,7 +18,7 @@ class SidebarMainNavbar extends React.Component {
   }
 
   render() {
-    const { hideLogoText, setting } = this.props;
+    const { setting } = this.props;
     return (
       <div className="main-navbar">
         <Navbar
