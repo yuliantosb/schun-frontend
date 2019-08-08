@@ -204,7 +204,7 @@ class ReportExpense extends React.Component {
 				[response.data], 
 				{type: 'application/pdf'});
 			const fileURL = URL.createObjectURL(file);
-            window.open(fileURL);
+            window.open(fileURL, "_self");
 		  
 		})
 	}
