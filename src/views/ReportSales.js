@@ -2,37 +2,41 @@ import React from 'react';
 import { Container, Row, Col, Card, CardBody, DatePicker } from 'shards-react';
 import PageTitle from '../components/common/PageTitle';
 import '../assets/range-date-picker.css';
-import { Link } from 'react-router-dom';
-import { appName } from '../global';
+import { Redirect } from 'react-router-dom';
+import { appName, url } from '../global';
 import { Helmet } from 'react-helmet';
-import moment from 'moment';
-import { fetchExpense, deleteExpense } from '../store/actions/expenseAction';
 import ScrollToTop from '../components/layout/ScrollToTop';
-import Loading from 'react-loading-bar';
 import { withToastManager } from 'react-toast-notifications';
-import { connect } from 'react-redux';
-import ReactTooltip from 'react-tooltip';
+import { fetchSales, deleteSales } from '../store/actions/salesAction';
+import {connect} from 'react-redux';
+import Loading from 'react-loading-bar';
+import Error500 from './Error500';
 import Table from '../components/table/Table';
+import Modal from 'react-bootstrap4-modal';
+import moment from 'moment';
+import Axios from 'axios';
 
-class Expense extends React.Component {
-    state = {
-        startDate: new Date(),
+class ReportSales extends React.Component {
+	state = {
+		startDate: new Date(),
 		endDate: new Date(),
-		search: null,
+        search: null,
         page: 1,
         perpage: 10,
 		keyword: null,
 		alert: true,
 		alertMsgBox: false,
-		deleteId: null,
 		showMsgBox: false,
+		isDeleted: false,
 		ordering: {
-            type: 'reference',
+            type: 'created_at',
             sort: 'asc'
-        }
-    }
+        },
+		modal: false,
+		download: false
+	}
 
-    handleStartDateChange = (value) => {
+	handleStartDateChange = (value) => {
         this.setState({
             ...this.state,
             startDate: new Date(value)
@@ -45,8 +49,8 @@ class Expense extends React.Component {
             endDate: new Date(value)
         });
 	}
-
-	handleSorting = (e) => {
+	
+    handleSorting = (e) => {
         const type = e.target.id;
         const sort = this.state.ordering.sort;
         this.setState({
@@ -57,17 +61,17 @@ class Expense extends React.Component {
             }
         });
     }
-	
-	handleChangeKeyword = (e) => {
+
+    handleChangeKeyword = (e) => {
 		this.setState({
 			...this.state,
-			keyword: e.target.value
+			[e.target.id]: e.target.value
 		});
 	}
 
 	handleSubmitKeyword = (e) => {
 		e.preventDefault();
-		this.props.fetchExpense(this.state);
+		this.props.fetchSales(this.state);
 	}
 
 	handleClickPage = (e) => {
@@ -87,7 +91,7 @@ class Expense extends React.Component {
     handleClickDelete = (id) => {
 		this.setState({
 			...this.state,
-			deleteId: id,
+			deleteIdSales: id,
 			showMsgBox: true
 		});
 	}
@@ -97,42 +101,46 @@ class Expense extends React.Component {
 		this.setState({
 			...this.state,
 			alertMsgBox: true,
-			showMsgBox: false
+			showMsgBox: false,
+			isDeleted: true
 		});
 
-		this.props.deleteExpense(this.state.deleteId);
+		this.props.deleteSales(this.state.deleteIdSales);
 	}
 
 	handleClickNo = () => {
 		this.setState({
 			...this.state,
 			showMsgBox: false,
-			deleteId: null
+			deleteIdSales: null
 		});
 	}
 
     componentWillUpdate(nextProps, nextState) {
         if (this.state.page !== nextState.page) {
-            this.props.fetchExpense(nextState);
+            this.props.fetchSales(nextState);
         }
 
         if (this.state.perpage !== nextState.perpage) {
-            this.props.fetchExpense(nextState);
-        }
-
-        if (this.state.startDate !== nextState.startDate) {
-            this.props.fetchExpense(nextState);
-        }
-
-        if (this.state.endDate !== nextState.endDate) {
-            this.props.fetchExpense(nextState);
+            this.props.fetchSales(nextState);
 		}
-	}
-	
+		
+		if (this.state.ordering !== nextState.ordering) {
+			this.props.fetchSales(nextState);
+		}
+
+		if (this.state.startDate !== nextState.startDate) {
+			this.props.fetchSales(nextState);
+		}
+
+		if (this.state.endDate !== nextState.endDate) {
+			this.props.fetchSales(nextState);
+		}
+    }
     
     componentDidUpdate = (prevProps, prevState) => {
 
-		if (prevProps.error !== this.props.error) {
+        if (prevProps.error !== this.props.error) {
             if (!this.props.fetched) {
                 if (this.props.error) {
                     const { toastManager } = this.props;
@@ -151,83 +159,149 @@ class Expense extends React.Component {
 					appearance: 'success',
 					autoDismiss: true
 				});
-				this.props.fetchExpense(this.state);
+				this.props.fetchSales(this.state);
 			}
 		}
     }
 
-    componentDidMount = () => {
-        this.props.fetchExpense(this.state)
+    modalBackdropClicked = () => {
+        this.setState({
+            ...this.state,
+            modal: false
+        })
     }
 
+    handleReturn = () => {
+        this.setState({
+            ...this.state,
+            modal: true
+        });
+	}
+	
+	handleDownload = async () => {
+
+		this.setState({
+			...this.state,
+			download: true
+		});
+
+		await Axios.post(`${url}/report/sales`, {
+			start_date: moment(this.state.startDate).format('YYYY-MM-DD'),
+			end_date: moment(this.state.endDate).format('YYYY-MM-DD')
+		}, {
+			responseType: 'blob',
+			headers: {
+				Authorization: `Bearer ${sessionStorage.getItem('token')}`
+			}
+		}).then(response => {
+			
+			this.setState({
+				...this.state,
+				download: false
+			});
+
+			const file = new Blob(
+				[response.data], 
+				{type: 'application/pdf'});
+			const fileURL = URL.createObjectURL(file);
+			window.open(fileURL, "_self");
+		  
+		})
+	}
+
+    componentDidMount = () => {
+        this.props.fetchSales(this.state)
+	}	
+	
 	render() {
-		const {payload, fetching} = this.props;
+		const {payload, error, fetching} = this.props;
+		
+		if (!sessionStorage.getItem('token')) return <Redirect to="/login" />
+		if (error && error.status === 500) return <Error500 message={error.data.message} />
+
 		const {ordering} = this.state;
-		const theads = [
-			{name: 'reference', value: 'Reference', sortable: true},
-			{name:'created_at', value: 'Date', sortable: true},
-			{ name: 'amount', value: 'Amount', sortable: true },
-			{ name: 'note', value: 'Note', sortable: true },
-			{ name: 'in_charge', value: 'In Charge', sortable: true },
-			{ name: 'evidence', value: 'Evidence', sortable: true },
-			{ name: 'options', value: 'Options', sortable: false },
-		]
-		const expenses = payload.data && payload.data.data.map(expense => {
-			return (
-				<tr key={expense._id}>
-					<td>
-						<strong>{ expense.reference }</strong>
-					</td>
-					<td>{ moment(expense.created_at).format('ll') }</td>
-					<td>{ expense.amount_formatted }</td>
-					<td>{ expense.notes }</td>
-					<td>{ expense.user && expense.user.name }</td>
-					<td><a download={expense.evidence} href={ expense.file }>{ expense.evidence }</a></td>
-					<td className="text-center">
-						<Link data-tip="Edit" className="btn btn-link text-success btn-sm  py-0 px-0 pr-4" to={`expense/edit/${expense._id}`}>
-							<i className="mdi mdi-pencil"></i>
-						</Link>
-						<button data-tip="Delete" onClick={ () => this.handleClickDelete(expense._id) } className="btn btn-link text-danger btn-sm  py-0 px-0 pr-4">
-							<i className="mdi mdi-delete"></i>
-						</button>
-						<ReactTooltip/>
-					</td>
-				</tr>
-			)
-		}) 		
+        const theads = [
+            {name:'created_at', 'value': 'Date', sortable: false},
+            {name:'subtotal', 'value': 'Subtotal', sortable: false},
+            {name:'tax', 'value': 'Tax', sortable: false},
+            {name:'discount', 'value': 'Discount', sortable: false},
+            {name:'total', 'value': 'Total', sortable: false},
+            {name:'payment_type', 'value': 'Payment Type', sortable: false},
+            {name:'is_hold', 'value': 'Status', sortable: false}
+        ];
+
+		const saleses = payload.data && payload.data.data.map(sales => {
+            return (
+            <tr key={sales._id}>
+				<td>{ moment(sales.created_at).format('ll') }</td>
+				<td className="text-right">{ sales.subtotal_formatted }</td>
+				<td className="text-right">{ sales.tax_formatted }</td>				
+				<td className="text-right">{ sales.discount_formatted }</td>
+				<td className="text-right">{ sales.total_formatted }</td>
+				<td>{ sales.payment_type === 'cash' ? 'Cash' : 'Credit or Debit' }</td>
+                <td>{ sales.is_hold ? (<span className="badge badge-warning">Hold</span>) : (<span className="badge badge-success">Finish</span>) }</td>
+            </tr>
+            );
+		});
+
 
 		return (
 			<Container fluid className="main-content-container px-4">
 				<Loading
-						show={fetching}
-						color="blue"
-						showSpinner={false}
-						/>
+					show={fetching}
+					color="blue"
+					showSpinner={false}
+					/>
 				<Helmet>
-					<title>Expense | {appName} </title>
+					<title>Report Sales | {appName} </title>
 				</Helmet>
+
+                <Modal visible={this.state.modal} onClickBackdrop={this.modalBackdropClicked}>
+                    <div className="modal-header">
+                        <h5 className="modal-title">Return sales</h5>
+                    </div>
+                    <div className="modal-body py-0 pt-2 px-4">
+                        <div className="row">
+                            <div className="col-sm-12">
+                                <div className="form-group">
+                                    <label className="control-label">Why?</label>
+                                    <textarea id="reason" className="form-control"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="modal-footer px-0">
+                            <button type="button" className="btn btn-default" onClick={this.modalBackdropClicked}>
+                                Close
+                            </button>
+                            <button type="button" className="btn btn-secondary" onClick={this.handlePayAndPrint}>
+                                Reutrn Sales
+                            </button>
+                        </div>
+                    </div>
+                </Modal>
+
 				<Row noGutters className="page-header py-4">
-					<PageTitle sm="4" title="Expense" className="text-sm-left" />
+					<PageTitle sm="4" title="Report Sales"  className="text-sm-left" />
 				</Row>
 				<Row>
 					{
-							this.state.showMsgBox &&
-							(
-								<ScrollToTop>
-									<div className="messagebox">
-										<p className="mb-5">Are you sure want to delete this data?</p>
-										<button className="btn btn-secondary mr-4" onClick={this.handleClickYes}>Yes</button>
-										<button className="btn btn-white" onClick={this.handleClickNo}>No Cancel</button>
-									</div>
-									<div className="backdrop"></div>
-								</ScrollToTop>
-							)
-						}
+						this.state.showMsgBox &&
+						(
+							<ScrollToTop>
+								<div className="messagebox">
+									<p className="mb-5">Are you sure want to delete this data?</p>
+									<button className="btn btn-secondary mr-4" onClick={this.handleClickYes}>Yes</button>
+									<button className="btn btn-white" onClick={this.handleClickNo}>No Cancel</button>
+								</div>
+								<div className="backdrop"></div>
+							</ScrollToTop>
+						)
+					}
 					<Col>
 						<Card small className="mb-4">
 							<CardBody className="p-0 pb-3">
 								<div className="col-md-12 mt-4">
-									<div className="row">
+								<div className="row">
                                         <div className="col-md-6">
                                             <div className="row">
                                                 <div className="col-md-6">
@@ -281,34 +355,45 @@ class Expense extends React.Component {
 													</div>
 												</form>
 											</div>
-                                            <Link to="/expense/create" className="btn btn-secondary mr-2">
-                                                <i className="mdi mdi-plus" /> Add
-                                            </Link>
+											{
+												this.state.download ? (
+													<button className="btn btn-secondary btn-disabled" disabled>
+														<i className="mdi mdi-timer-sand"></i> Loading...
+													</button>
+												) : (
+													<button className="btn btn-secondary" onClick={this.handleDownload}>
+														<i className="mdi mdi-download"></i> Download
+													</button>
+												)
+											}
+                                            
 										</div>
 									</div>
 								</div>
 								<div className="col-md-12 mt-3">
-								<Table theads={theads} ordering={ordering} handleSorting={this.handleSorting}>
+
+									<Table theads={theads} ordering={ordering} handleSorting={this.handleSorting}>
 										{ 
 											fetching ? 
 											(
 												<tr>
-													<td className="text-center" colSpan="7">Loading...</td>
+													<td className="text-center" colSpan="8">Loading...</td>
 												</tr>
 											)
 											:
-											payload.data && payload.data.data.length > 0 ? expenses : (
+											payload.data && payload.data.data.length > 0 ? saleses : (
 												<tr>
-													<td className="text-center" colSpan="7">Data not found</td>
+													<td className="text-center" colSpan="8">Data not found</td>
 												</tr>
 										) }
 									</Table>
+
 								</div>
 
 								<div className="col-md-12 py-3">
 									<div className="row">
 										<div className="col-md-10">
-										{ payload.data && payload.data.total > 1 && (
+											{ payload.data && payload.data.total > 1 && (
 												<p>Showing { payload.data && payload.data.from.toLocaleString() } to { payload.data && payload.data.to.toLocaleString() } of { payload.data && payload.data.total.toLocaleString() } record(s)</p>
 
 											)}
@@ -370,19 +455,20 @@ class Expense extends React.Component {
 const mapStateToProps = (state) => {
     return {
         ...state,
-        payload: state.expense.payload,
-        error: state.expense.error,
-		fetching: state.expense.fetching,
-		message: state.expense.message,
-		isDeleted: state.expense.isDeleted
+        payload: state.sales.payload,
+        error: state.sales.error,
+		fetching: state.sales.fetching,
+		message: state.sales.message,
+		saved: state.sales.saved,
+		isDeleted: state.sales.isDeleted
     }
 }
 
 const mapDispatchToProps = (dispatch) => {
 	return {
-		fetchExpense: (filter) => dispatch(fetchExpense(filter)),
-		deleteExpense: (id) => dispatch(deleteExpense(id))
+		fetchSales: (filter) => dispatch(fetchSales(filter)),
+		deleteSales: (id) => dispatch(deleteSales(id))
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(withToastManager(Expense));
+export default connect(mapStateToProps, mapDispatchToProps)(withToastManager(ReportSales));

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Container, Row, Col, Card, CardHeader, CardBody, DatePicker } from 'shards-react';
+import { Container, Row, Col, Card, CardBody } from 'shards-react';
 import PageTitle from '../components/common/PageTitle';
 import '../assets/range-date-picker.css';
 import { appName, url } from '../global';
@@ -91,7 +91,7 @@ class AddExpense extends React.Component {
     }
     
 	render() {      
-        const { fetching, saved, error } = this.props;
+        const { fetching, error } = this.props;
         if (!sessionStorage.getItem('token')) return <Redirect to="/login" />
         if (error && error.status === 500) return <Error500 message={error.data.message} />
 		return (

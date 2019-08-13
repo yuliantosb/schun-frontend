@@ -1,11 +1,9 @@
 import React from 'react';
-import { Container, Row, Col, Card, CardHeader, CardBody, FormCheckbox } from 'shards-react';
+import { Container, Row, Col, Card, CardBody } from 'shards-react';
 import PageTitle from '../components/common/PageTitle';
 import '../assets/range-date-picker.css';
 import { appName } from '../global';
 import { Helmet } from 'react-helmet';
-import { customerStyles } from '../utils/selectStyle';
-import Select from 'react-select';
 import Loading from 'react-loading-bar';
 import { fetchParent, savePermission } from '../store/actions/permissionAction';
 import { connect } from 'react-redux';

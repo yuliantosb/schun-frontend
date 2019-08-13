@@ -1,5 +1,5 @@
 import React from 'react';
-import { Container, Row, Col, Card, CardHeader, CardBody, DatePicker } from 'shards-react';
+import { Container, Row, Col, Card, CardBody } from 'shards-react';
 import PageTitle from '../components/common/PageTitle';
 import '../assets/range-date-picker.css';
 import { appName, url } from '../global';
@@ -95,7 +95,7 @@ class EditProduct extends React.Component {
     }
     
     componentWillUpdate = (nextProps) => {
-        if (nextProps != this.props) {
+        if (nextProps !== this.props) {
             if (nextProps.data) {
                 this.setState({
                     ...this.state,
@@ -167,24 +167,24 @@ class EditProduct extends React.Component {
                                                         }
                                                     </div>
 
-                                                    <div className="form-group">
+                                                    {/* <div className="form-group">
                                                         <label className="control-label">Cost <span className="text-danger">*</span></label>
                                                         <NumberFormat decimalSeparator="." thousandSeparator="," type="text" id="cost" value={this.state.cost} className={`text-right form-control ${ error && error.data.errors.cost && 'is-invalid' }`} onChange={this.handleChange} placeholder="0.0" />
                                                         { 
                                                             error && error.data.errors.cost && <div class="invalid-feedback">{ error.data.errors.cost[0] }</div>
                                                         }
-                                                    </div>
+                                                    </div> */}
 
-                                                    <div className="row">
-                                                        <div className="col-md-6">
+                                                    {/* <div className="row">
+                                                        <div className="col-md-6"> */}
                                                             <div className="form-group">
-                                                                <label className="control-label">Retail Price <span className="text-danger">*</span></label>
+                                                                <label className="control-label">Price <span className="text-danger">*</span></label>
                                                                 <NumberFormat decimalSeparator="." thousandSeparator="," type="text" id="price" value={this.state.price} className={`text-right form-control ${ error && error.data.errors.price && 'is-invalid' }`} onChange={this.handleChange} placeholder="0.0" />
                                                                 { 
                                                                     error && error.data.errors.price && <div class="invalid-feedback">{ error.data.errors.price[0] }</div>
                                                                 }
                                                             </div>
-                                                        </div>
+                                                        { /*</div>
                                                         <div className="col-md-6">
                                                             <div className="form-group">
                                                                 <label className="control-label">Wholesale Price <span className="text-danger">*</span></label>
@@ -194,7 +194,7 @@ class EditProduct extends React.Component {
                                                                 }
                                                             </div>
                                                         </div>
-                                                    </div>
+                                                    </div> */}
 
                                                     <div className="form-group">
                                                         <label className="control-label">Picture</label>
@@ -221,7 +221,7 @@ class EditProduct extends React.Component {
                                                 <div className="col-md-6">    
                                                     <div className="form-group">
                                                         <label className="control-label">Stock <span className="badge badge-pill badge-secondary" title="You can update stock on stock menu" ><i className="mdi mdi-help"></i></span></label>
-                                                        <NumberFormat readOnly="true" decimalSeparator="." thousandSeparator="," type="text" id="stock" value={this.state.stock} className={`text-right form-control ${ error && error.data.errors.stock && 'is-invalid' }`} onChange={this.handleChange} placeholder="0.0" />
+                                                        <NumberFormat readOnly={true} decimalSeparator="." thousandSeparator="," type="text" id="stock" value={this.state.stock} className={`text-right form-control ${ error && error.data.errors.stock && 'is-invalid' }`} onChange={this.handleChange} placeholder="0.0" />
                                                         { 
                                                             error && error.data.errors.stock && <div class="invalid-feedback">{ error.data.errors.stock[0] }</div>
                                                         }

@@ -1,9 +1,9 @@
 let url;
-if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
+// if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
     url = 'http://localhost:8000/api';
-} else {    
-    url = 'https://shard-backend.herokuapp.com/api';
-}
+// } else {    
+//     url = 'https://shard-backend.herokuapp.com/api';
+// }
 
 const appName = 'POS';
 const customerStyles = { 

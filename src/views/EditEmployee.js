@@ -1,5 +1,5 @@
 import React from 'react';
-import { Container, Row, Col, Card, CardHeader, CardBody, DatePicker } from 'shards-react';
+import { Container, Row, Col, Card, CardBody, DatePicker } from 'shards-react';
 import PageTitle from '../components/common/PageTitle';
 import '../assets/range-date-picker.css';
 import { appName, url } from '../global';
@@ -12,18 +12,15 @@ import Axios from 'axios';
 import {connect} from 'react-redux';
 import Loading from 'react-loading-bar';
 import { updateEmployee, getEmployee } from '../store/actions/employeeAction';
-import moment from 'moment';
 
 class EditEmployee extends React.Component {
 
     state = {
-		date_of_birth: undefined,
         photo: 'Choose file...',
         name: '',
         username: '',
         place_of_birth: '',
         date_of_birth: '',
-        photo: '',
         email: '',
         phone_number: '',
         role_id: '',
@@ -107,7 +104,7 @@ class EditEmployee extends React.Component {
     }
 
     componentWillUpdate = (nextProps) => {
-        if (nextProps != this.props) {
+        if (nextProps !== this.props) {
             if (nextProps.data) {
                 this.setState({
                     ...this.state,
@@ -127,7 +124,7 @@ class EditEmployee extends React.Component {
     }
     
 	render() {      
-        const { fetching, saved, error } = this.props;
+        const { fetching, error } = this.props;
         if (!sessionStorage.getItem('token')) return <Redirect to="/login" />
 		return (
          

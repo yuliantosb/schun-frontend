@@ -1,5 +1,5 @@
 import React from 'react';
-import { Container, Row, Col, Card, CardHeader, CardBody, DatePicker } from 'shards-react';
+import { Container, Row, Col, Card, CardBody } from 'shards-react';
 import PageTitle from '../components/common/PageTitle';
 import '../assets/range-date-picker.css';
 import { appName, url } from '../global';
@@ -69,6 +69,12 @@ class AddProduct extends React.Component {
         this.props.saveProduct(this.state);
     }
 
+    handleKeypress = (e) => {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+        }
+    }
+
     componentDidUpdate = (prevProps, prevState) => {
         if (prevProps.saved !== this.props.saved) {
 
@@ -128,7 +134,7 @@ class AddProduct extends React.Component {
 
                                                     <div className="form-group">
                                                         <label className="control-label">Code </label>
-                                                        <input type="text" id="code" className={`form-control ${ error && error.data.errors.code && 'is-invalid' }`} onChange={this.handleChange} placeholder="Enter barcode code" />
+                                                        <input onKeyPress={this.handleKeypress} type="text" id="code" className={`form-control ${ error && error.data.errors.code && 'is-invalid' }`} onChange={this.handleChange} placeholder="Enter barcode code" />
                                                         { 
                                                             error && error.data.errors.code && <div class="invalid-feedback">{ error.data.errors.code[0] }</div>
                                                         }
@@ -142,25 +148,25 @@ class AddProduct extends React.Component {
                                                         }
                                                     </div>
 
-                                                    <div className="form-group">
+                                                    {/* <div className="form-group">
                                                         <label className="control-label">Cost <span className="text-danger">*</span></label>
                                                         <NumberFormat decimalSeparator="." thousandSeparator="," type="text" id="cost" className={`text-right form-control ${ error && error.data.errors.cost && 'is-invalid' }`} onChange={this.handleChange} placeholder="0.0" />
                                                         { 
                                                             error && error.data.errors.cost && <div class="invalid-feedback">{ error.data.errors.cost[0] }</div>
                                                         }
-                                                    </div>
+                                                    </div> */}
 
-                                                    <div className="row">
-                                                        <div className="col-md-6">
+                                                    {/* <div className="row">
+                                                        <div className="col-md-6"> */}
                                                             <div className="form-group">
-                                                                <label className="control-label">Retail Price <span className="text-danger">*</span></label>
+                                                                <label className="control-label">Price <span className="text-danger">*</span></label>
                                                                 <NumberFormat decimalSeparator="." thousandSeparator="," type="text" id="price" className={`text-right form-control ${ error && error.data.errors.price && 'is-invalid' }`} onChange={this.handleChange} placeholder="0.0" />
                                                                 { 
                                                                     error && error.data.errors.price && <div class="invalid-feedback">{ error.data.errors.price[0] }</div>
                                                                 }
-                                                            </div>
-                                                        </div>
-                                                        <div className="col-md-6">
+                                                            {/* </div>
+                                                        </div> */}
+                                                        {/* <div className="col-md-6">
                                                             <div className="form-group">
                                                                 <label className="control-label">Wholesale Price <span className="text-danger">*</span></label>
                                                                 <NumberFormat decimalSeparator="." thousandSeparator="," type="text" id="wholesale" className={`text-right form-control ${ error && error.data.errors.wholesale && 'is-invalid' }`} onChange={this.handleChange} placeholder="0.0" />
@@ -168,7 +174,7 @@ class AddProduct extends React.Component {
                                                                     error && error.data.errors.wholesale && <div class="invalid-feedback">{ error.data.errors.wholesale[0] }</div>
                                                                 }
                                                             </div>
-                                                        </div>
+                                                        </div> */}
                                                     </div>
 
                                                     <div className="form-group">

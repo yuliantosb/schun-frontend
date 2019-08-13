@@ -16,6 +16,8 @@ import Datetime from 'react-datetime';
 import '../../node_modules/react-datetime/css/react-datetime.css';
 import { saveSales } from '../store/actions/salesAction';
 import moment from 'moment';
+import AsyncSelect from 'react-select/async';
+import { customerStyles } from '../utils/selectStyle';
 
 class PosSimple extends React.Component {
 
@@ -343,10 +345,10 @@ class PosSimple extends React.Component {
 						<div className="modal-body py-0 pt-2 px-4">
 							<div className="row">
 								<div className="col-md-6">
-									{/* <div className="form-group">
+									<div className="form-group">
 										<label className="control-label">Customer</label>
 										<AsyncSelect value={ this.state.customer_id && { label: this.state.customer_name, value: this.state.customer_id }} isClearable={true} className={error && error.data.errors.user_id && 'is-invalid'} styles={customerStyles} loadOptions={promiseOptions} id="user_id" placeholder="Type to search" onChange={this.handleChangeCustomer} />
-									</div> */}
+									</div>
 									<div className="form-group">
 										<label className="control-label">Payment Type</label>
 										<select value={this.state.payment_type} id="payment_type" className="form-control custom-select" onChange={this.handlePaymentType}>
@@ -516,6 +518,29 @@ class PosSimple extends React.Component {
 		);
 	}
 }
+
+
+const filterInCharge = (users) => {
+	const options = users.map((user) => {
+		return { label: user.name, value: user._id };
+	});
+
+	return options;
+};
+
+const promiseOptions = (inputValue, callback) => {
+	Axios.get(`${url}/sales/customer`, {
+		params: {
+			name: inputValue
+		},
+		headers: {
+			Authorization: `Bearer ${sessionStorage.getItem('token')}`
+		}
+	}).then((response) => {
+		callback(filterInCharge(response.data.data));
+	});
+};
+
 
 const mapStateToProps = (state) => {
 	return {

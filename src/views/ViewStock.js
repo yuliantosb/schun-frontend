@@ -19,7 +19,7 @@ class ViewStock extends React.Component {
     }
 	
 	render() {
-		const {payload, error, fetching} = this.props;
+		const {error, fetching} = this.props;
 		
 		if (!sessionStorage.getItem('token')) return <Redirect to="/login" />
 		if (error && error.status === 500) return <Error500 message={error.data.message} />

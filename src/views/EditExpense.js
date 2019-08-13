@@ -1,5 +1,5 @@
 import React from 'react';
-import { Container, Row, Col, Card, CardHeader, CardBody, DatePicker } from 'shards-react';
+import { Container, Row, Col, Card, CardBody } from 'shards-react';
 import PageTitle from '../components/common/PageTitle';
 import '../assets/range-date-picker.css';
 import { appName, url } from '../global';
@@ -91,7 +91,7 @@ class EditExpense extends React.Component {
     }
     
     componentWillUpdate = (nextProps) => {
-        if (nextProps != this.props) {
+        if (nextProps !== this.props) {
             if (nextProps.data) {
                 this.setState({
                     ...this.state,
@@ -100,7 +100,6 @@ class EditExpense extends React.Component {
                     notes: nextProps.data.notes ? nextProps.data.notes : '',
                     user_id: nextProps.data.user_id ? nextProps.data.user_id : '',
                     evidence: nextProps.data.evidence ? nextProps.data.evidence : 'Choose file...',
-                    user_id: nextProps.data.user_id ? nextProps.data.user_id : null,
                     user_name: nextProps.data.user && nextProps.data.user.name ? nextProps.data.user.name : null
                 })
             }
@@ -112,7 +111,7 @@ class EditExpense extends React.Component {
     }
 
 	render() {      
-        const { fetching, error, data } = this.props;
+        const { fetching, error } = this.props;
         if (!sessionStorage.getItem('token')) return <Redirect to="/login" />
         if (error && error.status === 500) return <Error500 message={error.data.message} />
 		return (

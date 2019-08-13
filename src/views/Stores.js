@@ -1,11 +1,10 @@
 import React from 'react';
-import { Container, Row, Col, Card, CardHeader, CardBody, FormCheckbox } from 'shards-react';
+import { Container, Row, Col, Card, CardBody } from 'shards-react';
 import PageTitle from '../components/common/PageTitle';
 import '../assets/range-date-picker.css';
 import { Link, Redirect } from 'react-router-dom';
 import { appName } from '../global';
 import { Helmet } from 'react-helmet';
-import moment from 'moment';
 import Loading from 'react-loading-bar';
 import ScrollToTop from '../components/layout/ScrollToTop';
 import { fetchStore, deleteStore } from '../store/actions/storeAction';

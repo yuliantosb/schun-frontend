@@ -1,18 +1,16 @@
 import React from "react";
-import PropTypes from "prop-types";
-import { Card, CardHeader, CardBody, Button } from "shards-react";
+import { Card, CardHeader, CardBody } from "shards-react";
 import { Line } from 'react-chartjs-2';
 
 class UsersOverview extends React.Component {
   render() {
-    const { title } = this.props;
     return (
       <Card small className="h-100">
         <CardHeader className="border-bottom">
           <h6 className="m-0">Sales summary</h6>
         </CardHeader>
         <CardBody className="pt-0 mt-1">
-          <Line legend={false} data={{
+          <Line legend={{ display: false }} data={{
             labels: this.props.labels,
             datasets: [
               {

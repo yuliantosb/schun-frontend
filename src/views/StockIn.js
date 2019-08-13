@@ -94,7 +94,7 @@ class StockIn extends React.Component {
         const {payload, error, fetching} =  this.props;
         if (error && error.status === 401) {
             sessionStorage.removeItem('token');
-            return <Redirect to="/" />
+            return <Redirect to="/login" />
         } else if (error && error.status === 500) {
             return <Error500 message={error.data.message} />
         }        

@@ -3,7 +3,7 @@ import { Container, Row, Col, Card, CardBody } from 'shards-react';
 import PageTitle from '../components/common/PageTitle';
 import '../assets/range-date-picker.css';
 import { Link, Redirect } from 'react-router-dom';
-import { appName } from '../global';
+import { appName, url } from '../global';
 import { Helmet } from 'react-helmet';
 import ScrollToTop from '../components/layout/ScrollToTop';
 import { withToastManager } from 'react-toast-notifications';
@@ -13,6 +13,8 @@ import Loading from 'react-loading-bar';
 import Error500 from './Error500';
 import Table from '../components/table/Table';
 import ReactTooltip from 'react-tooltip';
+import Modal from 'react-bootstrap4-modal';
+import Axios from 'axios';
 
 class Product extends React.Component {
 	state = {
@@ -28,7 +30,10 @@ class Product extends React.Component {
 		ordering: {
             type: 'name',
             sort: 'asc'
-        }
+		},
+		modal: false,
+		file_import: null,
+		import: 'Choose file...'
 	}
 	
     handleSorting = (e) => {
@@ -135,11 +140,97 @@ class Product extends React.Component {
 				this.props.fetchProduct(this.state);
 			}
 		}
-    }
+	}
+	
+	handleModal = () => {
+		this.setState({
+			...this.state,
+			modal: true
+		})
+	}
+
+	modalBackdropClicked = () => {
+		this.setState({
+			...this.state,
+			modal: false
+		});
+	}
 
     componentDidMount = () => {
         this.props.fetchProduct(this.state)
-	}	
+	}
+
+	handleChangeFileImport = (e) => {
+		
+		if (e.target.files.length > 0) {
+
+			// const toastManager = this.props.toastManager;
+			// const file_size = e.target.files[0].size;
+			const file_name = e.target.files[0].name;
+			// const file_type = e.target.files[0].type;
+	
+			// if (file_type !==  'application/wps-office.xls' && file_type !== 'application/wps-office.xlsx' && file_type !== 'text/csv') {
+			// 	toastManager.add("file format is not supported", {
+			// 		appearance: 'error',
+			// 		autoDismiss: true
+			// 	});
+			// 	console.log(file_type);
+			// 	e.preventDefault();
+			
+			// } else if (file_size >=  1000000) {
+			// 	toastManager.add("file size too big", {
+			// 		appearance: 'error',
+			// 		autoDismiss: true
+			// 	});
+			// 	console.log(file_size);
+			// 	e.preventDefault();
+			
+			// } else {
+
+				const file = e.target.files[0];
+				const reader = new FileReader();
+				reader.readAsDataURL(file);
+				reader.onload = (e) => {
+					this.setState({
+						...this.state,
+						import_file: e.target.result,
+						import: file_name
+					})
+				}
+			// }
+	
+		}
+	}
+
+	handleImport = () => {
+		const { toastManager } = this.props;
+		Axios.post(`${url}/products/import`, {
+			import_file: this.state.import_file,
+			import: this.state.import
+		},
+		{
+			headers: {
+				Authorization: `Bearer ${sessionStorage.getItem('token')}`
+			}
+		}).then(res => {
+			
+			this.setState({
+				...this.state,
+				modal: false
+			});
+
+			toastManager.add(res.data.message, {
+				appearance: 'success',
+				autoDismiss: true
+			});
+		})
+		.catch(error => {
+			toastManager.add(error.data.message, {
+				appearance: 'success',
+				autoDismiss: true
+			});
+		});
+	}
 	
 	render() {
 		const {payload, error, fetching} = this.props;
@@ -191,6 +282,46 @@ class Product extends React.Component {
 				<Row noGutters className="page-header py-4">
 					<PageTitle sm="4" title="Product"  className="text-sm-left" />
 				</Row>
+					<Modal visible={this.state.modal} onClickBackdrop={this.modalBackdropClicked}>
+						<div className="modal-header">
+							<h5 className="modal-title">Import products</h5>
+						</div>
+						<div className="modal-body py-0 pt-2 px-4">
+							<div className="row">
+								<div className="custom-file mb-3">
+									<input
+										id="import"
+										type="file"
+										className="custom-file-input"
+										onChange={this.handleChangeFileImport} 
+										accept=".xlsx, .xls, .csv"
+									/>
+									<label
+										className="custom-file-label"
+										htmlFor="customFile2"
+										id="placeholderCustomFile2"
+									>
+										{this.state.import}
+									</label>
+								</div>
+								<div className="my-3">
+									<small>
+										*) File format is xlsx, xlsx, or csv (semicolon separator ';')<br />
+										*) Warning! existing data will be overwritted, be carefully! <br />
+										*) Max file size 1MBs <br />
+									</small>
+								</div>
+							</div>
+						</div>
+						<div className="modal-footer">
+						<button type="button" className="btn btn-default" onClick={this.modalBackdropClicked}>
+							Close
+						</button>
+						<button type="button" className="btn btn-secondary" onClick={this.handleImport}>
+							Import
+						</button>
+						</div>
+					</Modal>
 				<Row>
 					{
 						this.state.showMsgBox &&
@@ -214,6 +345,9 @@ class Product extends React.Component {
                                             <Link to="/product/create" className="btn btn-secondary mr-2">
                                                 <i className="mdi mdi-plus" /> Add
                                             </Link>
+											<button className="btn btn-secondary" onClick={this.handleModal}>
+												<i className="mdi mdi-upload" /> Import
+											</button>
                                         </div>
 										<div className="col-md-4 text-right">
 											<form onSubmit={this.handleSubmitKeyword}>

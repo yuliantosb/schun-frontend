@@ -53,7 +53,11 @@ import ViewPurchase from "./views/ViewPurchase";
 import EditPurchase from "./views/EditPurchase";
 import StockOpname from "./views/StockOpname";
 import ViewStock from "./views/ViewStock";
+import PosSimple from "./views/PosSimple";
 import ReportSales from "./views/ReportSales";
+import ReportPurchase from "./views/ReportPurchase";
+import ReportExpense from "./views/ReportExpense";
+import ReportStock from "./views/ReportStock";
 
 export default [
   {
@@ -281,6 +285,12 @@ export default [
     exact: true
   },
   {
+    path: "/simple-pos",
+    layout: DefaultLayout,
+    component: PosSimple,
+    exact: true
+  },
+  {
     path: "/pos/:id",
     layout: BlankLayout,
     component: Pos
@@ -331,7 +341,22 @@ export default [
   },
   {
     path: "/report-sales",
-    layout: BlankLayout,
+    layout: DefaultLayout,
     component: ReportSales
+  },
+  {
+    path: "/report-purchase",
+    layout: DefaultLayout,
+    component: ReportPurchase
+  },
+  {
+    path: "/report-expense",
+    layout: DefaultLayout,
+    component: ReportExpense
+  },
+  {
+    path: "/report-stock",
+    layout: DefaultLayout,
+    component: ReportStock
   }
 ];

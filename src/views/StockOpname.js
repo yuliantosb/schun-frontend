@@ -6,13 +6,12 @@ import { Link, Redirect } from 'react-router-dom';
 import { appName } from '../global';
 import { Helmet } from 'react-helmet';
 import { withToastManager } from 'react-toast-notifications';
-import { fetchStockOpname, deleteStockOpname, updateStockOpname } from '../store/actions/stockOpnameActions';
+import { fetchStockOpname, updateStockOpname } from '../store/actions/stockOpnameActions';
 import {connect} from 'react-redux';
 import Loading from 'react-loading-bar';
 import Error500 from './Error500';
 import Table from '../components/table/Table';
 import ReactTooltip from 'react-tooltip';
-import moment from 'moment';
 import Modal from 'react-bootstrap4-modal';
 
 class StockOpname extends React.Component {

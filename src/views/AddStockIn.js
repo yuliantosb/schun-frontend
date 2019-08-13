@@ -149,7 +149,6 @@ class AddStockIn extends React.Component {
 															id="evidence"
 															type="file"
 															className="custom-file-input"
-															id="customFile2"
 															onChange={this.handleChangeUpload}
 														/>
 														<label

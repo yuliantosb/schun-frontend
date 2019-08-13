@@ -225,7 +225,7 @@ class EditPurchase extends React.Component {
 
     componentWillUpdate = (nextProps) => {
         
-        if (nextProps != this.props) {
+        if (nextProps !== this.props) {
             if (nextProps.data) {
                 this.setState({
                     ...this.state,
@@ -244,7 +244,6 @@ class EditPurchase extends React.Component {
                     taxes: nextProps.data.tax ? nextProps.data.tax : '',
                     user_id: nextProps.data.user_id ? nextProps.data.user_id : '',
                     user_name: nextProps.data.user_name ? nextProps.data.user_name : '',
-                    total: nextProps.data.total ? nextProps.data.total : '',
                     carts: nextProps.carts ? nextProps.carts : '',
                 })
             }
@@ -256,7 +255,7 @@ class EditPurchase extends React.Component {
     }
     
 	render() {      
-        const { fetching, saved, error } = this.props;
+        const { fetching, error } = this.props;
         const setting = this.props.setting.setting.data;
         if (!sessionStorage.getItem('token')) return <Redirect to="/login" />
         if (error && error.status === 500) return <Error500 message={error.data.message} />

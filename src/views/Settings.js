@@ -1,5 +1,5 @@
 import React from 'react';
-import { Container, Row, Col, Card, CardHeader, CardBody } from 'shards-react';
+import { Container, Row, Col, Card, CardBody } from 'shards-react';
 import PageTitle from '../components/common/PageTitle';
 import '../assets/range-date-picker.css';
 import { appName } from '../global';
@@ -114,7 +114,7 @@ class Settings extends React.Component {
                                         <div className="col-md-6">
                                             <div className="form-group">
                                                 <label className="control-label">Site Name <span className="text-danger">*</span></label>
-                                                <input onChange={this.handleChange} value={this.state.site_name} type="text" id="site_name" className={`form-control ${ error && error.data.errors.site_name && 'is-invalid' }`} onChange={this.handleChange} placeholder="Site Name" />
+                                                <input onChange={this.handleChange} value={this.state.site_name} type="text" id="site_name" className={`form-control ${ error && error.data.errors.site_name && 'is-invalid' }`} placeholder="Site Name" />
                                                 { 
                                                     error && error.data.errors.site_name && <div class="invalid-feedback">{ error.data.errors.site_name[0] }</div>
                                                 }

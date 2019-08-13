@@ -1,5 +1,5 @@
 import React from 'react';
-import { Container, Row, Col, Card, CardHeader, CardBody } from 'shards-react';
+import { Container, Row, Col, Card, CardBody } from 'shards-react';
 import PageTitle from '../components/common/PageTitle';
 import '../assets/range-date-picker.css';
 import { Link, Redirect } from 'react-router-dom';
@@ -9,7 +9,6 @@ import ScrollToTop from '../components/layout/ScrollToTop';
 import { withToastManager } from 'react-toast-notifications';
 import { fetchDiscount, deleteDiscount } from '../store/actions/discountAction';
 import Loading from 'react-loading-bar';
-import moment from 'moment';
 import {connect} from 'react-redux';
 import Error500 from './Error500';
 import Table from '../components/table/Table';

@@ -29,7 +29,7 @@ class Login extends React.Component {
         const {error, fetching, payload} = this.props;
         const setting = this.props.setting.setting.data;
         const errorMessage = payload.response ? payload.response.data.message : error;
-        if (sessionStorage.getItem('token')) return (<Redirect to="/" />);
+        if (sessionStorage.getItem('token')) return (<Redirect to="/dashboard" />);
         return (
             <main className="main-content col mt-5">
                 <Loading

@@ -369,10 +369,10 @@ class Pos extends React.Component {
 						<div className="modal-body py-0 pt-2 px-4">
 							<div className="row">
 								<div className="col-md-6">
-									{/* <div className="form-group">
+									<div className="form-group">
 										<label className="control-label">Customer</label>
 										<AsyncSelect value={ this.state.customer_id && { label: this.state.customer_name, value: this.state.customer_id }} isClearable={true} className={error && error.data.errors.user_id && 'is-invalid'} styles={customerStyles} loadOptions={promiseOptions} id="user_id" placeholder="Type to search" onChange={this.handleChangeCustomer} />
-									</div> */}
+									</div>
 									<div className="form-group">
 										<label className="control-label">Payment Type</label>
 										<select value={this.state.payment_type} id="payment_type" className="form-control custom-select" onChange={this.handlePaymentType}>

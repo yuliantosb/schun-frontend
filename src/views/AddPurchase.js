@@ -224,7 +224,7 @@ class AddPurchase extends React.Component {
     }
     
 	render() {      
-        const { fetching, saved, error } = this.props;
+        const { fetching, error } = this.props;
         const setting = this.props.setting.setting.data;
         if (!sessionStorage.getItem('token')) return <Redirect to="/login" />
         if (error && error.status === 500) return <Error500 message={error.data.message} />
