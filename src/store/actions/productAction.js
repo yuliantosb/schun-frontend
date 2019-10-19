@@ -82,6 +82,22 @@ const updateProduct = (id, data) => {
     }
 }
 
+const inactiveProduct = (id, status) => {
+    return (dispatch, getState) => {
+        dispatch({
+            type: 'INACTIVE_PRODUCT',
+            payload: Axios.delete(`${url}/products/inactive/${id}`, {
+                headers: {
+                    Authorization: `Bearer ${sessionStorage.getItem('token')}`
+                },
+                data: {
+                    status
+                }
+            })
+        })
+    }
+}
+
 
 const deleteProduct = (id) => {
     return (dispatch, getState) => {
@@ -96,4 +112,4 @@ const deleteProduct = (id) => {
     }
 }
 
-export { fetchProduct, saveProduct, getProduct, updateProduct, deleteProduct };
+export { fetchProduct, saveProduct, getProduct, updateProduct, inactiveProduct, deleteProduct };

@@ -136,6 +136,30 @@ const productReducer = (state = initState, action) => {
 				error: null,
 				isDeleted: true
 			};
+		case 'INACTIVE_PRODUCT_PENDING' : 
+			return {
+				...state,
+				fetching: true
+			};
+		case 'INACTIVE_PRODUCT_REJECTED' :
+			if (action.payload.response.status === 401) {
+				sessionStorage.removeItem('token');
+			}
+			
+			return {
+				...state,
+				error: action.payload.response,
+				fetching: false
+			};
+		case 'INACTIVE_PRODUCT_FULFILLED':
+			return {
+				...state,
+				fetching: false,
+				fetched: true,
+				message: action.payload.data.message,
+				error: null,
+				isDeleted: true
+			};
 		default:
 			return state;
 	}

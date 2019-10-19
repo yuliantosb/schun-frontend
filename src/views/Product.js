@@ -7,7 +7,7 @@ import { appName, url } from '../global';
 import { Helmet } from 'react-helmet';
 import ScrollToTop from '../components/layout/ScrollToTop';
 import { withToastManager } from 'react-toast-notifications';
-import { fetchProduct, deleteProduct } from '../store/actions/productAction';
+import { fetchProduct, deleteProduct, inactiveProduct } from '../store/actions/productAction';
 import {connect} from 'react-redux';
 import Loading from 'react-loading-bar';
 import Error500 from './Error500';
@@ -202,6 +202,10 @@ class Product extends React.Component {
 		}
 	}
 
+	handleChangeActive = (id, status) => {
+		this.props.inactiveProduct(id, status)
+	}
+
 	handleImport = () => {
 		const { toastManager } = this.props;
 		Axios.post(`${url}/products/import`, {
@@ -244,7 +248,8 @@ class Product extends React.Component {
             {name:'price', 'value': 'Retail price', sortable: true},
             {name:'wholesale', 'value': 'Wholesale price', sortable: true},
             {name:'category', 'value': 'Category', sortable: true},
-            {name:'stock', 'value': 'Stock', sortable: true},
+			{name:'stock', 'value': 'Stock', sortable: true},
+			{name: 'is_active', value: 'Active', sortable: false},
             {name:'option', 'value': 'Options', sortable: false}
         ];
 
@@ -259,9 +264,24 @@ class Product extends React.Component {
 				<td>{ product.category && product.category.name }</td>
                 <td>{ product.stock ? product.stock.amount : 0 }</td>
 				<td className="text-center">
+					{
+						fetching ? (
+							<span className="text-muted">
+								<i className="mdi mdi-loading mdi-spin"></i>
+							</span>
+						) : (
+							<label className="switch">
+								<input type="checkbox" checked={product.deleted_at ? false : true } onChange={() => this.handleChangeActive(product._id, product.deleted_at ? true : false)} />
+								<span className="slider round" />
+							</label>
+						)
+					}
+					
+				</td>
+				<td className="text-center">
 					<Link data-tip="Edit" to={`/product/edit/${product._id}`} className="btn btn-link text-success btn-sm  py-0 px-0 pr-4"><i className="mdi mdi-pencil"></i></Link>
 					<Link data-tip="View" to={`/product/view/${product._id}`} className="btn btn-link text-info btn-sm  py-0 px-0 pr-4"><i className="mdi mdi-eye"></i></Link>
-                    <button data-tip="Delete" onClick={() => this.handleClickDelete(product._id)} className="btn btn-link text-danger btn-sm  py-0 px-0"><i className="mdi mdi-delete"></i></button>
+					<button data-tip="Delete" onClick={() => this.handleClickDelete(product._id)} className="btn btn-link text-danger btn-sm  py-0 px-0"><i className="mdi mdi-delete"></i></button>
 					<ReactTooltip/>
 				</td>
             </tr>
@@ -382,13 +402,13 @@ class Product extends React.Component {
 											fetching ? 
 											(
 												<tr>
-													<td className="text-center" colSpan="6">Loading...</td>
+													<td className="text-center" colSpan="7">Loading...</td>
 												</tr>
 											)
 											:
 											payload.data && payload.data.data.length > 0 ? products : (
 												<tr>
-													<td className="text-center" colSpan="6">Data not found</td>
+													<td className="text-center" colSpan="7">Data not found</td>
 												</tr>
 										) }
 									</Table>
@@ -472,7 +492,8 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
 	return {
 		fetchProduct: (filter) => dispatch(fetchProduct(filter)),
-		deleteProduct: (id) => dispatch(deleteProduct(id))
+		deleteProduct: (id) => dispatch(deleteProduct(id)),
+		inactiveProduct: (id, status) => dispatch(inactiveProduct(id, status))
     }
 }
 
